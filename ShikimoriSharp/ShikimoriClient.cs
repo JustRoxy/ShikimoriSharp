@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ShikimoriSharp.Information;
 using ShikimoriSharp.UpdatableInformation;
 
@@ -7,28 +6,8 @@ namespace ShikimoriSharp
 {
     public class ShikimoriClient
     {
-        public ApiClient Client { get; }
-
-        public static async Task<ShikimoriClient> Create(string clientName, string clientId, string clientSecret,
-            string authorizationCode, string redirectUrl = @"urn:ietf:wg:oauth:2.0:oob")
-        {
-            var obj = new ShikimoriClient(clientName, clientId, clientSecret, redirectUrl);
-            await obj.Client.Auth(authorizationCode);
-            return obj;
-        }
-        public static ShikimoriClient Create(string clientName, string clientId, string clientSecret,
-             ApiClient.AccessToken token, string redirectUrl = @"urn:ietf:wg:oauth:2.0:oob")
-        {
-            var obj = new ShikimoriClient(clientName, clientId, clientSecret, redirectUrl);
-            obj.Client.Auth(token);
-            return obj;
-        }
-        
-        
-        
-        
-        
-        private ShikimoriClient(string clientName, string clientId, string clientSecret, string redirectUrl  = @"urn:ietf:wg:oauth:2.0:oob")
+        private ShikimoriClient(string clientName, string clientId, string clientSecret,
+            string redirectUrl = @"urn:ietf:wg:oauth:2.0:oob")
         {
             Client = new ApiClient(clientName, clientId, clientSecret, redirectUrl);
             Animes = new Animes(Client);
@@ -36,6 +15,8 @@ namespace ShikimoriSharp
             Ranobe = new Ranobe(Client);
             Users = new Users(Client);
         }
+
+        public ApiClient Client { get; }
         public Achievements Achievements { get; set; }
         public Animes Animes { get; }
         public Appear Appear { get; set; }
@@ -65,7 +46,21 @@ namespace ShikimoriSharp
         public UserRates UserRates { get; set; }
         public Users Users { get; set; }
         public Videos Videos { get; set; }
-        
-        
+
+        public static async Task<ShikimoriClient> Create(string clientName, string clientId, string clientSecret,
+            string authorizationCode, string redirectUrl = @"urn:ietf:wg:oauth:2.0:oob")
+        {
+            var obj = new ShikimoriClient(clientName, clientId, clientSecret, redirectUrl);
+            await obj.Client.Auth(authorizationCode);
+            return obj;
+        }
+
+        public static ShikimoriClient Create(string clientName, string clientId, string clientSecret,
+            ApiClient.AccessToken token, string redirectUrl = @"urn:ietf:wg:oauth:2.0:oob")
+        {
+            var obj = new ShikimoriClient(clientName, clientId, clientSecret, redirectUrl);
+            obj.Client.Auth(token);
+            return obj;
+        }
     }
 }

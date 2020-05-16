@@ -9,7 +9,8 @@ namespace ShikimoriSharp.Information
     public class Calendars : ApiBase
     {
         public Calendars(ApiClient apiClient) : base(Version.v1, apiClient)
-        {}
+        {
+        }
 
         public async Task<Calendar[]> GetCalendarAsync()
         {
@@ -17,18 +18,14 @@ namespace ShikimoriSharp.Information
         }
     }
 
-    public partial class Calendar
+    public class Calendar
     {
-        [JsonProperty("next_episode")]
-        public long NextEpisode { get; set; }
+        [JsonProperty("next_episode")] public long NextEpisode { get; set; }
 
-        [JsonProperty("next_episode_at")]
-        public DateTimeOffset NextEpisodeAt { get; set; }
+        [JsonProperty("next_episode_at")] public DateTimeOffset NextEpisodeAt { get; set; }
 
-        [JsonProperty("duration")]
-        public string Duration { get; set; }
+        [JsonProperty("duration")] public string Duration { get; set; }
 
-        [JsonProperty("anime")]
-        public Anime Anime { get; set; }
+        [JsonProperty("anime")] public Anime Anime { get; set; }
     }
 }

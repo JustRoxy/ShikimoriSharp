@@ -7,8 +7,16 @@ namespace ShikimoriSharp.Bases
 {
     public abstract class ApiBase
     {
-        private ApiClient _apiClient;
+        private readonly ApiClient _apiClient;
+
+        protected ApiBase(Version version, ApiClient apiClient)
+        {
+            Version = version;
+            _apiClient = apiClient;
+        }
+
         public Version Version { get; }
+        private string Site => $"https://shikimori.one/api/{GetThing()}";
 
         private string GetThing()
         {
@@ -18,13 +26,6 @@ namespace ShikimoriSharp.Bases
                 _ => Version + "/"
             };
         }
-        private string Site => $"https://shikimori.one/api/{GetThing()}";
-
-        protected ApiBase(Version version, ApiClient apiClient)
-        {
-            Version = version;
-            _apiClient = apiClient;
-        }
 
         private static HttpContent DeserializeToRequest<T>(T obj)
         {
@@ -32,21 +33,25 @@ namespace ShikimoriSharp.Bases
             var typeooft = obj.GetType();
             var type = typeooft.GetFields(BindingFlags.Public | BindingFlags.Instance);
             var typeEnum = type.Select(it => new
-                    {Name = it.Name, Value = typeooft.GetField(it.Name)?.GetValue(obj)})
+                {
+                    it.Name, Value = typeooft.GetField(it.Name)?.GetValue(obj)
+                })
                 .Where(it => !(it.Value is null));
             var content = new MultipartFormDataContent();
             foreach (var i in typeEnum)
                 content.Add(new StringContent(i.Value.ToString()), i.Name);
-            
+
 
             return content;
         }
 
-        public async Task<TResult> Request<TResult, TSettings>(string apiMethod, TSettings settings, bool protectedResource = false)
+        public async Task<TResult> Request<TResult, TSettings>(string apiMethod, TSettings settings,
+            bool protectedResource = false)
         {
             var settingsInfo = DeserializeToRequest(settings);
             return await _apiClient.RequestApi<TResult>($"{Site}{apiMethod}", settingsInfo, protectedResource);
         }
+
         public async Task<TResult> Request<TResult>(string apiMethod, bool protectedResource = false)
         {
             return await _apiClient.RequestApi<TResult>($"{Site}{apiMethod}", protectedResource);

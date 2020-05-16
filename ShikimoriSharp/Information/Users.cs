@@ -29,18 +29,22 @@ namespace ShikimoriSharp.Information
         {
             return await Request<UserId>($"users/{id}");
         }
+
         public async Task<UserId> GetUser(string nickname)
         {
             return await Request<UserId, UserIdRequestSettings>($"users/{nickname}", new UserIdRequestSettings(1));
         }
+
         public async Task<UserInfo> GetUserInfo(int id)
         {
             return await Request<UserInfo>($"users/{id}/info");
         }
+
         public async Task<UserInfo> WhoAmI()
         {
             return await Request<UserInfo>("users/whoami", true);
         }
+
         public async Task Sign_Out()
         {
             await NoResponseRequest("users/sign_out");
@@ -55,18 +59,22 @@ namespace ShikimoriSharp.Information
         {
             return await Request<Club[]>($"users/{id}/clubs");
         }
+
         public async Task<AnimeRate[]> GetUserAnimeRates(int id)
         {
             return await AllRates("anime", id);
         }
+
         public async Task<AnimeRate[]> GetUserAnimeRates(int id, AnimeRateRequestSettings settings)
         {
             return await AllRates("anime", id, settings);
         }
+
         public async Task<AnimeRate[]> GetUserMangaRates(int id)
         {
             return await AllRates("manga", id);
         }
+
         public async Task<AnimeRate[]> GetUserMangaRates(int id, AnimeRateRequestSettings settings)
         {
             return await AllRates("manga", id, settings);
@@ -76,10 +84,12 @@ namespace ShikimoriSharp.Information
         {
             return await Request<AnimeRate[]>($"users/{id}/{thingy}_rates");
         }
+
         private async Task<AnimeRate[]> AllRates(string thingy, int id, AnimeRateRequestSettings settings)
         {
             return await Request<AnimeRate[], AnimeRateRequestSettings>($"users/{id}/{thingy}_rates", settings);
         }
+
         public async Task<Favorites> GetFavourites(int id)
         {
             return await Request<Favorites>($"users/{id}");
@@ -94,43 +104,41 @@ namespace ShikimoriSharp.Information
         {
             return await Request<NewInformation>($"users/{id}/unread_messages", true);
         }
+
         public async Task<History[]> GetHistory(int id)
         {
             return await Request<History[]>($"users/{id}/history");
         }
+
         public async Task<History[]> GetHistory(int id, HistoryRequestSettings settings)
         {
             return await Request<History[], HistoryRequestSettings>($"users/{id}/history", settings);
         }
+
         public async Task<Bans[]> GetBans(int id)
         {
             return await Request<Bans[]>($"users/{id}/bans");
         }
+
         public class History
         {
-            [JsonProperty("id")]
-            public long Id { get; set; }
+            [JsonProperty("id")] public long Id { get; set; }
 
-            [JsonProperty("created_at")]
-            public DateTimeOffset CreatedAt { get; set; }
+            [JsonProperty("created_at")] public DateTimeOffset CreatedAt { get; set; }
 
-            [JsonProperty("description")]
-            public string Description { get; set; }
+            [JsonProperty("description")] public string Description { get; set; }
 
-            [JsonProperty("target")]
-            public HistoryTarget Target { get; set; }
-
+            [JsonProperty("target")] public HistoryTarget Target { get; set; }
         }
+
         /// <summary>
-        /// So the point of this class is to fix the "target_type" in <see cref="HistoryRequestSettings"/> 
+        ///     So the point of this class is to fix the "target_type" in <see cref="HistoryRequestSettings" />
         /// </summary>
         public class HistoryTarget : Anime
         {
-            
-            [JsonProperty("volumes")]
-            public long? Volumes { get; set; }
-            [JsonProperty("chapters")]
-            public long? Chapters { get; set; }
+            [JsonProperty("volumes")] public long? Volumes { get; set; }
+
+            [JsonProperty("chapters")] public long? Chapters { get; set; }
         }
 
         public class HistoryRequestSettings : BasicSettings
@@ -138,16 +146,14 @@ namespace ShikimoriSharp.Information
             public string target_id;
             public string target_type;
         }
+
         public class NewInformation
         {
-            [JsonProperty("messages")]
-            public long Messages { get; set; }
+            [JsonProperty("messages")] public long Messages { get; set; }
 
-            [JsonProperty("news")]
-            public long News { get; set; }
+            [JsonProperty("news")] public long News { get; set; }
 
-            [JsonProperty("notifications")]
-            public long Notifications { get; set; }
+            [JsonProperty("notifications")] public long Notifications { get; set; }
         }
 
         public class MessageRequestSettings : BasicSettings
@@ -159,6 +165,7 @@ namespace ShikimoriSharp.Information
                 this.type = type;
             }
         }
+
         public class AnimeRateRequestSettings : BasicSettings
         {
             public bool? censored;
@@ -166,34 +173,28 @@ namespace ShikimoriSharp.Information
 
         public class Favorites
         {
-            [JsonProperty("animes")]
-            public SmallRepresentation[] Animes { get; set; }
+            [JsonProperty("animes")] public SmallRepresentation[] Animes { get; set; }
 
-            [JsonProperty("mangas")]
-            public SmallRepresentation[] Mangas { get; set; }
+            [JsonProperty("mangas")] public SmallRepresentation[] Mangas { get; set; }
 
-            [JsonProperty("characters")]
-            public SmallRepresentation[] Characters { get; set; }
+            [JsonProperty("characters")] public SmallRepresentation[] Characters { get; set; }
 
-            [JsonProperty("people")]
-            public SmallRepresentation[] People { get; set; }
+            [JsonProperty("people")] public SmallRepresentation[] People { get; set; }
 
-            [JsonProperty("mangakas")]
-            public SmallRepresentation[] Mangakas { get; set; }
+            [JsonProperty("mangakas")] public SmallRepresentation[] Mangakas { get; set; }
 
-            [JsonProperty("seyu")]
-            public SmallRepresentation[] Seyu { get; set; }
+            [JsonProperty("seyu")] public SmallRepresentation[] Seyu { get; set; }
 
-            [JsonProperty("producers")]
-            public SmallRepresentation[] Producers { get; set; }
+            [JsonProperty("producers")] public SmallRepresentation[] Producers { get; set; }
         }
-        
+
         private class UserIdRequestSettings
         {
             /// <summary>
-            /// 1 if you want to get user by its nickname
+            ///     1 if you want to get user by its nickname
             /// </summary>
             public int is_nickname;
+
             public UserIdRequestSettings(int isNickname)
             {
                 is_nickname = isNickname;
@@ -202,47 +203,33 @@ namespace ShikimoriSharp.Information
 
         public class AnimeRate
         {
-            [JsonProperty("id")]
-            public long Id { get; set; }
+            [JsonProperty("id")] public long Id { get; set; }
 
-            [JsonProperty("score")]
-            public long Score { get; set; }
+            [JsonProperty("score")] public long Score { get; set; }
 
-            [JsonProperty("status")]
-            public string Status { get; set; }
+            [JsonProperty("status")] public string Status { get; set; }
 
-            [JsonProperty("text")]
-            public object Text { get; set; }
+            [JsonProperty("text")] public object Text { get; set; }
 
-            [JsonProperty("episodes")]
-            public long? Episodes { get; set; }
+            [JsonProperty("episodes")] public long? Episodes { get; set; }
 
-            [JsonProperty("chapters")]
-            public long? Chapters { get; set; }
+            [JsonProperty("chapters")] public long? Chapters { get; set; }
 
-            [JsonProperty("volumes")]
-            public long? Volumes { get; set; }
+            [JsonProperty("volumes")] public long? Volumes { get; set; }
 
-            [JsonProperty("text_html")]
-            public object TextHtml { get; set; }
+            [JsonProperty("text_html")] public object TextHtml { get; set; }
 
-            [JsonProperty("rewatches")]
-            public long? Rewatches { get; set; }
+            [JsonProperty("rewatches")] public long? Rewatches { get; set; }
 
-            [JsonProperty("created_at")]
-            public DateTimeOffset? CreatedAt { get; set; }
+            [JsonProperty("created_at")] public DateTimeOffset? CreatedAt { get; set; }
 
-            [JsonProperty("updated_at")]
-            public DateTimeOffset? UpdatedAt { get; set; }
+            [JsonProperty("updated_at")] public DateTimeOffset? UpdatedAt { get; set; }
 
-            [JsonProperty("user")]
-            public User User { get; set; }
+            [JsonProperty("user")] public User User { get; set; }
 
-            [JsonProperty("anime")]
-            public Anime Anime { get; set; }
+            [JsonProperty("anime")] public Anime Anime { get; set; }
 
-            [JsonProperty("manga")]
-            public Manga Manga { get; set; }
+            [JsonProperty("manga")] public Manga Manga { get; set; }
         }
 
         public class User
@@ -259,73 +246,54 @@ namespace ShikimoriSharp.Information
 
         public class Message
         {
-            [JsonProperty("id")]
-            public long? Id { get; set; }
+            [JsonProperty("id")] public long? Id { get; set; }
 
-            [JsonProperty("kind")]
-            public string Kind { get; set; }
+            [JsonProperty("kind")] public string Kind { get; set; }
 
-            [JsonProperty("read")]
-            public bool? Read { get; set; }
+            [JsonProperty("read")] public bool? Read { get; set; }
 
-            [JsonProperty("body")]
-            public string Body { get; set; }
+            [JsonProperty("body")] public string Body { get; set; }
 
-            [JsonProperty("html_body")]
-            public string HtmlBody { get; set; }
+            [JsonProperty("html_body")] public string HtmlBody { get; set; }
 
-            [JsonProperty("created_at")]
-            public DateTimeOffset CreatedAt { get; set; }
+            [JsonProperty("created_at")] public DateTimeOffset CreatedAt { get; set; }
 
-            [JsonProperty("linked_id")]
-            public long? LinkedId { get; set; }
+            [JsonProperty("linked_id")] public long? LinkedId { get; set; }
 
-            [JsonProperty("linked_type")]
-            public string LinkedType { get; set; }
+            [JsonProperty("linked_type")] public string LinkedType { get; set; }
 
-            [JsonProperty("linked")]
-            public UserLinked Linked { get; set; }
+            [JsonProperty("linked")] public UserLinked Linked { get; set; }
 
-            [JsonProperty("from")]
-            public User From { get; set; }
+            [JsonProperty("from")] public User From { get; set; }
 
-            [JsonProperty("to")]
-            public User To { get; set; }
+            [JsonProperty("to")] public User To { get; set; }
         }
 
         public class UserLinked : Linked
         {
-            [JsonProperty("topic_url")]
-            public Uri TopicUrl { get; set; }
+            [JsonProperty("topic_url")] public Uri TopicUrl { get; set; }
 
-            [JsonProperty("thread_id")]
-            public long ThreadId { get; set; }
+            [JsonProperty("thread_id")] public long ThreadId { get; set; }
 
-            [JsonProperty("topic_id")]
-            public long TopicId { get; set; }
+            [JsonProperty("topic_id")] public long TopicId { get; set; }
 
-            [JsonProperty("type")]
-            public string Type { get; set; }
+            [JsonProperty("type")] public string Type { get; set; }
         }
 
         public class BasicUser : User
         {
-            [JsonProperty("name")]
-            public object Name { get; set; }
+            [JsonProperty("name")] public object Name { get; set; }
 
-            [JsonProperty("sex")]
-            public object Sex { get; set; }
+            [JsonProperty("sex")] public object Sex { get; set; }
 
-            [JsonProperty("website")]
-            public object Website { get; set; }
-            [JsonProperty("locale")]
-            public string Locale { get; set; }
+            [JsonProperty("website")] public object Website { get; set; }
+
+            [JsonProperty("locale")] public string Locale { get; set; }
         }
 
         public class UserInfo : BasicUser
         {
-            [JsonProperty("birth_on")]
-            public object BirthOn { get; set; }
+            [JsonProperty("birth_on")] public object BirthOn { get; set; }
         }
 
         public class UserId : BasicUser
@@ -333,7 +301,7 @@ namespace ShikimoriSharp.Information
             [JsonProperty("full_years")] public long? FullYears { get; set; }
 
             [JsonProperty("last_online")] public string LastOnline { get; set; }
-            
+
             [JsonProperty("location")] public string Location { get; set; }
 
             [JsonProperty("banned")] public bool? Banned { get; set; }
