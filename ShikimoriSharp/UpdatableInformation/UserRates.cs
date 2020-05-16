@@ -9,7 +9,7 @@ namespace ShikimoriSharp.UpdatableInformation
 {
     public class UserRates : ApiBase
     {
-        public async Task<UserRate[]> GetUserRates(int id)
+        public async Task<UserRate[]> GetUserRates(long id)
         {
             return await Request<UserRate[]>($"user_rates/{id}");
         }
@@ -84,10 +84,10 @@ namespace ShikimoriSharp.UpdatableInformation
 
         public class UserRatesSettings : BasicSettings
         {
-            public int user_id;
-            public int target_id;
-            public TargetType target_type;
-            public MyList status;
+            public long user_id;
+            public long? target_id;
+            public TargetType? target_type;
+            public MyList? status;
         }
 
         public enum TargetType
@@ -117,16 +117,16 @@ namespace ShikimoriSharp.UpdatableInformation
             public string Status { get; set; }
 
             [JsonProperty("rewatches")]
-            public long Rewatches { get; set; }
+            public long? Rewatches { get; set; }
 
             [JsonProperty("episodes")]
-            public long Episodes { get; set; }
+            public long? Episodes { get; set; }
 
             [JsonProperty("volumes")]
-            public long Volumes { get; set; }
+            public long? Volumes { get; set; }
 
             [JsonProperty("chapters")]
-            public long Chapters { get; set; }
+            public long? Chapters { get; set; }
 
             [JsonProperty("text")]
             public object Text { get; set; }

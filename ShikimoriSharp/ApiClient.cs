@@ -8,7 +8,11 @@ namespace ShikimoriSharp
 {
     public class ApiClient
     {
+        private const string TokenUrl = "https://shikimori.one/oauth/token";
         private AccessToken _currentToken;
+        
+        public delegate void OnChange(AccessToken token);
+        public event OnChange OnTokenChange;
 
         public ApiClient(string clientName, string clientId, string clientSecret, string redirectUrl)
         {
@@ -139,8 +143,10 @@ namespace ShikimoriSharp
 
         private async Task<AccessToken> GetAccessTokenRequest(HttpContent stringData)
         {
-            var res = await MakeRequest<AccessToken>("https://shikimori.one/oauth/token", "POST", stringData,
+            var res = await MakeRequest<AccessToken>(TokenUrl, "POST", stringData,
                 new Exception("Get Access Token Failed"));
+            if (res.RefreshToken != _currentToken.RefreshToken || res.Access_Token != _currentToken.Access_Token)
+                OnTokenChange?.Invoke(res);
             _currentToken = res;
             return res;
         }
