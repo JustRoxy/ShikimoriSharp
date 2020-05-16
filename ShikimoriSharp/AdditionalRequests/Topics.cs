@@ -5,9 +5,21 @@ using static ShikimoriSharp.Information.Users;
 
 namespace ShikimoriSharp.AdditionalRequests
 {
-    public class Topic
+    public enum Forums
+    {
+        all, animanga, site, games, vn, contests, offtopic, clubs, my_clubs, reviews, news, collections, articles, cosplay
+    }
+
+    public class LightTopic
     {
         [JsonProperty("id")] public long Id { get; set; }
+        [JsonProperty("linked")] public Linked Linked { get; set; }
+        [JsonProperty("event")] public object Event { get; set; }
+        [JsonProperty("created_at")] public DateTimeOffset CreatedAt { get; set; }
+        [JsonProperty("episode")] public object Episode { get; set; }
+    }
+    public class Topic : LightTopic
+    {
 
         [JsonProperty("topic_title")] public string TopicTitle { get; set; }
 
@@ -16,13 +28,10 @@ namespace ShikimoriSharp.AdditionalRequests
         [JsonProperty("html_body")] public string HtmlBody { get; set; }
 
         [JsonProperty("html_footer")] public string HtmlFooter { get; set; }
-
-        [JsonProperty("created_at")] public DateTimeOffset CreatedAt { get; set; }
-
+        
         [JsonProperty("comments_count")] public long CommentsCount { get; set; }
 
         [JsonProperty("forum")] public Forum Forum { get; set; }
-
         [JsonProperty("user")] public User User { get; set; }
 
         [JsonProperty("type")] public string Type { get; set; }
@@ -31,15 +40,9 @@ namespace ShikimoriSharp.AdditionalRequests
 
         [JsonProperty("linked_type")] public string LinkedType { get; set; }
 
-        [JsonProperty("linked")] public Linked Linked { get; set; }
-
         [JsonProperty("viewed")] public bool Viewed { get; set; }
 
         [JsonProperty("last_comment_viewed")] public object LastCommentViewed { get; set; }
-
-        [JsonProperty("event")] public object Event { get; set; }
-
-        [JsonProperty("episode")] public object Episode { get; set; }
     }
 
     public class Forum

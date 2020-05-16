@@ -33,20 +33,20 @@ namespace ShikimoriSharp
             _currentToken = token;
         }
 
-        public async Task NoResponseRequest(string destination, HttpContent settings, bool requestAccess = false)
+        public async Task NoResponseRequest(string destination, HttpContent settings, bool requestAccess = false, string method = "GET")
         {
-            await MakeStringRequest(destination, "GET", settings, new Exception("Shit happened"),
+            await MakeStringRequest(destination, method, settings, new Exception("Shit happened"),
                 requestAccess);
         }
 
         public async Task<TResult> RequestApi<TResult>(string destination, HttpContent settings,
-            bool requestAccess = false)
+            bool requestAccess = false, string method = "GET")
         {
-            return await MakeRequest<TResult>(destination, "GET", settings, new Exception("Api request failed"),
+            return await MakeRequest<TResult>(destination, method, settings, new Exception("Api request failed"),
                 requestAccess);
         }
 
-        public async Task<TResult> RequestApi<TResult>(string destination, bool requestAccess = false)
+        public async Task<TResult> RequestApi<TResult>(string destination, bool requestAccess = false, string method = "GET")
         {
             return await RequestApi<TResult>(destination, null, requestAccess);
         }
@@ -66,6 +66,9 @@ namespace ShikimoriSharp
                 var response = await httpClient.SendAsync(request);
                 switch (response.StatusCode)
                 {
+                    case HttpStatusCode.UnprocessableEntity:
+                        throw new Exception(
+                            $"{response.ReasonPhrase}, something is empty. It's probably because of already deleted dialog, or the club's name is empty");
                     case HttpStatusCode.Forbidden:
                         throw new Exception(
                             "You were trying to access a forbidden information. Check your bot's privileges" +

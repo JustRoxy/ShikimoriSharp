@@ -12,7 +12,7 @@ namespace ShikimoriSharp.Information
         {
         }
 
-        public async Task<Ban[]> GetBansAsync()
+        public async Task<Ban[]> GetBans()
         {
             return await Request<Ban[]>("bans");
         }

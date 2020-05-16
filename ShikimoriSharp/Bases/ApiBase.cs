@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using System.Net.Http;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace ShikimoriSharp.Bases
 {
@@ -46,20 +48,38 @@ namespace ShikimoriSharp.Bases
         }
 
         public async Task<TResult> Request<TResult, TSettings>(string apiMethod, TSettings settings,
-            bool protectedResource = false)
+            bool protectedResource = false, string method = "GET")
         {
             var settingsInfo = DeserializeToRequest(settings);
-            return await _apiClient.RequestApi<TResult>($"{Site}{apiMethod}", settingsInfo, protectedResource);
+            return await _apiClient.RequestApi<TResult>($"{Site}{apiMethod}", settingsInfo, protectedResource, method);
         }
 
-        public async Task<TResult> Request<TResult>(string apiMethod, bool protectedResource = false)
+        private static async Task<string> SerializeToJson(object obj)
+        {
+            
+            return await Task.Factory.StartNew(() => JsonConvert.SerializeObject(obj));
+        }
+        public async Task<TResult> SendJson<TResult>(string apiMethod, object content, bool protectedResource, string method = "POST")
+        {
+            var json = new StringContent(await SerializeToJson(content), Encoding.UTF8, "application/json");
+            return await _apiClient.RequestApi<TResult>($"{Site}{apiMethod}", json, protectedResource, method);
+        }
+        
+        public async Task<TResult> Request<TResult>(string apiMethod, bool protectedResource = false, string method = "GET")
         {
             return await _apiClient.RequestApi<TResult>($"{Site}{apiMethod}", protectedResource);
         }
 
-        public async Task NoResponseRequest(string apiMethod, bool protectedResource = true)
+        public async Task NoResponseRequest(string apiMethod, bool protectedResource = true, string method = "POST")
         {
-            await _apiClient.NoResponseRequest($"{Site}{apiMethod}", null, protectedResource);
+            await _apiClient.NoResponseRequest(apiMethod, null, protectedResource, method);
+        }
+
+        public async Task NoResponseRequest<TSettings>(string apiMethod, TSettings setting,
+            bool protectedResource = true, string method = "POST")
+        {
+            var settings = DeserializeToRequest(setting);
+            await _apiClient.NoResponseRequest($"{Site}{apiMethod}", settings, protectedResource);
         }
     }
 

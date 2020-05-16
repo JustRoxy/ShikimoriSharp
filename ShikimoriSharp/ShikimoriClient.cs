@@ -10,23 +10,44 @@ namespace ShikimoriSharp
             string redirectUrl = @"urn:ietf:wg:oauth:2.0:oob")
         {
             Client = new ApiClient(clientName, clientId, clientSecret, redirectUrl);
+            Achievements = new Achievements(Client);
             Animes = new Animes(Client);
+            Bans = new Bans(Client);
+            Calendars = new Calendars(Client);
+            Characters = new Characters(Client);
+            Clubs = new Clubs(Client);
+            Comments = new Comments(Client);
+            Constants = new Constants(Client);
+            Dialogs = new Dialogs(Client);
+            Favorites = new Favorites(Client);
+            Forums = new Forums(Client);
+            Friends = new Friends(Client);
+            Genres = new Genres(Client);
             Mangas = new Mangas(Client);
+            Messages = new Messages(Client);
+            People = new People(Client);
+            Publishers = new Publishers(Client);
             Ranobe = new Ranobe(Client);
+            Stats = new Stats(Client);
+            Studios = new Studios(Client);
+            Styles = new Styles(Client);
+            TopicIgnores = new TopicIgnores(Client);
+            Topics = new Topics(Client);
+            UserImages = new UserImages(Client);
+            UserRates = new UserRates(Client);
             Users = new Users(Client);
+            Videos = new Videos(Client);
         }
 
         public ApiClient Client { get; }
         public Achievements Achievements { get; set; }
         public Animes Animes { get; }
-        public Appear Appear { get; set; }
         public Bans Bans { get; set; }
         public Calendars Calendars { get; set; }
         public Characters Characters { get; set; }
         public Clubs Clubs { get; set; }
         public Comments Comments { get; set; }
         public Constants Constants { get; set; }
-        public Devices Devices { get; set; }
         public Dialogs Dialogs { get; set; }
         public Favorites Favorites { get; set; }
         public Forums Forums { get; set; }

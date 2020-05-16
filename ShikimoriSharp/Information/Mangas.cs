@@ -11,52 +11,52 @@ namespace ShikimoriSharp.Information
         {
         }
 
-        public async Task<Manga[]> GetMangaAsync()
+        public async Task<Manga[]> GetManga()
         {
             return await Request<Manga[]>("mangas");
         }
 
-        public async Task<Manga[]> GetMangaAsync(MangaRequestSettings settings)
+        public async Task<Manga[]> GetManga(MangaRequestSettings settings)
         {
             return await Request<Manga[], MangaRequestSettings>("mangas", settings);
         }
 
-        public async Task<MangaID> GetMangaAsync(int id)
+        public async Task<MangaID> GetManga(int id)
         {
             return await Request<MangaID>($"mangas/{id}");
         }
 
-        public async Task<Role[]> GetRolesAsync(int id)
+        public async Task<Role[]> GetRoles(int id)
         {
             return await Request<Role[]>($"mangas/{id}/roles");
         }
 
-        public async Task<Manga[]> GetSimilarAsync(int id)
+        public async Task<Manga[]> GetSimilar(int id)
         {
             return await Request<Manga[]>($"mangas/{id}/similar");
         }
 
-        public async Task<Related[]> GetRelatedAsync(int id)
+        public async Task<Related[]> GetRelated(int id)
         {
             return await Request<Related[]>($"mangas/{id}/related");
         }
 
-        public async Task<Franchise> GetFranchiseAsync(int id)
+        public async Task<Franchise> GetFranchise(int id)
         {
             return await Request<Franchise>($"mangas/{id}/franchise");
         }
 
-        public async Task<ExternalLinks[]> GetExternalLinksAsync(int id)
+        public async Task<ExternalLinks[]> GetExternalLinks(int id)
         {
             return await Request<ExternalLinks[]>($"mangas/{id}/external_links");
         }
 
-        public async Task<Topic> GetTopicsAsync(int id)
+        public async Task<Topic> GetTopics(int id)
         {
             return await Request<Topic>($"mangas/{id}/topics");
         }
 
-        public async Task<Topic> GetTopicsAsync(int id, BasicSettings settings)
+        public async Task<Topic> GetTopics(int id, BasicSettings settings)
         {
             return await Request<Topic, BasicSettings>($"mangas/{id}/topics", settings);
         }

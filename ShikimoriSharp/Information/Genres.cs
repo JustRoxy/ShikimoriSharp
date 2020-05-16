@@ -10,7 +10,7 @@ namespace ShikimoriSharp.Information
         {
         }
 
-        public async Task<Genre[]> GetGenresAsync()
+        public async Task<Genre[]> GetGenres()
         {
             return await Request<Genre[]>("genres");
         }

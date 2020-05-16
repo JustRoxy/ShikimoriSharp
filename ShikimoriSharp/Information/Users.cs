@@ -47,7 +47,7 @@ namespace ShikimoriSharp.Information
 
         public async Task Sign_Out()
         {
-            await NoResponseRequest("users/sign_out");
+            await NoResponseRequest("users/sign_out", method: "GET");
         }
 
         public async Task<User[]> GetFriends(int id)
@@ -244,7 +244,7 @@ namespace ShikimoriSharp.Information
             [JsonProperty("last_online_at")] public DateTimeOffset LastOnlineAt { get; set; }
         }
 
-        public class Message
+        public class MessageContent
         {
             [JsonProperty("id")] public long? Id { get; set; }
 
@@ -263,9 +263,11 @@ namespace ShikimoriSharp.Information
             [JsonProperty("linked_type")] public string LinkedType { get; set; }
 
             [JsonProperty("linked")] public UserLinked Linked { get; set; }
+        }
 
+        public class Message : MessageContent
+        {
             [JsonProperty("from")] public User From { get; set; }
-
             [JsonProperty("to")] public User To { get; set; }
         }
 

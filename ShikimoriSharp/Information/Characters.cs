@@ -14,7 +14,7 @@ namespace ShikimoriSharp.Information
         {
         }
 
-        public async Task<FullCharacter> GetCharacterByIdAsync(int id)
+        public async Task<FullCharacter> GetCharacterById(int id)
         {
             return await Request<FullCharacter>($"characters/{id}");
         }

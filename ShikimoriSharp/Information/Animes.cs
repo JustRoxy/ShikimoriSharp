@@ -14,52 +14,52 @@ namespace ShikimoriSharp.Information
         {
         }
 
-        public async Task<Anime[]> GetAnimeAsync(AnimeRequestSettings settings)
+        public async Task<Anime[]> GetAnime(AnimeRequestSettings settings)
         {
             return await Request<Anime[], AnimeRequestSettings>("animes", settings);
         }
 
-        public async Task<AnimeID> GetAnimeByIdAsync(int id)
+        public async Task<AnimeID> GetAnimeById(int id)
         {
             return await Request<AnimeID>($"animes/{id}");
         }
 
-        public async Task<Role[]> GetRolesAsync(int id)
+        public async Task<Role[]> GetRoles(int id)
         {
             return await Request<Role[]>($"animes/{id}/roles");
         }
 
-        public async Task<Anime[]> GetSimilarAsync(int id)
+        public async Task<Anime[]> GetSimilar(int id)
         {
             return await Request<Anime[]>($"animes/{id}/similar");
         }
 
-        public async Task<Related[]> GetRelatedAsync(int id)
+        public async Task<Related[]> GetRelated(int id)
         {
             return await Request<Related[]>($"animes/{id}/related");
         }
 
-        public async Task<Screenshots[]> GetScreenshotsAsync(int id)
+        public async Task<Screenshots[]> GetScreenshots(int id)
         {
             return await Request<Screenshots[]>($"animes/{id}/screenshots");
         }
 
-        public async Task<Franchise> GetFranchiseAsync(int id)
+        public async Task<Franchise> GetFranchise(int id)
         {
             return await Request<Franchise>($"animes/{id}/franchise");
         }
 
-        public async Task<ExternalLinks[]> GetExternalLinksAsync(int id)
+        public async Task<ExternalLinks[]> GetExternalLinks(int id)
         {
             return await Request<ExternalLinks[]>($"animes/{id}/external_links");
         }
 
-        public async Task<Topic[]> GetTopicsAsync(int id)
+        public async Task<Topic[]> GetTopics(int id)
         {
             return await Request<Topic[]>($"animes/{id}/topics");
         }
 
-        public async Task<Topic[]> GetTopicsAsync(int id, AnimeTopicSettings settings)
+        public async Task<Topic[]> GetTopics(int id, AnimeTopicSettings settings)
         {
             return await Request<Topic[], AnimeTopicSettings>($"animes/{id}/topics", settings);
         }

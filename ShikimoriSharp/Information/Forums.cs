@@ -10,7 +10,7 @@ namespace ShikimoriSharp.Information
         {
         }
 
-        public async Task<Forum[]> GetForumsAsync()
+        public async Task<Forum[]> GetForums()
         {
             return await Request<Forum[]>("forums");
         }

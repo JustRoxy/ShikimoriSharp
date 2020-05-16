@@ -12,7 +12,7 @@ namespace ShikimoriSharp.Information
         {
         }
 
-        public async Task<Achievement[]> GetAchievementsAsync(AchievementsSettings settings)
+        public async Task<Achievement[]> GetAchievements(AchievementsSettings settings)
         {
             return await Request<Achievement[], AchievementsSettings>("achievements", settings);
         }

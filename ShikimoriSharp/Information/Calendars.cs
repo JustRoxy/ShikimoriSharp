@@ -12,7 +12,7 @@ namespace ShikimoriSharp.Information
         {
         }
 
-        public async Task<Calendar[]> GetCalendarAsync()
+        public async Task<Calendar[]> GetCalendar()
         {
             return await Request<Calendar[]>("calendar");
         }
