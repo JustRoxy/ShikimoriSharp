@@ -2,162 +2,92 @@
 using System;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using ShikimoriSharp.AdditionalRequests;
+using ShikimoriSharp.Bases;
 using ShikimoriSharp.Enums;
+using Version = ShikimoriSharp.Bases.Version;
 
 namespace ShikimoriSharp.Information
 {
     public class Animes : ApiBase
     {
-        
-
         public async Task<Anime[]> GetAnimeAsync(AnimeRequestSettings settings)
         {
             return await Request<Anime[], AnimeRequestSettings>("animes", settings);
         }
 
-        public async Task<FullAnime> GetAnimeByIdAsync(int id)
+        public async Task<AnimeID> GetAnimeByIdAsync(int id)
+            => await Request<AnimeID>($"animes/{id}");
+        public async Task<Role[]> GetRolesAsync(int id)
+            => await Request<Role[]>($"animes/{id}/roles");
+        public async Task<Anime[]> GetSimilarAsync(int id)
+            => await Request<Anime[]>($"animes/{id}/similar");
+        public async Task<Related[]> GetRelatedAsync(int id)
+            => await Request<Related[]>($"animes/{id}/related");
+        public async Task<Screenshots[]> GetScreenshotsAsync(int id)
+            => await Request<Screenshots[]>($"animes/{id}/screenshots");
+        public async Task<Franchise> GetFranchiseAsync(int id)
+            => await Request<Franchise>($"animes/{id}/franchise");
+        public async Task<ExternalLinks[]> GetExternalLinksAsync(int id)
+            => await Request<ExternalLinks[]>($"animes/{id}/external_links");
+
+        public async Task<Topic[]> GetTopicsAsync(int id)
+            => await Request<Topic[]>($"animes/{id}/topics");
+        public async Task<Topic[]> GetTopicsAsync(int id, AnimeTopicSettings settings)
+            => await Request<Topic[], AnimeTopicSettings>($"animes/{id}/topics", settings);
+        
+        public class AnimeTopicSettings : BasicSettings
         {
-            return await Request<FullAnime>($"animes/{id}");
+            public int episode;
+            public string? kind;
         }
 
-        public class AnimeRequestSettings
+        public class Screenshots
         {
-            public int? page;
-            public int? limit;
-            public Order? order;
-            public Kind? kind;
-            public Status? status;
-            public string? seasons;
-            public int? score;
-            public int[]? genre;
+            [JsonProperty("original")]
+            public string Original { get; set; }
+
+            [JsonProperty("preview")]
+            public string Preview { get; set; }
+        }
+        
+        public class AnimeID : AnimeMangaIdBase
+        {
+            [JsonProperty("episodes")] public long Episodes { get; set; }
+
+            [JsonProperty("episodes_aired")] public long EpisodesAired { get; set; }
+
+            [JsonProperty("rating")] public string Rating { get; set; }
+
+            [JsonProperty("duration")] public long Duration { get; set; }
+
+            [JsonProperty("updated_at")] public DateTimeOffset UpdatedAt { get; set; }
+
+            [JsonProperty("next_episode_at")] public object NextEpisodeAt { get; set; }
+
+            [JsonProperty("studios")] public object[] Studios { get; set; }
+
+            [JsonProperty("videos")] public object[] Videos { get; set; }
+
+            [JsonProperty("screenshots")] public object[] Screenshots { get; set; }
+        }
+      
+        public class AnimeRequestSettings : MangaAnimeRequestSettingsBase
+        {
             public int[]? studio;
-            public int[]? franchise;
-            public bool? censored;
-            public MyList? mylist;
-            public int[]? ids;
-            public int[]? exclude_ids;
-            public string? search;
         }
 
         public Animes(ApiClient apiClient) : base(Version.v1, apiClient)
         {
         }
     }
-
-    public class Anime
+    
+    public class Anime : AnimeMangaBase
     {
-        [JsonProperty("id")]
-        public long Id { get; set; }
-
-        [JsonProperty("name")]
-        public string? Name { get; set; }
-
-        [JsonProperty("russian")]
-        public object? Russian { get; set; }
-
-        [JsonProperty("image")]
-        public Image? Image { get; set; }
-
-        [JsonProperty("url")]
-        public string? Url { get; set; }
-
-        [JsonProperty("kind")]
-        public string? Kind { get; set; }
-
-        [JsonProperty("score")]
-        public string? Score { get; set; }
-
-        [JsonProperty("status")]
-        public string? Status { get; set; }
-
         [JsonProperty("episodes")]
         public long Episodes { get; set; }
 
         [JsonProperty("episodes_aired")]
         public long EpisodesAired { get; set; }
-
-        [JsonProperty("aired_on")]
-        public DateTimeOffset AiredOn { get; set; }
-
-        [JsonProperty("released_on")]
-        public object? ReleasedOn { get; set; }
-    }
-
-    public class FullAnime : Anime
-    {
-        [JsonProperty("rating")]
-        public string? Rating { get; set; }
-
-        [JsonProperty("english")]
-        public object[]? English { get; set; }
-
-        [JsonProperty("japanese")]
-        public object[]? Japanese { get; set; }
-
-        [JsonProperty("synonyms")]
-        public object[]? Synonyms { get; set; }
-
-        [JsonProperty("license_name_ru")]
-        public object? LicenseNameRu { get; set; }
-
-        [JsonProperty("duration")]
-        public long Duration { get; set; }
-
-        [JsonProperty("description")]
-        public object? Description { get; set; }
-
-        [JsonProperty("description_html")]
-        public string? DescriptionHtml { get; set; }
-
-        [JsonProperty("description_source")]
-        public object? DescriptionSource { get; set; }
-
-        [JsonProperty("franchise")]
-        public object? Franchise { get; set; }
-
-        [JsonProperty("favoured")]
-        public bool Favoured { get; set; }
-
-        [JsonProperty("anons")]
-        public bool Anons { get; set; }
-
-        [JsonProperty("ongoing")]
-        public bool Ongoing { get; set; }
-
-        [JsonProperty("thread_id")]
-        public long ThreadId { get; set; }
-
-        [JsonProperty("topic_id")]
-        public long TopicId { get; set; }
-
-        [JsonProperty("myanimelist_id")]
-        public long MyanimelistId { get; set; }
-
-        [JsonProperty("rates_scores_stats")]
-        public object[]? RatesScoresStats { get; set; }
-
-        [JsonProperty("rates_statuses_stats")]
-        public object[]? RatesStatusesStats { get; set; }
-
-        [JsonProperty("updated_at")]
-        public DateTimeOffset UpdatedAt { get; set; }
-
-        [JsonProperty("next_episode_at")]
-        public object? NextEpisodeAt { get; set; }
-
-        [JsonProperty("genres")]
-        public object[]? Genres { get; set; }
-
-        [JsonProperty("studios")]
-        public object[]? Studios { get; set; }
-
-        [JsonProperty("videos")]
-        public object[]? Videos { get; set; }
-
-        [JsonProperty("screenshots")]
-        public object[]? Screenshots { get; set; }
-
-        [JsonProperty("user_rate")]
-        public object? UserRate { get; set; }
     }
 }

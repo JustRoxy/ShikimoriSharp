@@ -1,4 +1,4 @@
-﻿namespace ShikimoriSharp
+﻿namespace ShikimoriSharp.Information
 {
     public class Studios
     {

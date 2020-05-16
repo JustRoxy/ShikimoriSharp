@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using ShikimoriSharp.Information;
+using ShikimoriSharp.UpdatableInformation;
 
 namespace ShikimoriSharp
 {
@@ -27,6 +28,7 @@ namespace ShikimoriSharp
         {
             Client = new ApiClient(clientName, clientId, clientSecret, redirectUrl);
             Animes = new Animes(Client);
+            Mangas = new Mangas(Client);
         }
         public Achievements Achievements { get; set; }
         public Animes Animes { get; }

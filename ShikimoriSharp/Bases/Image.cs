@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace ShikimoriSharp
+namespace ShikimoriSharp.Bases
 {
     public partial class Image
     {

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
-namespace ShikimoriSharp
+namespace ShikimoriSharp.Bases
 {
     public abstract class ApiBase
     {

@@ -1,4 +1,4 @@
-﻿namespace ShikimoriSharp
+﻿namespace ShikimoriSharp.UpdatableInformation
 {
     public class TopicIgnores
     {
