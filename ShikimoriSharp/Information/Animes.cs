@@ -35,7 +35,6 @@ namespace ShikimoriSharp.Information
             => await Request<Topic[]>($"animes/{id}/topics");
         public async Task<Topic[]> GetTopicsAsync(int id, AnimeTopicSettings settings)
             => await Request<Topic[], AnimeTopicSettings>($"animes/{id}/topics", settings);
-        
         public class AnimeTopicSettings : BasicSettings
         {
             public int episode;

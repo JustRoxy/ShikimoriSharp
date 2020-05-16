@@ -87,34 +87,12 @@ namespace ShikimoriSharp.Information
         public Uri Avatar { get; set; }
 
         [JsonProperty("image")]
-        public Image Image { get; set; }
+        public PureImage Image { get; set; }
 
         [JsonProperty("last_online_at")]
         public DateTimeOffset LastOnlineAt { get; set; }
     }
 
-    public partial class Image
-    {
-        [JsonProperty("x160")]
-        public Uri X160 { get; set; }
-
-        [JsonProperty("x148")]
-        public Uri X148 { get; set; }
-
-        [JsonProperty("x80")]
-        public Uri X80 { get; set; }
-
-        [JsonProperty("x64")]
-        public Uri X64 { get; set; }
-
-        [JsonProperty("x48")]
-        public Uri X48 { get; set; }
-
-        [JsonProperty("x32")]
-        public Uri X32 { get; set; }
-
-        [JsonProperty("x16")]
-        public Uri X16 { get; set; }
-    }
+    
     }
 }

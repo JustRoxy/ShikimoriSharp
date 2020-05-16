@@ -5,7 +5,7 @@ using ShikimoriSharp.Enums;
 
 namespace ShikimoriSharp.Bases
 {
-    public class AnimeMangaBase
+    public class SmallRepresentation
     {
         [JsonProperty("id")]
         public long Id { get; set; }
@@ -22,6 +22,9 @@ namespace ShikimoriSharp.Bases
         [JsonProperty("url")]
         public string? Url { get; set; }
 
+    }
+    public class AnimeMangaBase : SmallRepresentation
+    {
         [JsonProperty("kind")]
         public string? Kind { get; set; }
 

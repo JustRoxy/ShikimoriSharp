@@ -1,6 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 using ShikimoriSharp.Bases;
+using static ShikimoriSharp.Information.Users;
 
 namespace ShikimoriSharp.AdditionalRequests
 {
@@ -88,7 +89,7 @@ namespace ShikimoriSharp.AdditionalRequests
         public string Russian { get; set; }
 
         [JsonProperty("image")]
-        public LinkedImage Image { get; set; }
+        public Image Image { get; set; }
 
         [JsonProperty("url")]
         public string Url { get; set; }
@@ -107,68 +108,18 @@ namespace ShikimoriSharp.AdditionalRequests
 
         [JsonProperty("chapters")]
         public long Chapters { get; set; }
+        
+        [JsonProperty("episodes")]
+        public long Episodes { get; set; }
+
+        [JsonProperty("episodes_aired")]
+        public long EpisodesAired { get; set; }
 
         [JsonProperty("aired_on")]
         public object AiredOn { get; set; }
 
         [JsonProperty("released_on")]
         public object ReleasedOn { get; set; }
-    }
-
-    public partial class LinkedImage
-    {
-        [JsonProperty("original")]
-        public string Original { get; set; }
-
-        [JsonProperty("preview")]
-        public string Preview { get; set; }
-
-        [JsonProperty("x96")]
-        public string X96 { get; set; }
-
-        [JsonProperty("x48")]
-        public string X48 { get; set; }
-    }
-
-    public partial class User
-    {
-        [JsonProperty("id")]
-        public long Id { get; set; }
-
-        [JsonProperty("nickname")]
-        public string Nickname { get; set; }
-
-        [JsonProperty("avatar")]
-        public Uri Avatar { get; set; }
-
-        [JsonProperty("image")]
-        public UserImage Image { get; set; }
-
-        [JsonProperty("last_online_at")]
-        public DateTimeOffset LastOnlineAt { get; set; }
-    }
-
-    public partial class UserImage
-    {
-        [JsonProperty("x160")]
-        public Uri X160 { get; set; }
-
-        [JsonProperty("x148")]
-        public Uri X148 { get; set; }
-
-        [JsonProperty("x80")]
-        public Uri X80 { get; set; }
-
-        [JsonProperty("x64")]
-        public Uri X64 { get; set; }
-
-        [JsonProperty("x48")]
-        public Uri X48 { get; set; }
-
-        [JsonProperty("x32")]
-        public Uri X32 { get; set; }
-
-        [JsonProperty("x16")]
-        public Uri X16 { get; set; }
+        
     }
 }

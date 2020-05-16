@@ -28,6 +28,7 @@ namespace ShikimoriSharp.Bases
 
         private static HttpContent DeserializeToRequest<T>(T obj)
         {
+            if (obj is null) return null;
             var typeooft = obj.GetType();
             var type = typeooft.GetFields(BindingFlags.Public | BindingFlags.Instance);
             var typeEnum = type.Select(it => new
@@ -49,6 +50,11 @@ namespace ShikimoriSharp.Bases
         public async Task<TResult> Request<TResult>(string apiMethod, bool protectedResource = false)
         {
             return await _apiClient.RequestApi<TResult>($"{Site}{apiMethod}", protectedResource);
+        }
+
+        public async Task NoResponseRequest(string apiMethod, bool protectedResource = true)
+        {
+            await _apiClient.NoResponseRequest($"{Site}{apiMethod}", null, protectedResource);
         }
     }
 

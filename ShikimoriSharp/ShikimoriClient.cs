@@ -24,11 +24,17 @@ namespace ShikimoriSharp
             return obj;
         }
         
+        
+        
+        
+        
         private ShikimoriClient(string clientName, string clientId, string clientSecret, string redirectUrl  = @"urn:ietf:wg:oauth:2.0:oob")
         {
             Client = new ApiClient(clientName, clientId, clientSecret, redirectUrl);
             Animes = new Animes(Client);
             Mangas = new Mangas(Client);
+            Ranobe = new Ranobe(Client);
+            Users = new Users(Client);
         }
         public Achievements Achievements { get; set; }
         public Animes Animes { get; }
