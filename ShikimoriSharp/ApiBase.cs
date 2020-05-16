@@ -48,6 +48,10 @@ namespace ShikimoriSharp
             var settingsInfo = DeserializeToRequest(settings);
             return await _apiClient.RequestApi<TResult>($"{Site}{apiMethod}", settingsInfo, protectedResource);
         }
+        public async Task<TResult> Request<TResult>(string apiMethod, bool protectedResource = false)
+        {
+            return await _apiClient.RequestApi<TResult>($"{Site}{apiMethod}", protectedResource);
+        }
     }
 
     public enum Version

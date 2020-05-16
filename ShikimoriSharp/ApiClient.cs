@@ -57,6 +57,10 @@ namespace ShikimoriSharp
                 requestAccess);
 
         }
+        public async Task<TResult> RequestApi<TResult>(string destination, bool requestAccess = false)
+        {
+            return await RequestApi<TResult>(destination, null, requestAccess);
+        }
 
         private async Task<TResult> MakeRequest<TResult>(string dest, string method, HttpContent data, Exception error, bool requestAccess = false)
         {
