@@ -10,13 +10,12 @@ namespace ShikimoriSharp
 {
     public class ApiClient
     {
-        public ApiClient(string clientName, string clientId, string clientSecret, string authorizationCode, string redirectUrl)
+        public ApiClient(string clientName, string clientId, string clientSecret, string redirectUrl)
         {
             ClientName = clientName;
             ClientId = clientId;
             ClientSecret = clientSecret;
             RedirectUrl = redirectUrl;
-            AuthorizationCode = authorizationCode;
         }
         public class AccessToken
         {
@@ -41,15 +40,19 @@ namespace ShikimoriSharp
         }
 
         private AccessToken _currentToken;
-        public string AuthorizationCode { get; set; }
         public string ClientName { get; }
         public string ClientId { get; }
         public string ClientSecret { get; }
         public string RedirectUrl { get; }
-
-        public async Task Auth()
+        
+        public async Task Auth(string authCode)
         {
-            await GetAccessToken();
+            await GetAccessToken(authCode);
+        }
+
+        public void Auth(AccessToken token)
+        {
+            _currentToken = token;
         }
         public async Task<TResult> RequestApi<TResult>(string destination, HttpContent settings, bool requestAccess = false)
         {
@@ -65,38 +68,41 @@ namespace ShikimoriSharp
         private async Task<TResult> MakeRequest<TResult>(string dest, string method, HttpContent data, Exception error, bool requestAccess = false)
         {
             string result;
-            using (var httpClient = new HttpClient())
+            using var httpClient = new HttpClient();
+            using var request = new HttpRequestMessage(new HttpMethod(method), dest);
+            request.Headers.TryAddWithoutValidation("User-Agent", ClientName);
+            if (requestAccess)
             {
-                using (var request = new HttpRequestMessage(new HttpMethod(method), dest))
-                {
-                    request.Headers.TryAddWithoutValidation("User-Agent", ClientName);
-                    if (requestAccess)
-                    {
-                        request.Headers.TryAddWithoutValidation("Authorization",
-                            $"{_currentToken.TokenType} {_currentToken.Access_Token}");
-                    }
-                    request.Content = data; 
-
-                    var response = await httpClient.SendAsync(request);
-                    result = await response.Content.ReadAsStringAsync();
-                }
+                request.Headers.TryAddWithoutValidation("Authorization",
+                    $"{_currentToken.TokenType} {_currentToken.Access_Token}");
             }
-
-
-            return await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<TResult>(result));
+            request.Content = data;
+            while (true)
+            {
+                var response = await httpClient.SendAsync(request);
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    await RefreshAccessToken(_currentToken);
+                else if (response.IsSuccessStatusCode)
+                {
+                    result = await response.Content.ReadAsStringAsync();
+                    return await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<TResult>(result));
+                } 
+                else
+                    throw new Exception($"Unsuccessful request: {response.StatusCode}, {response.Content}");
+            }
         }
 
         #region Authorization
 
         
-        public async Task<AccessToken> GetAccessToken()
+        public async Task<AccessToken> GetAccessToken(string authCode)
         {
             var content = new MultipartFormDataContent
             {
                 {new StringContent("authorization_code"), "grant_type"},
                 {new StringContent(ClientId), "client_id"},
                 {new StringContent(ClientSecret), "client_secret"},
-                {new StringContent(AuthorizationCode), "code"},
+                {new StringContent(authCode), "code"},
                 {new StringContent(RedirectUrl), "redirect_uri"}
             };
 

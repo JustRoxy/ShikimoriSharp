@@ -11,14 +11,21 @@ namespace ShikimoriSharp
         public static async Task<ShikimoriClient> Create(string clientName, string clientId, string clientSecret,
             string authorizationCode, string redirectUrl = @"urn:ietf:wg:oauth:2.0:oob")
         {
-            var obj = new ShikimoriClient(clientName, clientId, clientSecret, authorizationCode, redirectUrl);
-            await obj.Client.Auth();
+            var obj = new ShikimoriClient(clientName, clientId, clientSecret, redirectUrl);
+            await obj.Client.Auth(authorizationCode);
+            return obj;
+        }
+        public static ShikimoriClient Create(string clientName, string clientId, string clientSecret,
+             ApiClient.AccessToken token, string redirectUrl = @"urn:ietf:wg:oauth:2.0:oob")
+        {
+            var obj = new ShikimoriClient(clientName, clientId, clientSecret, redirectUrl);
+            obj.Client.Auth(token);
             return obj;
         }
         
-        private ShikimoriClient(string clientName, string clientId, string clientSecret, string authorizationCode, string redirectUrl  = @"urn:ietf:wg:oauth:2.0:oob")
+        private ShikimoriClient(string clientName, string clientId, string clientSecret, string redirectUrl  = @"urn:ietf:wg:oauth:2.0:oob")
         {
-            Client = new ApiClient(clientName, clientId, clientSecret, authorizationCode, redirectUrl);
+            Client = new ApiClient(clientName, clientId, clientSecret, redirectUrl);
             Animes = new Animes(Client);
         }
         public Achievements Achievements { get; set; }
