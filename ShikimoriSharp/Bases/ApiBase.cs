@@ -56,16 +56,18 @@ namespace ShikimoriSharp.Bases
 
         private static async Task<string> SerializeToJson(object obj)
         {
-            
             return await Task.Factory.StartNew(() => JsonConvert.SerializeObject(obj));
         }
-        public async Task<TResult> SendJson<TResult>(string apiMethod, object content, bool protectedResource, string method = "POST")
+
+        public async Task<TResult> SendJson<TResult>(string apiMethod, object content, bool protectedResource,
+            string method = "POST")
         {
             var json = new StringContent(await SerializeToJson(content), Encoding.UTF8, "application/json");
             return await _apiClient.RequestApi<TResult>($"{Site}{apiMethod}", json, protectedResource, method);
         }
-        
-        public async Task<TResult> Request<TResult>(string apiMethod, bool protectedResource = false, string method = "GET")
+
+        public async Task<TResult> Request<TResult>(string apiMethod, bool protectedResource = false,
+            string method = "GET")
         {
             return await _apiClient.RequestApi<TResult>($"{Site}{apiMethod}", protectedResource);
         }

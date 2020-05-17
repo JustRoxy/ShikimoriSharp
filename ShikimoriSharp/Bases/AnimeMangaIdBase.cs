@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
-using ShikimoriSharp.AdditionalRequests;
+﻿using Newtonsoft.Json;
 using ShikimoriSharp.Information;
 using ShikimoriSharp.UpdatableInformation;
 
@@ -46,9 +44,8 @@ namespace ShikimoriSharp.Bases
 
     public class Rate
     {
-        [JsonProperty("name")]
-        public string Name;
-        [JsonProperty("value")]
-        public long? Value;
+        [JsonProperty("name")] public string Name;
+
+        [JsonProperty("value")] public long? Value;
     }
 }

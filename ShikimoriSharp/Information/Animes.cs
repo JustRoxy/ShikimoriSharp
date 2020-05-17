@@ -102,8 +102,8 @@ namespace ShikimoriSharp.Information
 
         public class AnimeRequestSettings : MangaAnimeRequestSettingsBase
         {
-            public int[]? studio;
             public Duration? duration;
+            public int[]? studio;
         }
     }
 

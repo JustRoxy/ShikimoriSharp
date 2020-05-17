@@ -36,10 +36,9 @@ namespace ShikimoriSharp.Bases
         public int? page;
     }
 
-    
+
     public class MangaAnimeRequestSettingsBase : BasicSettings
     {
-        
         public bool? censored;
         public int[]? exclude_ids;
         public int[]? franchise;

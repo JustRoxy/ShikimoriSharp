@@ -7,6 +7,16 @@ namespace ShikimoriSharp.UpdatableInformation
 {
     public class Messages : ApiBase
     {
+        public enum MessageType
+        {
+            news,
+            notification
+        }
+
+        public Messages(ApiClient apiClient) : base(Version.v1, apiClient)
+        {
+        }
+
         public async Task<Users.Message> GetMessages(int id)
         {
             return await Request<Users.Message>($"messages/{id}", true);
@@ -16,6 +26,7 @@ namespace ShikimoriSharp.UpdatableInformation
         {
             return await SendJson<Users.Message>("messages", message, true);
         }
+
         public async Task<Users.Message> EditMessage(int id, MessageToEdit message)
         {
             return await SendJson<Users.Message>($"messages/{id}", message, true);
@@ -35,6 +46,7 @@ namespace ShikimoriSharp.UpdatableInformation
         {
             await NoResponseRequest("messages/read_all", settings);
         }
+
         public async Task DeleteAll(AllSettings settings = null)
         {
             await NoResponseRequest("messages/delete_all", settings);
@@ -44,12 +56,6 @@ namespace ShikimoriSharp.UpdatableInformation
         {
             public bool? frontend;
             public MessageType? type;
-        }
-
-        public enum MessageType
-        {
-            news,
-            notification
         }
 
         public class MarkReadSettings
@@ -68,18 +74,21 @@ namespace ShikimoriSharp.UpdatableInformation
                 this.body = body;
             }
         }
+
         public class MessageToEdit
         {
+            public bool? frontend;
+
+            [JsonProperty("message")] public MessageToEditContent message;
+
             public MessageToEdit(MessageToEditContent message)
             {
                 this.message = message;
             }
-            public bool? frontend;
-            [JsonProperty("message")]
-            public MessageToEditContent message;
         }
 
         #endregion
+
         #region Send Message
 
         public class MessageContent
@@ -97,22 +106,19 @@ namespace ShikimoriSharp.UpdatableInformation
                 to_id = toId;
             }
         }
+
         public class MessageToSend
         {
+            public bool? frontend;
+
+            [JsonProperty("message")] public MessageContent message;
+
             public MessageToSend(MessageContent content)
             {
                 message = content;
             }
-            public bool? frontend;
-            [JsonProperty("message")]
-            public MessageContent message;
         }
-
 
         #endregion
-        
-        public Messages(ApiClient apiClient) : base(Version.v1, apiClient)
-        {
-        }
     }
 }

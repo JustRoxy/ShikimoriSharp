@@ -7,7 +7,20 @@ namespace ShikimoriSharp.AdditionalRequests
 {
     public enum Forums
     {
-        all, animanga, site, games, vn, contests, offtopic, clubs, my_clubs, reviews, news, collections, articles, cosplay
+        all,
+        animanga,
+        site,
+        games,
+        vn,
+        contests,
+        offtopic,
+        clubs,
+        my_clubs,
+        reviews,
+        news,
+        collections,
+        articles,
+        cosplay
     }
 
     public class LightTopic
@@ -18,9 +31,9 @@ namespace ShikimoriSharp.AdditionalRequests
         [JsonProperty("created_at")] public DateTimeOffset CreatedAt { get; set; }
         [JsonProperty("episode")] public object Episode { get; set; }
     }
+
     public class Topic : LightTopic
     {
-
         [JsonProperty("topic_title")] public string TopicTitle { get; set; }
 
         [JsonProperty("body")] public string Body { get; set; }
@@ -28,7 +41,7 @@ namespace ShikimoriSharp.AdditionalRequests
         [JsonProperty("html_body")] public string HtmlBody { get; set; }
 
         [JsonProperty("html_footer")] public string HtmlFooter { get; set; }
-        
+
         [JsonProperty("comments_count")] public long? CommentsCount { get; set; }
 
         [JsonProperty("forum")] public Forum Forum { get; set; }

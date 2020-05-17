@@ -9,6 +9,16 @@ namespace ShikimoriSharp.UpdatableInformation
 {
     public class Styles : ApiBase
     {
+        public enum OwnerType
+        {
+            User,
+            Club
+        }
+
+        public Styles(ApiClient apiClient) : base(Version.v1, apiClient)
+        {
+        }
+
         public async Task<Style> GetStyle(int id)
         {
             return await Request<Style>($"styles/{id}");
@@ -16,7 +26,7 @@ namespace ShikimoriSharp.UpdatableInformation
 
         public async Task<Style> PreviewStyle(StylePreviewSettings settings)
         {
-            return await SendJson<Style>($"styles/preview", settings.style, true);
+            return await SendJson<Style>("styles/preview", settings.style, true);
         }
 
         public async Task<Style> CreateStyle(StyleSettings settings)
@@ -31,6 +41,9 @@ namespace ShikimoriSharp.UpdatableInformation
 
         public class StylePreviewSettings
         {
+            public Dictionary<string, Dictionary<string, string>> style =
+                new Dictionary<string, Dictionary<string, string>>();
+
             public StylePreviewSettings(string css)
             {
                 style.Add("style", new Dictionary<string, string>
@@ -38,22 +51,28 @@ namespace ShikimoriSharp.UpdatableInformation
                     {"css", css}
                 });
             }
-            public Dictionary<string, Dictionary<string, string>> style = new Dictionary<string, Dictionary<string, string>>();
         }
+
         public class StyleUpdateSettings
         {
+            public Dictionary<string, Dictionary<string, string>> style =
+                new Dictionary<string, Dictionary<string, string>>();
+
             public StyleUpdateSettings(string css, string name)
             {
                 style.Add("style", new Dictionary<string, string>
                 {
                     {"css", css},
-                    {"name", name},
+                    {"name", name}
                 });
             }
-            public Dictionary<string, Dictionary<string, string>> style = new Dictionary<string, Dictionary<string, string>>();
         }
+
         public class StyleSettings
         {
+            public Dictionary<string, Dictionary<string, string>> style =
+                new Dictionary<string, Dictionary<string, string>>();
+
             public StyleSettings(string css, string name, int owner_id, OwnerType owner_type)
             {
                 style.Add("style", new Dictionary<string, string>
@@ -64,43 +83,25 @@ namespace ShikimoriSharp.UpdatableInformation
                     {"owner_type", owner_type.ToString()}
                 });
             }
-            public Dictionary<string, Dictionary<string, string>> style = new Dictionary<string, Dictionary<string, string>>();
         }
 
-        public enum OwnerType
-        {
-            User,
-            Club
-        }
         public class Style
         {
-            [JsonProperty("id")]
-            public long? Id { get; set; }
+            [JsonProperty("id")] public long? Id { get; set; }
 
-            [JsonProperty("owner_id")]
-            public long? OwnerId { get; set; }
+            [JsonProperty("owner_id")] public long? OwnerId { get; set; }
 
-            [JsonProperty("owner_type")]
-            public string OwnerType { get; set; }
+            [JsonProperty("owner_type")] public string OwnerType { get; set; }
 
-            [JsonProperty("name")]
-            public string Name { get; set; }
+            [JsonProperty("name")] public string Name { get; set; }
 
-            [JsonProperty("css")]
-            public string Css { get; set; }
+            [JsonProperty("css")] public string Css { get; set; }
 
-            [JsonProperty("compiled_css")]
-            public object CompiledCss { get; set; }
+            [JsonProperty("compiled_css")] public object CompiledCss { get; set; }
 
-            [JsonProperty("created_at")]
-            public DateTimeOffset? CreatedAt { get; set; }
+            [JsonProperty("created_at")] public DateTimeOffset? CreatedAt { get; set; }
 
-            [JsonProperty("updated_at")]
-            public DateTimeOffset? UpdatedAt { get; set; }
-        }
-
-        public Styles(ApiClient apiClient) : base(Version.v1, apiClient)
-        {
+            [JsonProperty("updated_at")] public DateTimeOffset? UpdatedAt { get; set; }
         }
     }
 }
