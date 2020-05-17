@@ -13,7 +13,7 @@ namespace ShikimoriSharp.AdditionalRequests
 
         [JsonProperty("source")] public string Source { get; set; }
 
-        [JsonProperty("entry_id")] public long EntryId { get; set; }
+        [JsonProperty("entry_id")] public long? EntryId { get; set; }
 
         [JsonProperty("entry_type")] public string EntryType { get; set; }
 

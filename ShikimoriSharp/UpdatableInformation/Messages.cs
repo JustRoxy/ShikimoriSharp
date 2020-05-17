@@ -43,7 +43,7 @@ namespace ShikimoriSharp.UpdatableInformation
         public class AllSettings
         {
             public bool? frontend;
-            public MessageType type;
+            public MessageType? type;
         }
 
         public enum MessageType
@@ -54,7 +54,7 @@ namespace ShikimoriSharp.UpdatableInformation
 
         public class MarkReadSettings
         {
-            public string ids;
+            public string? ids;
         }
 
         #region Edit Message

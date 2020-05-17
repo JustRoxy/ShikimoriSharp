@@ -17,9 +17,9 @@ namespace ShikimoriSharp.Information
 
         public class Forum
         {
-            [JsonProperty("id")] public long Id { get; set; }
+            [JsonProperty("id")] public long? Id { get; set; }
 
-            [JsonProperty("position")] public long Position { get; set; }
+            [JsonProperty("position")] public long? Position { get; set; }
 
             [JsonProperty("name")] public string Name { get; set; }
 

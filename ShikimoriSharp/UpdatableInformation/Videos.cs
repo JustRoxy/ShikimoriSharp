@@ -45,7 +45,7 @@ namespace ShikimoriSharp.UpdatableInformation
         public class Video
         {
             [JsonProperty("id")]
-            public long Id { get; set; }
+            public long? Id { get; set; }
 
             [JsonProperty("url")]
             public Uri Url { get; set; }

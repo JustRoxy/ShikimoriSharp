@@ -30,9 +30,9 @@ namespace ShikimoriSharp.UpdatableInformation
         }
         public class FavoriteSettings
         {
-            public int linked_id;
-            public string linked_type;
-            public string kind;
+            public int? linked_id;
+            public string? linked_type;
+            public string? kind;
 
             public FavoriteSettings(int linkedId, string linkedType)
             {

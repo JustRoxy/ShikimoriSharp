@@ -12,14 +12,14 @@ namespace ShikimoriSharp.UpdatableInformation
         }
         public class UserImagesSettings
         {
-            public string image;
-            public string linked_type;
+            public string? image;
+            public string? linked_type;
         }
 
         public class ResultImage
         {
             [JsonProperty("id")]
-            public long Id { get; set; }
+            public long? Id { get; set; }
 
             [JsonProperty("preview")]
             public string Preview { get; set; }

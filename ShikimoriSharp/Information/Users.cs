@@ -338,9 +338,9 @@ namespace ShikimoriSharp.Information
 
             [JsonProperty("ratings")] public Ratings Ratings { get; set; }
 
-            [JsonProperty("has_anime?")] public bool HasAnime { get; set; }
+            [JsonProperty("has_anime?")] public bool? HasAnime { get; set; }
 
-            [JsonProperty("has_manga?")] public bool HasManga { get; set; }
+            [JsonProperty("has_manga?")] public bool? HasManga { get; set; }
 
             [JsonProperty("genres")] public object[] Genres { get; set; }
 
@@ -355,7 +355,7 @@ namespace ShikimoriSharp.Information
         {
             [JsonProperty("name")] public long[] Name { get; set; }
 
-            [JsonProperty("value")] public long Value { get; set; }
+            [JsonProperty("value")] public long? Value { get; set; }
         }
 
         public class Statuses
@@ -367,13 +367,13 @@ namespace ShikimoriSharp.Information
 
         public class FullStatusesAnime
         {
-            [JsonProperty("id")] public long Id { get; set; }
+            [JsonProperty("id")] public long? Id { get; set; }
 
             [JsonProperty("grouped_id")] public string GroupedId { get; set; }
 
             [JsonProperty("name")] public string Name { get; set; }
 
-            [JsonProperty("size")] public long Size { get; set; }
+            [JsonProperty("size")] public long? Size { get; set; }
 
             [JsonProperty("type")] public string Type { get; set; }
         }
@@ -387,7 +387,7 @@ namespace ShikimoriSharp.Information
         {
             [JsonProperty("name")] public string Name { get; set; }
 
-            [JsonProperty("value")] public long Value { get; set; }
+            [JsonProperty("value")] public long? Value { get; set; }
         }
 
         public class Scores

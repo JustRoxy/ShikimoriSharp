@@ -12,7 +12,6 @@ namespace ShikimoriSharp.Information
         /// <summary>
         ///     Be careful of this function. The estimated time of execution is very high
         /// </summary>
-        /// <returns></returns>
         public async Task<int[]> GetActiveUsers()
         {
             return await Request<int[]>("stats/active_users");

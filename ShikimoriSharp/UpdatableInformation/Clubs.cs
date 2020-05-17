@@ -57,7 +57,7 @@ namespace ShikimoriSharp.UpdatableInformation
         public class ClubImage
         {
             [JsonProperty("id")]
-            public long Id { get; set; }
+            public long? Id { get; set; }
 
             [JsonProperty("original_url")]
             public string OriginalUrl { get; set; }
@@ -72,7 +72,7 @@ namespace ShikimoriSharp.UpdatableInformation
             public object CanDestroy { get; set; }
 
             [JsonProperty("user_id")]
-            public long UserIdUserId { get; set; }
+            public long? UserIdUserId { get; set; }
         }
         public class UpdateClubSettings
         {
@@ -87,12 +87,12 @@ namespace ShikimoriSharp.UpdatableInformation
 
         public class UpdateClubSubSettings
         {
-            public string name;
-            public string description;
-            public bool display_images;
-            public string comment_policy;
-            public string topic_policy;
-            public string image_upload_policy;
+            public string? name;
+            public string? description;
+            public bool? display_images;
+            public string? comment_policy;
+            public string? topic_policy;
+            public string? image_upload_policy;
         }
         public Clubs(ApiClient apiClient) : base(Version.v1, apiClient)
         {
@@ -100,7 +100,7 @@ namespace ShikimoriSharp.UpdatableInformation
 
         public class ClubsRequestSettings : BasicSettings
         {
-            public string search;
+            public string? search;
         }
         
         public class Logo : Image
@@ -110,13 +110,13 @@ namespace ShikimoriSharp.UpdatableInformation
 
         public class Club
         {
-            [JsonProperty("id")] public long Id { get; set; }
+            [JsonProperty("id")] public long? Id { get; set; }
 
             [JsonProperty("name")] public string Name { get; set; }
 
             [JsonProperty("logo")] public Logo Logo { get; set; }
 
-            [JsonProperty("is_censored")] public bool IsCensored { get; set; }
+            [JsonProperty("is_censored")] public bool? IsCensored { get; set; }
 
             [JsonProperty("join_policy")] public string JoinPolicy { get; set; }
 
@@ -138,10 +138,10 @@ namespace ShikimoriSharp.UpdatableInformation
             public object[] Characters { get; set; }
 
             [JsonProperty("thread_id")]
-            public long ThreadId { get; set; }
+            public long? ThreadId { get; set; }
 
             [JsonProperty("topic_id")]
-            public long TopicId { get; set; }
+            public long? TopicId { get; set; }
 
             [JsonProperty("user_role")]
             public object UserRole { get; set; }

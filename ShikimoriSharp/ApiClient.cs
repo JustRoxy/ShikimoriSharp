@@ -1,15 +1,23 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using ShikimoriSharp.Bases;
 
 namespace ShikimoriSharp
 {
     public class ApiClient
     {
+        private const int RPS = 5;
+        private const int RPM = 90;
+
         private const string TokenUrl = "https://shikimori.one/oauth/token";
         private AccessToken _currentToken;
+        public TokenBucket BucketRps = new TokenBucket(RPS, 1);
+        public TokenBucket BucketRpm = new TokenBucket(RPM, 60);
+
         
         public delegate void OnChange(AccessToken token);
         public event OnChange OnTokenChange;
@@ -67,7 +75,14 @@ namespace ShikimoriSharp
             request.Content = data;
             while (true)
             {
-                var response = await httpClient.SendAsync(request);
+                HttpResponseMessage response = null;
+                if (await BucketRpm.GetToken() && await BucketRps.GetToken())
+                {
+                    response = await httpClient.SendAsync(request);
+                }
+
+                if (response is null) throw new Exception("Bucket error, probably server's rps or rpm is changed");
+                
                 switch (response.StatusCode)
                 {
                     case HttpStatusCode.UnprocessableEntity:
@@ -97,20 +112,7 @@ namespace ShikimoriSharp
             return await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<TResult>(response));
         }
 
-        public class AccessToken
-        {
-            [JsonProperty("access_token")] public string Access_Token { get; set; }
-
-            [JsonProperty("token_type")] public string TokenType { get; set; }
-
-            [JsonProperty("expires_in")] public int ExpiresIn { get; set; }
-
-            [JsonProperty("refresh_token")] public string RefreshToken { get; set; }
-
-            [JsonProperty("scope")] public string Scope { get; set; }
-
-            [JsonProperty("created_at")] public long CreatedAt { get; set; }
-        }
+        
 
         #region Authorization
 

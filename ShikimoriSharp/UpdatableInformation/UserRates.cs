@@ -57,22 +57,19 @@ namespace ShikimoriSharp.UpdatableInformation
         }
         public class UserRateBase
         {
-            public MyList status;
-            public int score;
-            public int chapters;
-            public int episodes;
-            public int volumes;
-            public int rewatches;
-            public string text;
+            public MyList? status;
+            public int? score;
+            public int? chapters;
+            public int? episodes;
+            public int? volumes;
+            public int? rewatches;
+            public string? text;
         }
         public class UserRateContent : UserRateBase
         {
             public long user_id;
             public long target_id;
             public TargetType target_type;
-            public MyList status;
-            public int score;
-            
 
             public UserRateContent(long userId, long targetId, TargetType targetType)
             {
@@ -84,7 +81,7 @@ namespace ShikimoriSharp.UpdatableInformation
 
         public class UserRatesSettings : BasicSettings
         {
-            public long user_id;
+            public long? user_id;
             public long? target_id;
             public TargetType? target_type;
             public MyList? status;
@@ -95,50 +92,43 @@ namespace ShikimoriSharp.UpdatableInformation
             Anime,
             Manga
         }
-        
-        public class UserRate
+
+        public class PublicUserRate
         {
             [JsonProperty("id")]
-            public long Id { get; set; }
-
+            public long? Id { get; set; }
+            [JsonProperty("score")]
+            public long? Score { get; set; }
+            [JsonProperty("status")]
+            public string Status { get; set; }
+            [JsonProperty("rewatches")]
+            public long? Rewatches { get; set; }
+            [JsonProperty("episodes")]
+            public long? Episodes { get; set; }
+            [JsonProperty("volumes")]
+            public long? Volumes { get; set; }
+            [JsonProperty("chapters")]
+            public long? Chapters { get; set; }
+            [JsonProperty("text")]
+            public object Text { get; set; }
+            [JsonProperty("text_html")]
+            public object TextHtml { get; set; }
+            [JsonProperty("created_at")]
+            public DateTimeOffset? CreatedAt { get; set; }
+            [JsonProperty("updated_at")]
+            public DateTimeOffset? UpdatedAt { get; set; }
+        }
+        
+        public class UserRate : PublicUserRate
+        {
             [JsonProperty("user_id")]
-            public long UserId { get; set; }
+            public long? UserId { get; set; }
 
             [JsonProperty("target_id")]
-            public long TargetId { get; set; }
+            public long? TargetId { get; set; }
 
             [JsonProperty("target_type")]
             public string TargetType { get; set; }
-
-            [JsonProperty("score")]
-            public long Score { get; set; }
-
-            [JsonProperty("status")]
-            public string Status { get; set; }
-
-            [JsonProperty("rewatches")]
-            public long? Rewatches { get; set; }
-
-            [JsonProperty("episodes")]
-            public long? Episodes { get; set; }
-
-            [JsonProperty("volumes")]
-            public long? Volumes { get; set; }
-
-            [JsonProperty("chapters")]
-            public long? Chapters { get; set; }
-
-            [JsonProperty("text")]
-            public object Text { get; set; }
-
-            [JsonProperty("text_html")]
-            public object TextHtml { get; set; }
-
-            [JsonProperty("created_at")]
-            public DateTimeOffset CreatedAt { get; set; }
-
-            [JsonProperty("updated_at")]
-            public DateTimeOffset UpdatedAt { get; set; }
         }
         public UserRates(ApiClient apiClient) : base(Version.v2, apiClient)
         {}

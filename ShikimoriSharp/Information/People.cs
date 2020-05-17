@@ -22,7 +22,7 @@ namespace ShikimoriSharp.Information
 
         public class Person
         {
-            [JsonProperty("id")] public long Id { get; set; }
+            [JsonProperty("id")] public long? Id { get; set; }
 
             [JsonProperty("name")] public string Name { get; set; }
 
@@ -50,21 +50,21 @@ namespace ShikimoriSharp.Information
 
             [JsonProperty("topic_id")] public object TopicId { get; set; }
 
-            [JsonProperty("person_favoured")] public bool PersonFavoured { get; set; }
+            [JsonProperty("person_favoured")] public bool? PersonFavoured { get; set; }
 
-            [JsonProperty("producer")] public bool Producer { get; set; }
+            [JsonProperty("producer")] public bool? Producer { get; set; }
 
-            [JsonProperty("producer_favoured")] public bool ProducerFavoured { get; set; }
+            [JsonProperty("producer_favoured")] public bool? ProducerFavoured { get; set; }
 
-            [JsonProperty("mangaka")] public bool Mangaka { get; set; }
+            [JsonProperty("mangaka")] public bool? Mangaka { get; set; }
 
-            [JsonProperty("mangaka_favoured")] public bool MangakaFavoured { get; set; }
+            [JsonProperty("mangaka_favoured")] public bool? MangakaFavoured { get; set; }
 
-            [JsonProperty("seyu")] public bool Seyu { get; set; }
+            [JsonProperty("seyu")] public bool? Seyu { get; set; }
 
-            [JsonProperty("seyu_favoured")] public bool SeyuFavoured { get; set; }
+            [JsonProperty("seyu_favoured")] public bool? SeyuFavoured { get; set; }
 
-            [JsonProperty("updated_at")] public DateTimeOffset UpdatedAt { get; set; }
+            [JsonProperty("updated_at")] public DateTimeOffset? UpdatedAt { get; set; }
         }
     }
 }

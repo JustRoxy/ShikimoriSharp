@@ -36,10 +36,10 @@ namespace ShikimoriSharp.UpdatableInformation
 
         public class EditTopicSettingsContent
         {
-            public string body;
-            public int linked_id;
-            public LinkedType linked_type;
-            public string title;
+            public string? body;
+            public int? linked_id;
+            public LinkedType? linked_type;
+            public string? title;
         }
         public class EditTopicSettings
         {
