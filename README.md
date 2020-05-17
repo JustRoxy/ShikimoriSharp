@@ -26,7 +26,7 @@ var client = ShikimoriClient.Create("ИмяБота", "ClientID", "ClientSecret"
 }, "redirectUrl");
 ```
 
-**Подпишитсь на обновления токена, это скорее всего будет для вас важно, чтобы передать уже новый токен при перезапуске программы**
+**Подпишитсь на обновления токена, это скорее всего будет для вас это будет важно**
 ```csharp
 client.Client.OnTokenChange += token => Console.WriteLine($"{token.Access_Token}:{token.RefreshToken}");
 ```
