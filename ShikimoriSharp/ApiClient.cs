@@ -3,16 +3,21 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using ShikimoriSharp.Bases;
 
 namespace ShikimoriSharp
 {
     public class ApiClient
     {
+        public delegate void OnChange(AccessToken token);
+
+        private const int RPS = 5;
+        private const int RPM = 90;
+
         private const string TokenUrl = "https://shikimori.one/oauth/token";
         private AccessToken _currentToken;
-        
-        public delegate void OnChange(AccessToken token);
-        public event OnChange OnTokenChange;
+        public TokenBucket BucketRpm = new TokenBucket("MINUTE", RPM, 60000);
+        public TokenBucket BucketRps = new TokenBucket("SECUND", RPS, 1000);
 
         public ApiClient(string clientName, string clientId, string clientSecret, string redirectUrl)
         {
@@ -26,6 +31,7 @@ namespace ShikimoriSharp
         public string ClientId { get; }
         public string ClientSecret { get; }
         public string RedirectUrl { get; }
+        public event OnChange OnTokenChange;
 
         public async Task Auth(string authCode)
         {
@@ -37,7 +43,8 @@ namespace ShikimoriSharp
             _currentToken = token;
         }
 
-        public async Task NoResponseRequest(string destination, HttpContent settings, bool requestAccess = false, string method = "GET")
+        public async Task NoResponseRequest(string destination, HttpContent settings, bool requestAccess = false,
+            string method = "GET")
         {
             await MakeStringRequest(destination, method, settings, new Exception("Shit happened"),
                 requestAccess);
@@ -50,7 +57,8 @@ namespace ShikimoriSharp
                 requestAccess);
         }
 
-        public async Task<TResult> RequestApi<TResult>(string destination, bool requestAccess = false, string method = "GET")
+        public async Task<TResult> RequestApi<TResult>(string destination, bool requestAccess = false,
+            string method = "GET")
         {
             return await RequestApi<TResult>(destination, null, requestAccess);
         }
@@ -67,7 +75,9 @@ namespace ShikimoriSharp
             request.Content = data;
             while (true)
             {
+                await Task.WhenAll(BucketRps.TokenRequest(), BucketRpm.TokenRequest());
                 var response = await httpClient.SendAsync(request);
+                
                 switch (response.StatusCode)
                 {
                     case HttpStatusCode.UnprocessableEntity:
@@ -97,20 +107,6 @@ namespace ShikimoriSharp
             return await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<TResult>(response));
         }
 
-        public class AccessToken
-        {
-            [JsonProperty("access_token")] public string Access_Token { get; set; }
-
-            [JsonProperty("token_type")] public string TokenType { get; set; }
-
-            [JsonProperty("expires_in")] public int ExpiresIn { get; set; }
-
-            [JsonProperty("refresh_token")] public string RefreshToken { get; set; }
-
-            [JsonProperty("scope")] public string Scope { get; set; }
-
-            [JsonProperty("created_at")] public long CreatedAt { get; set; }
-        }
 
         #region Authorization
 

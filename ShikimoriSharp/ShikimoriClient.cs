@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using ShikimoriSharp.Bases;
 using ShikimoriSharp.Information;
 using ShikimoriSharp.UpdatableInformation;
 
@@ -77,7 +78,7 @@ namespace ShikimoriSharp
         }
 
         public static ShikimoriClient Create(string clientName, string clientId, string clientSecret,
-            ApiClient.AccessToken token, string redirectUrl = @"urn:ietf:wg:oauth:2.0:oob")
+            AccessToken token, string redirectUrl = @"urn:ietf:wg:oauth:2.0:oob")
         {
             var obj = new ShikimoriClient(clientName, clientId, clientSecret, redirectUrl);
             obj.Client.Auth(token);

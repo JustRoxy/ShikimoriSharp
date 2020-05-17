@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿#nullable enable
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using ShikimoriSharp.AdditionalRequests;
 using ShikimoriSharp.Bases;
@@ -64,8 +65,8 @@ namespace ShikimoriSharp.Information
 
         public class MangaID : AnimeMangaIdBase
         {
-            [JsonProperty("volumes")] public long Volumes { get; set; }
-            [JsonProperty("chapters")] public long Chapters { get; set; }
+            [JsonProperty("volumes")] public long? Volumes { get; set; }
+            [JsonProperty("chapters")] public long? Chapters { get; set; }
             [JsonProperty("publishers")] public object[] Publishers { get; set; }
         }
 

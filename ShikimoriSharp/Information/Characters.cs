@@ -21,7 +21,7 @@ namespace ShikimoriSharp.Information
 
         public class Character
         {
-            [JsonProperty("id")] public long Id { get; set; }
+            [JsonProperty("id")] public long? Id { get; set; }
 
             [JsonProperty("name")] public string Name { get; set; }
 
@@ -44,13 +44,13 @@ namespace ShikimoriSharp.Information
 
             [JsonProperty("description_source")] public object DescriptionSource { get; set; }
 
-            [JsonProperty("favoured")] public bool Favoured { get; set; }
+            [JsonProperty("favoured")] public bool? Favoured { get; set; }
 
-            [JsonProperty("thread_id")] public long ThreadId { get; set; }
+            [JsonProperty("thread_id")] public long? ThreadId { get; set; }
 
-            [JsonProperty("topic_id")] public long TopicId { get; set; }
+            [JsonProperty("topic_id")] public long? TopicId { get; set; }
 
-            [JsonProperty("updated_at")] public DateTimeOffset UpdatedAt { get; set; }
+            [JsonProperty("updated_at")] public DateTimeOffset? UpdatedAt { get; set; }
 
             [JsonProperty("seyu")] public Seyu[] Seyu { get; set; }
 
@@ -61,7 +61,7 @@ namespace ShikimoriSharp.Information
 
         public class Seyu
         {
-            [JsonProperty("id")] public long Id { get; set; }
+            [JsonProperty("id")] public long? Id { get; set; }
 
             [JsonProperty("name")] public string Name { get; set; }
 

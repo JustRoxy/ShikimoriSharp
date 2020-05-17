@@ -9,6 +9,24 @@ namespace ShikimoriSharp.UpdatableInformation
 {
     public class Videos : ApiBase
     {
+        public enum VideoKind
+        {
+            pv,
+            character_trailer,
+            clip,
+            cm,
+            other,
+            op_clip,
+            ed_clip,
+            op,
+            ed,
+            episode_preview
+        }
+
+        public Videos(ApiClient apiClient) : base(Version.v1, apiClient)
+        {
+        }
+
         public async Task<Video> GetVideos(int id)
         {
             return await Request<Video>($"animes/{id}/videos");
@@ -26,6 +44,9 @@ namespace ShikimoriSharp.UpdatableInformation
 
         public class NewVideo
         {
+            private readonly Dictionary<string, Dictionary<string, string>> video =
+                new Dictionary<string, Dictionary<string, string>>();
+
             public NewVideo(VideoKind kind, string name, string url)
             {
                 video.Add("video", new Dictionary<string, string>
@@ -35,39 +56,23 @@ namespace ShikimoriSharp.UpdatableInformation
                     {"url", url}
                 });
             }
-            Dictionary<string, Dictionary<string, string>> video = new Dictionary<string, Dictionary<string, string>>();
         }
-        public enum VideoKind
-        {
-            pv, character_trailer, clip, cm, other, op_clip, ed_clip, op, ed, episode_preview
-        }
-        
+
         public class Video
         {
-            [JsonProperty("id")]
-            public long Id { get; set; }
+            [JsonProperty("id")] public long? Id { get; set; }
 
-            [JsonProperty("url")]
-            public Uri Url { get; set; }
+            [JsonProperty("url")] public Uri Url { get; set; }
 
-            [JsonProperty("image_url")]
-            public Uri ImageUrl { get; set; }
+            [JsonProperty("image_url")] public Uri ImageUrl { get; set; }
 
-            [JsonProperty("player_url")]
-            public Uri PlayerUrl { get; set; }
+            [JsonProperty("player_url")] public Uri PlayerUrl { get; set; }
 
-            [JsonProperty("name")]
-            public object Name { get; set; }
+            [JsonProperty("name")] public object Name { get; set; }
 
-            [JsonProperty("kind")]
-            public string Kind { get; set; }
+            [JsonProperty("kind")] public string Kind { get; set; }
 
-            [JsonProperty("hosting")]
-            public string Hosting { get; set; }
-        }
-
-        public Videos(ApiClient apiClient) : base(Version.v1, apiClient)
-        {
+            [JsonProperty("hosting")] public string Hosting { get; set; }
         }
     }
 }
