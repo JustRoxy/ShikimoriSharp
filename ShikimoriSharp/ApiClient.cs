@@ -16,8 +16,8 @@ namespace ShikimoriSharp
 
         private const string TokenUrl = "https://shikimori.one/oauth/token";
         private AccessToken _currentToken;
-        public TokenBucket BucketRpm = new TokenBucket(RPM, 60);
-        public TokenBucket BucketRps = new TokenBucket(RPS, 1);
+        public TokenBucket BucketRpm = new TokenBucket("MINUTE", RPM, 60000);
+        public TokenBucket BucketRps = new TokenBucket("SECUND", RPS, 1000);
 
         public ApiClient(string clientName, string clientId, string clientSecret, string redirectUrl)
         {
@@ -75,12 +75,9 @@ namespace ShikimoriSharp
             request.Content = data;
             while (true)
             {
-                HttpResponseMessage response = null;
-                if (await BucketRpm.GetToken() && await BucketRps.GetToken())
-                    response = await httpClient.SendAsync(request);
-
-                if (response is null) throw new Exception("Bucket error, probably server's rps or rpm is changed");
-
+                await Task.WhenAll(BucketRps.TokenRequest(), BucketRpm.TokenRequest());
+                var response = await httpClient.SendAsync(request);
+                
                 switch (response.StatusCode)
                 {
                     case HttpStatusCode.UnprocessableEntity:

@@ -1,70 +1,38 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
+
 
 namespace ShikimoriSharp.Bases
 {
-    /// <summary>
-    ///     https://github.com/samjcs/EasyDotNetTokenBucket
-    /// </summary>
     public class TokenBucket
     {
-        public delegate void TokenBucketLog(string status, string message);
-
-        private static readonly object SyncRoot = new object();
-
-        public TokenBucket(int maxCapacity, int interval)
+        public TokenBucket(string name, int maxConnections, int refreshTime)
         {
-            MaxCapacity = maxCapacity;
-            Interval = TimeSpan.FromMilliseconds((long) interval * 1000).Ticks;
-            CurrentTokens = 0;
-            NextRefill = DateTime.UtcNow.Ticks + interval;
+            Name = name;
+            MaxConnections = maxConnections;
+            RefreshTime = refreshTime;
+
+            _timer = new System.Timers.Timer(refreshTime);
+            _timer.Elapsed += Refresh;
+            _sem = new SemaphoreSlim(0, maxConnections);
+            _sem.Release(maxConnections);
+            _timer.Start();
         }
 
-        protected long MaxCapacity { get; set; }
-        protected long Interval { get; set; }
-        protected long CurrentTokens { get; set; }
-        protected long NextRefill { get; set; }
-
-        public event TokenBucketLog OnNewLog;
-
-        public async Task<bool> GetToken()
+        public string Name { get; }
+        public int MaxConnections { get; }
+        public double RefreshTime { get; }
+        private readonly System.Timers.Timer _timer;
+        private readonly SemaphoreSlim _sem;
+        private void Refresh(object sender, ElapsedEventArgs args)
         {
-            UpdateTime();
-
-            if (!ShouldThrottle()) return true;
-            UpdateTime();
-            await Task.Delay((int) NextRefill - (int) DateTime.UtcNow.Ticks);
-            return true;
+            _sem.Release(MaxConnections);
         }
-
-        private void UpdateTime()
+        public async Task TokenRequest()
         {
-            lock (SyncRoot)
-            {
-                var currentTime = DateTime.UtcNow.Ticks;
-                if (NextRefill >= currentTime) return;
-
-                OnNewLog?.Invoke("Reset", "Interval Reached Resetting Time");
-                NextRefill = currentTime + Interval;
-                CurrentTokens = 0;
-            }
-        }
-
-        private bool ShouldThrottle()
-        {
-            lock (SyncRoot)
-            {
-                UpdateTime();
-                if (CurrentTokens < MaxCapacity && CurrentTokens >= 0)
-                {
-                    CurrentTokens++;
-                    OnNewLog?.Invoke("Capacity", $"Bucket Capacity at: {CurrentTokens} of {MaxCapacity}");
-                    return false;
-                }
-
-                OnNewLog?.Invoke("Full", "Bucket Full");
-                return true;
-            }
+            await _sem.WaitAsync();
         }
     }
 }
