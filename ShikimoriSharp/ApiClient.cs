@@ -16,8 +16,8 @@ namespace ShikimoriSharp
 
         private const string TokenUrl = "https://shikimori.one/oauth/token";
         private AccessToken _currentToken;
-        public TokenBucket BucketRpm = new TokenBucket("MINUTE", RPM, 60000);
-        public TokenBucket BucketRps = new TokenBucket("SECUND", RPS, 1000);
+        public TokenBucket BucketRpm = new TokenBucket("MINUTE", RPM, 60 * 1000);
+        public TokenBucket BucketRps = new TokenBucket("SECUND", RPS, 1 * 1000);
 
         public ApiClient(string clientName, string clientId, string clientSecret, string redirectUrl)
         {
@@ -77,7 +77,7 @@ namespace ShikimoriSharp
             {
                 await Task.WhenAll(BucketRps.TokenRequest(), BucketRpm.TokenRequest());
                 var response = await httpClient.SendAsync(request);
-                
+
                 switch (response.StatusCode)
                 {
                     case HttpStatusCode.UnprocessableEntity:
