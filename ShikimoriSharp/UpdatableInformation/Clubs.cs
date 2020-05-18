@@ -13,7 +13,7 @@ namespace ShikimoriSharp.UpdatableInformation
 
         public async Task<Club[]> GetClubs(ClubsRequestSettings settings = null)
         {
-            return await Request<Club[], ClubsRequestSettings>("clubs", settings);
+            return await Request<Club[], ClubsRequestSettings>("clubs", settings, true);
         }
 
         public async Task<Club> UpdateClub(int id, UpdateClubSettings club = null)

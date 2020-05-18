@@ -8,20 +8,23 @@ namespace ShikimoriSharp.Information
 {
     public class Characters : ApiBase
     {
-        //TODO: Ask admin for the solution of this problem (lack of documentation)
-        //public async Task<Character> GetCharacterBySearchAsync() 
+        public async Task<Character[]> GetCharactersBySearch(string search)
+        {
+            return await Request<Character[], Search>("characters/search", new Search {search = search});
+        }
+
         public Characters(ApiClient apiClient) : base(Version.v1, apiClient)
         {
         }
 
-        public async Task<FullCharacter> GetCharacterById(int id)
+        public async Task<FullCharacter> GetCharacterById(long id)
         {
             return await Request<FullCharacter>($"characters/{id}");
         }
 
         public class Character
         {
-            [JsonProperty("id")] public long? Id { get; set; }
+            [JsonProperty("id")] public long Id { get; set; }
 
             [JsonProperty("name")] public string Name { get; set; }
 

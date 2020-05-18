@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using ShikimoriSharp.Bases;
+using ShikimoriSharp.Exceptions;
 
 namespace ShikimoriSharp
 {
@@ -16,8 +17,9 @@ namespace ShikimoriSharp
 
         private const string TokenUrl = "https://shikimori.one/oauth/token";
         private AccessToken _currentToken;
-        public TokenBucket BucketRpm = new TokenBucket("MINUTE", RPM, 60 * 1000);
-        public TokenBucket BucketRps = new TokenBucket("SECUND", RPS, 1 * 1000);
+        public AccessToken Token => _currentToken; 
+        public TokenBucket BucketRpm = new TokenBucket("MINUTE", RPM, 60 * 1200);
+        public TokenBucket BucketRps = new TokenBucket("SECUND", RPS, 1 * 1500);
 
         public ApiClient(string clientName, string clientId, string clientSecret, string redirectUrl)
         {
@@ -46,14 +48,14 @@ namespace ShikimoriSharp
         public async Task NoResponseRequest(string destination, HttpContent settings, bool requestAccess = false,
             string method = "GET")
         {
-            await MakeStringRequest(destination, method, settings, new Exception("Shit happened"),
+            await MakeStringRequest(destination, method, settings,
                 requestAccess);
         }
 
         public async Task<TResult> RequestApi<TResult>(string destination, HttpContent settings,
             bool requestAccess = false, string method = "GET")
         {
-            return await MakeRequest<TResult>(destination, method, settings, new Exception("Api request failed"),
+            return await MakeRequest<TResult>(destination, method, settings,
                 requestAccess);
         }
 
@@ -63,7 +65,7 @@ namespace ShikimoriSharp
             return await RequestApi<TResult>(destination, null, requestAccess);
         }
 
-        private async Task<string> MakeStringRequest(string dest, string method, HttpContent data, Exception error,
+        private async Task<string> MakeStringRequest(string dest, string method, HttpContent data,
             bool requestAccess = false)
         {
             using var httpClient = new HttpClient();
@@ -80,13 +82,15 @@ namespace ShikimoriSharp
 
                 switch (response.StatusCode)
                 {
+                    case HttpStatusCode.TooManyRequests:
+                    {
+                        await Task.Delay(1000);
+                        break;
+                    }
                     case HttpStatusCode.UnprocessableEntity:
-                        throw new Exception(
-                            $"{response.ReasonPhrase}, something is empty. It's probably because of already deleted dialog, or the club's name is empty");
+                        throw new UnprocessableEntityException();
                     case HttpStatusCode.Forbidden:
-                        throw new Exception(
-                            "You were trying to access a forbidden information. Check your bot's privileges" +
-                            $"{Environment.NewLine}Unsuccessful request: {response.StatusCode} | {response.ReasonPhrase}");
+                        throw new ForbiddenException();
                     case HttpStatusCode.Unauthorized:
                         await RefreshAccessToken(_currentToken);
                         break;
@@ -100,10 +104,10 @@ namespace ShikimoriSharp
             }
         }
 
-        private async Task<TResult> MakeRequest<TResult>(string dest, string method, HttpContent data, Exception error,
+        private async Task<TResult> MakeRequest<TResult>(string dest, string method, HttpContent data,
             bool requestAccess = false)
         {
-            var response = await MakeStringRequest(dest, method, data, error, requestAccess);
+            var response = await MakeStringRequest(dest, method, data, requestAccess);
             return await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<TResult>(response));
         }
 
@@ -139,8 +143,7 @@ namespace ShikimoriSharp
 
         private async Task<AccessToken> GetAccessTokenRequest(HttpContent stringData)
         {
-            var res = await MakeRequest<AccessToken>(TokenUrl, "POST", stringData,
-                new Exception("Get Access Token Failed"));
+            var res = await MakeRequest<AccessToken>(TokenUrl, "POST", stringData);
             if (res.RefreshToken != _currentToken.RefreshToken || res.Access_Token != _currentToken.Access_Token)
                 OnTokenChange?.Invoke(res);
             _currentToken = res;

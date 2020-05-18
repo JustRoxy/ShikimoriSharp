@@ -10,9 +10,9 @@ namespace ShikimoriSharp.Information
         {
         }
 
-        public async Task<Publisher[]> GetPerson(int id)
+        public async Task<Publisher[]> GetPublisher()
         {
-            return await Request<Publisher[]>($"publishers/{id}");
+            return await Request<Publisher[]>("publishers");
         }
 
         public class Publisher
