@@ -1,8 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Polly;
@@ -13,13 +11,18 @@ namespace ShikimoriSharp
 {
     public class ApiClient
     {
+        public delegate void NewLog(string log);
+
         public delegate void OnChange(AccessToken token);
 
         private const int RPS = 5;
         private const int RPM = 90;
 
         private const string TokenUrl = "https://shikimori.one/oauth/token";
-        
+
+        /// <summary>
+        ///     1.1d is the additional time because of server's inaccuracy
+        /// </summary>
         public TokenBucket BucketRpm =
             new TokenBucket("MINUTE", RPM, (int) TimeSpan.FromMinutes(1.1d).TotalMilliseconds);
 
@@ -40,8 +43,6 @@ namespace ShikimoriSharp
         public string ClientSecret { get; }
         public string RedirectUrl { get; }
         public event OnChange OnTokenChange;
-
-        public delegate void NewLog (string log);
 
         public event NewLog OnNewLog;
 
@@ -91,13 +92,15 @@ namespace ShikimoriSharp
                 return request;
             }
 
-            string sr = string.Empty;
+            var sr = string.Empty;
 
             var policy = Policy
                 .Handle<HttpRequestException>()
                 .OrResult<HttpResponseMessage>(r => r.StatusCode == HttpStatusCode.TooManyRequests)
-                .WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(Math.Pow(2, i)), 
-                    onRetry: (ex, con) => OnNewLog?.Invoke($"[{DateTime.Now:HH:mm:ss:ff}] ERROR {ex.Exception.Message} | {con.TotalMilliseconds}"));
+                .WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(Math.Pow(2, i)),
+                    (ex, con) =>
+                        OnNewLog?.Invoke(
+                            $"[{DateTime.Now:HH:mm:ss:ff}] ERROR {ex.Exception.Message} | {con.TotalMilliseconds}{Environment.NewLine}{ex.Exception.StackTrace}{Environment.NewLine}"));
 
             var response = await policy.ExecuteAsync(async () =>
             {
@@ -108,7 +111,7 @@ namespace ShikimoriSharp
                 sr += $"[{DateTime.Now:HH:mm:ss:ff}] RESPONSE {ret.ReasonPhrase}{Environment.NewLine}";
                 return ret;
             });
-            
+
             OnNewLog?.Invoke(sr);
             switch (response.StatusCode)
             {
@@ -121,9 +124,10 @@ namespace ShikimoriSharp
                     break;
             }
 
-            if (response.IsSuccessStatusCode)
-                return await response.Content.ReadAsStringAsync();
-            throw new Exception($"Unsuccessful request: {response.StatusCode} | {response.ReasonPhrase}");
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"Unsuccessful request: {response.StatusCode} | {response.ReasonPhrase}");
+
+            return await response.Content.ReadAsStringAsync();
         }
 
         private async Task<TResult> MakeRequest<TResult>(string dest, string method, HttpContent data,

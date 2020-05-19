@@ -35,7 +35,7 @@ namespace ShikimoriSharp.Bases
 
         public async Task TokenRequest()
         {
-            if(!_timer.Enabled)
+            if (!_timer.Enabled)
                 _timer.Start();
             await _sem.WaitAsync();
         }
