@@ -25,7 +25,7 @@ namespace ShikimoriSharp.Information
             return await Request<User[], BasicSettings>("users", settings);
         }
 
-        public async Task<UserId> GetUser(int id)
+        public async Task<UserId> GetUser(long id)
         {
             return await Request<UserId>($"users/{id}");
         }
@@ -35,7 +35,7 @@ namespace ShikimoriSharp.Information
             return await Request<UserId, UserIdRequestSettings>($"users/{nickname}", new UserIdRequestSettings(1));
         }
 
-        public async Task<UserInfo> GetUserInfo(int id)
+        public async Task<UserInfo> GetUserInfo(long id)
         {
             return await Request<UserInfo>($"users/{id}/info");
         }
@@ -50,72 +50,72 @@ namespace ShikimoriSharp.Information
             await NoResponseRequest("users/sign_out", method: "GET");
         }
 
-        public async Task<User[]> GetFriends(int id)
+        public async Task<User[]> GetFriends(long id)
         {
             return await Request<User[]>($"users/{id}/friends");
         }
 
-        public async Task<Club[]> GetClubs(int id)
+        public async Task<Club[]> GetClubs(long id)
         {
             return await Request<Club[]>($"users/{id}/clubs");
         }
 
-        public async Task<AnimeRate[]> GetUserAnimeRates(int id)
+        public async Task<AnimeRate[]> GetUserAnimeRates(long id)
         {
             return await AllRates("anime", id);
         }
 
-        public async Task<AnimeRate[]> GetUserAnimeRates(int id, AnimeRateRequestSettings settings)
+        public async Task<AnimeRate[]> GetUserAnimeRates(long id, AnimeRateRequestSettings settings)
         {
             return await AllRates("anime", id, settings);
         }
 
-        public async Task<AnimeRate[]> GetUserMangaRates(int id)
+        public async Task<AnimeRate[]> GetUserMangaRates(long id)
         {
             return await AllRates("manga", id);
         }
 
-        public async Task<AnimeRate[]> GetUserMangaRates(int id, AnimeRateRequestSettings settings)
+        public async Task<AnimeRate[]> GetUserMangaRates(long id, AnimeRateRequestSettings settings)
         {
             return await AllRates("manga", id, settings);
         }
 
-        private async Task<AnimeRate[]> AllRates(string thingy, int id)
+        private async Task<AnimeRate[]> AllRates(string thingy, long id)
         {
             return await Request<AnimeRate[]>($"users/{id}/{thingy}_rates");
         }
 
-        private async Task<AnimeRate[]> AllRates(string thingy, int id, AnimeRateRequestSettings settings)
+        private async Task<AnimeRate[]> AllRates(string thingy, long id, AnimeRateRequestSettings settings)
         {
             return await Request<AnimeRate[], AnimeRateRequestSettings>($"users/{id}/{thingy}_rates", settings);
         }
 
-        public async Task<Favorites> GetFavourites(int id)
+        public async Task<Favorites> GetFavourites(long id)
         {
             return await Request<Favorites>($"users/{id}");
         }
 
-        public async Task<Message[]> GetMessages(int id, MessageRequestSettings settings)
+        public async Task<Message[]> GetMessages(long id, MessageRequestSettings settings)
         {
             return await Request<Message[], MessageRequestSettings>($"users/{id}/messages", settings, true);
         }
 
-        public async Task<NewInformation> UnreadMessages(int id)
+        public async Task<NewInformation> UnreadMessages(long id)
         {
             return await Request<NewInformation>($"users/{id}/unread_messages", true);
         }
 
-        public async Task<History[]> GetHistory(int id)
+        public async Task<History[]> GetHistory(long id)
         {
             return await Request<History[]>($"users/{id}/history");
         }
 
-        public async Task<History[]> GetHistory(int id, HistoryRequestSettings settings)
+        public async Task<History[]> GetHistory(long id, HistoryRequestSettings settings)
         {
             return await Request<History[], HistoryRequestSettings>($"users/{id}/history", settings);
         }
 
-        public async Task<Bans[]> GetBans(int id)
+        public async Task<Bans[]> GetBans(long id)
         {
             return await Request<Bans[]>($"users/{id}/bans");
         }
@@ -160,7 +160,10 @@ namespace ShikimoriSharp.Information
         {
             public string type;
 
-            public MessageRequestSettings(string type)
+            /// <summary>
+            ///     Must be one of: inbox, private, sent, news, notifications
+            /// </summary>
+            public MessageRequestSettings(string type = "sent")
             {
                 this.type = type;
             }

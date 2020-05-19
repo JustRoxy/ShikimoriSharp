@@ -15,13 +15,18 @@ namespace ShikimoriSharp.Information
         {
         }
 
+        public async Task<Anime[]> GetAnime()
+        {
+            return await Request<Anime[]>("animes");
+        }
+
         public async Task<Anime[]> GetAnime(AnimeRequestSettings settings)
         {
             var personalRequest = !(settings.mylist is null);
             return await Request<Anime[], AnimeRequestSettings>("animes", settings, personalRequest);
         }
 
-        public async Task<AnimeID> GetAnimeById(long id)
+        public async Task<AnimeID> GetAnime(long id)
         {
             return await Request<AnimeID>($"animes/{id}", true);
         }

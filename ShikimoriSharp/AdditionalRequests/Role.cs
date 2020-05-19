@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using ShikimoriSharp.Information;
+using static ShikimoriSharp.Information.Characters;
 
 namespace ShikimoriSharp.AdditionalRequests
 {
@@ -9,8 +9,8 @@ namespace ShikimoriSharp.AdditionalRequests
 
         [JsonProperty("roles_russian")] public string[] RolesRussian { get; set; }
 
-        [JsonProperty("character")] public Characters.Character Character { get; set; }
+        [JsonProperty("character")] public Character Character { get; set; }
 
-        [JsonProperty("person")] public Characters.Character Person { get; set; }
+        [JsonProperty("person")] public Character Person { get; set; }
     }
 }

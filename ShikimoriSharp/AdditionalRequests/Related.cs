@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using ShikimoriSharp.Information;
+using static ShikimoriSharp.Information.Mangas;
 
 namespace ShikimoriSharp.AdditionalRequests
 {
@@ -11,6 +12,6 @@ namespace ShikimoriSharp.AdditionalRequests
 
         [JsonProperty("anime")] public Anime Anime { get; set; }
 
-        [JsonProperty("manga")] public Mangas.Manga Manga { get; set; }
+        [JsonProperty("manga")] public Manga Manga { get; set; }
     }
 }

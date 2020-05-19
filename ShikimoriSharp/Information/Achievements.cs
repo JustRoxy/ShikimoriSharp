@@ -36,9 +36,9 @@ namespace ShikimoriSharp.Information
 
         public class AchievementsSettings
         {
-            public int user_id;
+            public long user_id;
 
-            public AchievementsSettings(int userId)
+            public AchievementsSettings(long userId)
             {
                 user_id = userId;
             }

@@ -35,9 +35,9 @@ namespace ShikimoriSharp.Information
             return await Request<ConstantsClub>("constants/club");
         }
 
-        public async Task<ConstantsSmileys> GetSmileysConstants()
+        public async Task<ConstantsSmileys[]> GetSmileysConstants()
         {
-            return await Request<ConstantsSmileys>("constants/smileys");
+            return await Request<ConstantsSmileys[]>("constants/smileys");
         }
 
         public class ConstantsSmileys

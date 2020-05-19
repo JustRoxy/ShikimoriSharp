@@ -22,44 +22,44 @@ namespace ShikimoriSharp.Information
             return await Request<Manga[], MangaRequestSettings>("mangas", settings);
         }
 
-        public async Task<MangaID> GetManga(int id)
+        public async Task<MangaID> GetManga(long id)
         {
             return await Request<MangaID>($"mangas/{id}");
         }
 
-        public async Task<Role[]> GetRoles(int id)
+        public async Task<Role[]> GetRoles(long id)
         {
             return await Request<Role[]>($"mangas/{id}/roles");
         }
 
-        public async Task<Manga[]> GetSimilar(int id)
+        public async Task<Manga[]> GetSimilar(long id)
         {
             return await Request<Manga[]>($"mangas/{id}/similar");
         }
 
-        public async Task<Related[]> GetRelated(int id)
+        public async Task<Related[]> GetRelated(long id)
         {
             return await Request<Related[]>($"mangas/{id}/related");
         }
 
-        public async Task<Franchise> GetFranchise(int id)
+        public async Task<Franchise> GetFranchise(long id)
         {
             return await Request<Franchise>($"mangas/{id}/franchise");
         }
 
-        public async Task<ExternalLinks[]> GetExternalLinks(int id)
+        public async Task<ExternalLinks[]> GetExternalLinks(long id)
         {
             return await Request<ExternalLinks[]>($"mangas/{id}/external_links");
         }
 
-        public async Task<Topic> GetTopics(int id)
+        public async Task<Topic[]> GetTopics(long id)
         {
-            return await Request<Topic>($"mangas/{id}/topics");
+            return await Request<Topic[]>($"mangas/{id}/topics");
         }
 
-        public async Task<Topic> GetTopics(int id, BasicSettings settings)
+        public async Task<Topic[]> GetTopics(long id, BasicSettings settings)
         {
-            return await Request<Topic, BasicSettings>($"mangas/{id}/topics", settings);
+            return await Request<Topic[], BasicSettings>($"mangas/{id}/topics", settings);
         }
 
 
@@ -67,7 +67,7 @@ namespace ShikimoriSharp.Information
         {
             [JsonProperty("volumes")] public long? Volumes { get; set; }
             [JsonProperty("chapters")] public long? Chapters { get; set; }
-            [JsonProperty("publishers")] public object[] Publishers { get; set; }
+            [JsonProperty("publishers")] public Publishers.Publisher[] Publishers { get; set; }
         }
 
         public class Manga : AnimeMangaBase
