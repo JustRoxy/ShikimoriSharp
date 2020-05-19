@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using ShikimoriSharp.Bases;
 using ShikimoriSharp.Information;
+using static ShikimoriSharp.Information.Mangas;
 
 namespace ShikimoriSharp.UpdatableInformation
 {
@@ -16,47 +17,47 @@ namespace ShikimoriSharp.UpdatableInformation
             return await Request<Club[], ClubsRequestSettings>("clubs", settings, true);
         }
 
-        public async Task<Club> UpdateClub(int id, UpdateClubSettings club = null)
+        public async Task<Club> UpdateClub(long id, UpdateClubSettings club = null)
         {
             return await SendJson<Club>($"clubs/{id}", club, true, "PUT");
         }
 
-        public async Task<Anime[]> GetAnimes(int id)
+        public async Task<Anime[]> GetAnimes(long id)
         {
             return await Request<Anime[]>($"clubs/{id}/animes");
         }
 
-        public async Task<Mangas.Manga[]> GetMangas(int id)
+        public async Task<Manga[]> GetMangas(long id)
         {
-            return await Request<Mangas.Manga[]>($"clubs/{id}/mangas");
+            return await Request<Manga[]>($"clubs/{id}/mangas");
         }
 
-        public async Task<Mangas.Manga[]> GetRanobe(int id)
+        public async Task<Manga[]> GetRanobe(long id)
         {
-            return await Request<Mangas.Manga[]>($"clubs/{id}/ranobe");
+            return await Request<Manga[]>($"clubs/{id}/ranobe");
         }
 
-        public async Task<Characters.Character[]> GetCharacters(int id)
+        public async Task<Characters.Character[]> GetCharacters(long id)
         {
             return await Request<Characters.Character[]>($"clubs/{id}/characters");
         }
 
-        public async Task<Users.User[]> GetMembers(int id)
+        public async Task<Users.User[]> GetMembers(long id)
         {
             return await Request<Users.User[]>($"clubs/{id}/members");
         }
 
-        public async Task<ClubImage[]> GetImages(int id)
+        public async Task<ClubImage[]> GetImages(long id)
         {
             return await Request<ClubImage[]>($"clubs/{id}/images");
         }
 
-        public async Task Join(int id)
+        public async Task Join(long id)
         {
             await NoResponseRequest($"clubs/{id}/join");
         }
 
-        public async Task Leave(int id)
+        public async Task Leave(long id)
         {
             await NoResponseRequest($"clubs/{id}/leave");
         }

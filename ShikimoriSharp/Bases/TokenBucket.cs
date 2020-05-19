@@ -19,6 +19,7 @@ namespace ShikimoriSharp.Bases
 
             _timer = new Timer(refreshTime);
             _timer.Elapsed += Refresh;
+            _timer.AutoReset = true;
             _sem = new SemaphoreSlim(0, maxTokens);
             _sem.Release(maxTokens);
         }
@@ -29,17 +30,13 @@ namespace ShikimoriSharp.Bases
 
         private void Refresh(object sender, ElapsedEventArgs args)
         {
-            if (_sem.CurrentCount == MaxTokens - 1)
-                _timer.Stop();
-
             _sem.Release(MaxTokens);
         }
 
         public async Task TokenRequest()
         {
-            if (!_timer.Enabled)
+            if(!_timer.Enabled)
                 _timer.Start();
-
             await _sem.WaitAsync();
         }
     }

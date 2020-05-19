@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using NUnit;
 using NUnit.Framework;
@@ -26,6 +27,11 @@ namespace ShikimoriSharp.Tests
                 RefreshToken = refresh,
                 Scope = scope
             });
+        }
+
+        protected bool IsInScope(string scope)
+        {
+            return client.Client.Token.Scope.Split(" ").Any(it => it == scope);
         }
     }
 }

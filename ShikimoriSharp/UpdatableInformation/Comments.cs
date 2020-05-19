@@ -13,14 +13,14 @@ namespace ShikimoriSharp.UpdatableInformation
         {
         }
 
-        public async Task<Comment> GetComment(int id)
+        public async Task<Comment> GetComment(long id)
         {
             return await Request<Comment>($"comments/{id}", true);
         }
 
-        public async Task<Comment> GetComments(CommentsRequestSettings settings)
+        public async Task<Comment[]> GetComments(CommentsRequestSettings settings)
         {
-            return await Request<Comment, CommentsRequestSettings>("comments", settings, true);
+            return await Request<Comment[], CommentsRequestSettings>("comments", settings, true);
         }
 
         public async Task<Comment> SendComment(CommentCreateSettings settings)
@@ -28,12 +28,12 @@ namespace ShikimoriSharp.UpdatableInformation
             return await SendJson<Comment>("comments", settings, true);
         }
 
-        public async Task<Comment> EditComment(int id, CommentEditSettings newMessage)
+        public async Task<Comment> EditComment(long id, CommentEditSettings newMessage)
         {
             return await SendJson<Comment>($"comments/{id}", newMessage, true, "PUT");
         }
 
-        public async Task DeleteComment(int id)
+        public async Task DeleteComment(long id)
         {
             await NoResponseRequest($"comment/{id}", true, "DELETE");
         }
@@ -73,28 +73,39 @@ namespace ShikimoriSharp.UpdatableInformation
         {
             public string? body;
             public bool? broadcast;
-            public int? commentable_id;
+            public long commentable_id;
             public string? commentable_type;
             public bool? frontend;
             public bool? is_offtopic;
             public bool? is_summary;
-
-            public CommentCreateContent(string body, int commentableId, string commentableType)
+            
+            /// <summary>
+            /// commentableType can be Topic, User, Anime, Manga, Character, Person
+            /// </summary>
+            /// <param name="body"></param>
+            /// <param name="commentableId"></param>
+            /// <param name="commentableType"></param>
+            public CommentCreateContent(string body, long commentableId, string commentableType)
             {
                 this.body = body;
                 commentable_id = commentableId;
                 commentable_type = commentableType;
             }
         }
-
+        
+        public enum CommentableType
+        {
+            Topic,
+            User
+        }
         public class CommentsRequestSettings : BasicSettings
         {
-            public int? commentable_id;
-            public string? commentable_type;
+            public long commentable_id;
+            public CommentableType commentable_type;
             public byte? desc;
             public bool? is_summary;
 
-            public CommentsRequestSettings(int commentableId, string commentableType)
+            public CommentsRequestSettings(long commentableId, CommentableType commentableType)
             {
                 commentable_id = commentableId;
                 commentable_type = commentableType;
@@ -103,13 +114,13 @@ namespace ShikimoriSharp.UpdatableInformation
 
         public class Comment
         {
-            [JsonProperty("id")] public long? Id { get; set; }
+            [JsonProperty("id")] public long Id { get; set; }
 
             [JsonProperty("user_id")] public long? UserIdUserId { get; set; }
 
             [JsonProperty("commentable_id")] public long? CommentableId { get; set; }
 
-            [JsonProperty("commentable_type")] public string CommentableType { get; set; }
+            [JsonProperty("commentable_type")] public CommentableType CommentableType { get; set; }
 
             [JsonProperty("body")] public string Body { get; set; }
 

@@ -89,7 +89,7 @@ namespace ShikimoriSharp.Tests.Information
         [Test]
         public async Task GetUnreadMessagesTest([Values(114858)] long x)
         {
-            if (client.Client.Token.Scope.Split(" ").Any(it => it == "messages"))
+            if (IsInScope("messages"))
                 Assert.IsNotNull(await client.Users.UnreadMessages(x));
             else
                 Assert.ThrowsAsync<ForbiddenException>(async () => await client.Users.UnreadMessages(x));
