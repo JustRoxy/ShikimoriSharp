@@ -1,4 +1,6 @@
-# Shikimori API for .NET
+# Shikimori API .NET
+ ![https://www.nuget.org/packages/ShikimoriSharp/](https://img.shields.io/nuget/v/ShikimoriSharp)
+
 # Документация API
 https://shikimori.one/api/doc/1.0
 
