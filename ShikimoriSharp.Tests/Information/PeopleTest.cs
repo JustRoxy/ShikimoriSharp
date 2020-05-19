@@ -17,7 +17,7 @@ namespace ShikimoriSharp.Tests.Information
             })).First();
             Assert.AreEqual(x, person.Name);
         }
-        
+
         [Test]
         public async Task GetPersonTest([Values(1991)] long x, [Values("Yoshitoshi Abe")] string testName)
         {

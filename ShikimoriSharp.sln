@@ -4,8 +4,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShikimoriSharp", "Shikimori
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShikimoriSharp.Tests", "ShikimoriSharp.Tests\ShikimoriSharp.Tests.csproj", "{D60A10FC-8BCC-449F-AB8A-46B016828DCD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTest", "TestTest\TestTest.csproj", "{3FADEC38-BB5B-4828-9B61-90FE544913C9}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,9 +18,5 @@ Global
 		{D60A10FC-8BCC-449F-AB8A-46B016828DCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D60A10FC-8BCC-449F-AB8A-46B016828DCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D60A10FC-8BCC-449F-AB8A-46B016828DCD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3FADEC38-BB5B-4828-9B61-90FE544913C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3FADEC38-BB5B-4828-9B61-90FE544913C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3FADEC38-BB5B-4828-9B61-90FE544913C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3FADEC38-BB5B-4828-9B61-90FE544913C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

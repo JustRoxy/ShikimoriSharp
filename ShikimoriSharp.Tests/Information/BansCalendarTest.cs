@@ -19,6 +19,5 @@ namespace ShikimoriSharp.Tests.Information
             var calendar = await client.Calendars.GetCalendar();
             Assert.IsNotEmpty(calendar);
         }
-
     }
 }

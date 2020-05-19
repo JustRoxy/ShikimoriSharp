@@ -8,11 +8,14 @@ namespace ShikimoriSharp.Information
 {
     public class People : ApiBase
     {
-        //TODO: Contact admin (lack of documentation)
-        public async Task<Person[]> GetPerson(Search settings)
-            => await Request<Person[], Search>($"people/search", settings);
         public People(ApiClient apiClient) : base(Version.v1, apiClient)
         {
+        }
+
+        //TODO: Contact admin (lack of documentation)
+        public async Task<Person[]> GetPerson(Search settings)
+        {
+            return await Request<Person[], Search>("people/search", settings);
         }
 
         public async Task<Person> GetPerson(long id)

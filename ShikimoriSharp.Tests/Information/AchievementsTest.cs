@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using NUnit.Framework;
 using ShikimoriSharp.Exceptions;
 using static ShikimoriSharp.Information.Achievements;
@@ -16,6 +15,7 @@ namespace ShikimoriSharp.Tests.Information
                 new AchievementsSettings(userId));
             Assert.That(value.Length, Is.GreaterThan(15));
         }
+
         [Test]
         public void IsFailingTest()
         {

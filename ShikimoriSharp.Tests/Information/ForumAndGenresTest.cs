@@ -11,6 +11,7 @@ namespace ShikimoriSharp.Tests.Information
         {
             Assert.IsNotEmpty(await client.Forums.GetForums());
         }
+
         [Test]
         public async Task GetGenres()
         {

@@ -8,10 +8,11 @@ namespace ShikimoriSharp.Tests.Information
     public class CharactersTest : TestBase
     {
         [Test]
-        public async Task GetCharactersBySearchTest([Values("Эдогава Конан")] string x)
+        public async Task GetCharacterByIdTest([Values("Эдогава Конан")] string x)
         {
-            var normalResult = await client.Characters.GetCharactersBySearch(x);
-            Assert.IsNotEmpty(normalResult);
+            var getId = (await client.Characters.GetCharactersBySearch(x)).First();
+            var getChar = await client.Characters.GetCharacterById(getId.Id);
+            Assert.AreEqual(getId.Name, getChar.Name);
         }
 
         [Test]
@@ -22,11 +23,10 @@ namespace ShikimoriSharp.Tests.Information
         }
 
         [Test]
-        public async Task GetCharacterByIdTest([Values("Эдогава Конан")] string x)
+        public async Task GetCharactersBySearchTest([Values("Эдогава Конан")] string x)
         {
-            var getId = (await client.Characters.GetCharactersBySearch(x)).First();
-            var getChar = await client.Characters.GetCharacterById(getId.Id);
-            Assert.AreEqual(getId.Name, getChar.Name);
+            var normalResult = await client.Characters.GetCharactersBySearch(x);
+            Assert.IsNotEmpty(normalResult);
         }
     }
 }

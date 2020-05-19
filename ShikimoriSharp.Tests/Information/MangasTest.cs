@@ -10,23 +10,6 @@ namespace ShikimoriSharp.Tests.Information
     public class MangasTest : TestBase
     {
         [Test]
-        public async Task GetMangaTest()
-        {
-            Assert.IsNotEmpty(await client.Mangas.GetManga());
-        }
-        
-        [Test]
-        public async Task GetMangaSettingsTest([Values("Mushishi")] string search, [Values("Мастер Муси")] string expect)
-        {
-            var mangas = (await client.Mangas.GetManga(new MangaRequestSettings
-            {
-                limit = 1,
-                search = search
-            })).First();
-            Assert.That(mangas.Russian.ToString()?.ToLower(), Is.EqualTo(expect.ToLower()));
-        }
-
-        [Test]
         public async Task GetMangaByIdTest([Values(418)] long x)
         {
             var manga = (await client.Mangas.GetManga(new MangaRequestSettings
@@ -41,10 +24,15 @@ namespace ShikimoriSharp.Tests.Information
         }
 
         [Test]
-        public async Task GetMangaRolesTest([Values(418)] long x)
+        public async Task GetMangaExternalLinksTest([Values(418)] long x)
         {
-            var roles = await client.Mangas.GetRoles(x);
-            Assert.IsNotEmpty(roles);
+            Assert.IsNotEmpty(await client.Mangas.GetExternalLinks(x));
+        }
+
+        [Test]
+        public async Task GetMangaFranchiseTest([Values(418)] long x)
+        {
+            Assert.IsNotNull(await client.Mangas.GetFranchise(x));
         }
 
         [Test]
@@ -55,23 +43,24 @@ namespace ShikimoriSharp.Tests.Information
         }
 
         [Test]
-        public async Task GetMangaFranchiseTest([Values(418)] long x)
+        public async Task GetMangaRolesTest([Values(418)] long x)
         {
-            Assert.IsNotNull(await client.Mangas.GetFranchise(x));
+            var roles = await client.Mangas.GetRoles(x);
+            Assert.IsNotEmpty(roles);
         }
 
         [Test]
-        public async Task GetMangaExternalLinksTest([Values(418)] long x)
+        public async Task GetMangaSettingsTest([Values("Mushishi")] string search,
+            [Values("Мастер Муси")] string expect)
         {
-            Assert.IsNotEmpty(await client.Mangas.GetExternalLinks(x));
+            var mangas = (await client.Mangas.GetManga(new MangaRequestSettings
+            {
+                limit = 1,
+                search = search
+            })).First();
+            Assert.That(mangas.Russian.ToString()?.ToLower(), Is.EqualTo(expect.ToLower()));
         }
 
-        [Test]
-        public async Task GetMangaTopicsTest([Values(418)] long x)
-        {
-            Assert.IsNotNull(await client.Mangas.GetTopics(x));
-        }
-        
         [Test]
         public async Task GetMangaSettingsTopicsTest([Values(418)] long x)
         {
@@ -79,7 +68,18 @@ namespace ShikimoriSharp.Tests.Information
             {
                 limit = 2
             })).Length);
+        }
 
+        [Test]
+        public async Task GetMangaTest()
+        {
+            Assert.IsNotEmpty(await client.Mangas.GetManga());
+        }
+
+        [Test]
+        public async Task GetMangaTopicsTest([Values(418)] long x)
+        {
+            Assert.IsNotNull(await client.Mangas.GetTopics(x));
         }
     }
 }

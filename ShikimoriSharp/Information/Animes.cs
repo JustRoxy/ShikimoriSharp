@@ -19,6 +19,7 @@ namespace ShikimoriSharp.Information
         {
             return await Request<Anime[]>("animes");
         }
+
         public async Task<Anime[]> GetAnime(AnimeRequestSettings settings)
         {
             var personalRequest = !(settings.mylist is null);

@@ -9,6 +9,12 @@ namespace ShikimoriSharp.UpdatableInformation
 {
     public class Comments : ApiBase
     {
+        public enum CommentableType
+        {
+            Topic,
+            User
+        }
+
         public Comments(ApiClient apiClient) : base(Version.v1, apiClient)
         {
         }
@@ -78,9 +84,9 @@ namespace ShikimoriSharp.UpdatableInformation
             public bool? frontend;
             public bool? is_offtopic;
             public bool? is_summary;
-            
+
             /// <summary>
-            /// commentableType can be Topic, User, Anime, Manga, Character, Person
+            ///     commentableType can be Topic, User, Anime, Manga, Character, Person
             /// </summary>
             /// <param name="body"></param>
             /// <param name="commentableId"></param>
@@ -92,12 +98,7 @@ namespace ShikimoriSharp.UpdatableInformation
                 commentable_type = commentableType;
             }
         }
-        
-        public enum CommentableType
-        {
-            Topic,
-            User
-        }
+
         public class CommentsRequestSettings : BasicSettings
         {
             public long commentable_id;

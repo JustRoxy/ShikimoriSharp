@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
-using NUnit;
 using NUnit.Framework;
 using ShikimoriSharp.Bases;
 
