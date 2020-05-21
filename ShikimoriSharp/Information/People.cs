@@ -12,7 +12,6 @@ namespace ShikimoriSharp.Information
         {
         }
 
-        //TODO: Contact admin (lack of documentation)
         public async Task<Person[]> GetPerson(Search settings)
         {
             return await Request<Person[], Search>("people/search", settings);

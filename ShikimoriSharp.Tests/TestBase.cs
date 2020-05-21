@@ -12,13 +12,13 @@ namespace ShikimoriSharp.Tests
 
         protected TestBase()
         {
-            var scope = TestContext.Parameters["scope"];
-            var access = TestContext.Parameters["access_token"];
-            var refresh = TestContext.Parameters["refresh_token"];
-            var name = TestContext.Parameters["name"];
-            var clientId = TestContext.Parameters["client_id"];
-            var clientSecret = TestContext.Parameters["client_secret"];
-            userId = Convert.ToInt64(TestContext.Parameters["userId"]);
+            var scope = Environment.GetEnvironmentVariable("scope");
+            var access = Environment.GetEnvironmentVariable("access_token");
+            var refresh = Environment.GetEnvironmentVariable("refresh_token");
+            var name = Environment.GetEnvironmentVariable("name");
+            var clientId = Environment.GetEnvironmentVariable("client_id");
+            var clientSecret = Environment.GetEnvironmentVariable("client_secret");
+            userId = Convert.ToInt64(Environment.GetEnvironmentVariable("userId"));
             client = ShikimoriClient.Create(name, clientId, clientSecret, new AccessToken
             {
                 Access_Token = access,
