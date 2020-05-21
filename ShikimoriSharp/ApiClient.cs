@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Polly;
+using Polly.Retry;
 using ShikimoriSharp.Bases;
 using ShikimoriSharp.Exceptions;
 
@@ -26,7 +27,7 @@ namespace ShikimoriSharp
         public TokenBucket BucketRpm =
             new TokenBucket("MINUTE", RPM, (int) TimeSpan.FromMinutes(1.1d).TotalMilliseconds);
 
-        public TokenBucket BucketRps = new TokenBucket("SECUND", RPS, (int) TimeSpan.FromSeconds(1).TotalMilliseconds);
+        public TokenBucket BucketRps = new TokenBucket("SECOND", RPS, (int) TimeSpan.FromSeconds(1).TotalMilliseconds);
 
         public ApiClient(string clientName, string clientId, string clientSecret, string redirectUrl)
         {
@@ -75,55 +76,47 @@ namespace ShikimoriSharp
         {
             return await RequestApi<TResult>(destination, null, requestAccess);
         }
+        
+        private HttpClient _httpClient = new HttpClient();
 
+        private async Task<HttpResponseMessage> Request(string dest, string method, HttpContent data,
+            bool requestAccess = false)
+        {
+            var sr = string.Empty;
+            await BucketRpm.TokenRequest();
+            await BucketRps.TokenRequest();
+            sr += $"[{DateTime.Now:HH:mm:ss:ff}] REQUEST {dest}{Environment.NewLine}";
+            var request = new HttpRequestMessage(new HttpMethod(method), dest);
+            request.Headers.TryAddWithoutValidation("User-Agent", ClientName);
+            request.Content = data;
+            if (requestAccess)
+                request.Headers.TryAddWithoutValidation("Authorization",
+                    $"{Token.TokenType} {Token.Access_Token}");
+            var ret = await _httpClient.SendAsync(request);
+            sr += $"[{DateTime.Now:HH:mm:ss:ff}] RESPONSE {ret.ReasonPhrase}{Environment.NewLine}";
+            OnNewLog?.Invoke(sr);
+            return ret;
+        }
+        
         private async Task<string> MakeStringRequest(string dest, string method, HttpContent data,
             bool requestAccess = false)
         {
-            using var httpClient = new HttpClient();
-
-            HttpRequestMessage GetRequest()
-            {
-                using var request = new HttpRequestMessage(new HttpMethod(method), dest);
-                request.Headers.TryAddWithoutValidation("User-Agent", ClientName);
-                request.Content = data;
-                if (requestAccess)
-                    request.Headers.TryAddWithoutValidation("Authorization",
-                        $"{Token.TokenType} {Token.Access_Token}");
-                return request;
-            }
-
-            var sr = string.Empty;
-
             var policy = Policy
                 .Handle<HttpRequestException>()
-                .OrResult<HttpResponseMessage>(r => r.StatusCode == HttpStatusCode.TooManyRequests)
-                .WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(Math.Pow(2, i)),
-                    (ex, con) =>
-                        OnNewLog?.Invoke(
-                            $"[{DateTime.Now:HH:mm:ss:ff}] ERROR {ex.Exception.Message} | {con.TotalMilliseconds}{Environment.NewLine}{ex.Exception.StackTrace}{Environment.NewLine}"));
+                .OrResult<HttpResponseMessage>(r =>
+                    r.StatusCode == HttpStatusCode.TooManyRequests || r.StatusCode == HttpStatusCode.Unauthorized)
+                .WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(Math.Pow(2, i)));
 
-            var response = await policy.ExecuteAsync(async () =>
-            {
-                await BucketRpm.TokenRequest();
-                await BucketRps.TokenRequest();
-                sr += $"[{DateTime.Now:HH:mm:ss:ff}] REQUEST {dest}{Environment.NewLine}";
-                var ret = await httpClient.SendAsync(GetRequest());
-                sr += $"[{DateTime.Now:HH:mm:ss:ff}] RESPONSE {ret.ReasonPhrase}{Environment.NewLine}";
-                return ret;
-            });
-
-            OnNewLog?.Invoke(sr);
+            var response = await policy.ExecuteAsync(async () => await Request(dest, method, data, requestAccess));
             switch (response.StatusCode)
             {
                 case HttpStatusCode.UnprocessableEntity:
                     throw new UnprocessableEntityException();
                 case HttpStatusCode.Forbidden:
                     throw new ForbiddenException();
-                case HttpStatusCode.Unauthorized:
-                    await RefreshAccessToken(Token);
-                    break;
+                case HttpStatusCode.BadRequest:
+                    throw new Exception("Bad Request, probably your refresh token is expired");
             }
-
             if (!response.IsSuccessStatusCode)
                 throw new Exception($"Unsuccessful request: {response.StatusCode} | {response.ReasonPhrase}");
 
@@ -172,7 +165,6 @@ namespace ShikimoriSharp
             var res = await MakeRequest<AccessToken>(TokenUrl, "POST", stringData);
             if (res.RefreshToken != Token.RefreshToken || res.Access_Token != Token.Access_Token)
                 OnTokenChange?.Invoke(res);
-            Token = res;
             return res;
         }
 
