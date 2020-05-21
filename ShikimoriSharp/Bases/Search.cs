@@ -1,4 +1,5 @@
-﻿namespace ShikimoriSharp.Bases
+﻿#nullable enable
+namespace ShikimoriSharp.Bases
 {
     public class Search
     {

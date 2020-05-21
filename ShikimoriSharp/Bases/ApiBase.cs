@@ -74,7 +74,7 @@ namespace ShikimoriSharp.Bases
 
         public async Task NoResponseRequest(string apiMethod, bool protectedResource = true, string method = "POST")
         {
-            await _apiClient.NoResponseRequest(apiMethod, null, protectedResource, method);
+            await _apiClient.NoResponseRequest($"{Site}{apiMethod}", null, protectedResource, method);
         }
 
         public async Task NoResponseRequest<TSettings>(string apiMethod, TSettings setting,
