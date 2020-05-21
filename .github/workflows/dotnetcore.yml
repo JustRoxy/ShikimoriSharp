@@ -22,4 +22,12 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Test
+      env:
+        scope: ${{ secrets.Scope }} 
+        access_token: ${{ secrets.AccessToken }}
+        refresh_token: ${{ secrets.RefreshToken }}
+        name: ${{ secrets.Name }}
+        userId: ${{ secrets.UserId }}
+        client_id: ${{ secrets.ClientId }}
+        client_secret: ${{ secrets.ClientSecret }}
       run: dotnet test --no-restore --verbosity normal
