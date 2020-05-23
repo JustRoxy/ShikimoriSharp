@@ -1,6 +1,7 @@
 # Shikimori API .NET
 
 [![Nuget](https://img.shields.io/nuget/v/ShikimoriSharp)](https://www.nuget.org/packages/ShikimoriSharp/)
+![.NET Core](https://github.com/JustRoxy/ShikimoriSharp/workflows/.NET%20Core/badge.svg)
 
 # Документация API
 https://shikimori.one/api/doc/1.0
