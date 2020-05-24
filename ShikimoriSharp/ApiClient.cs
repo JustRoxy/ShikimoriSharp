@@ -95,7 +95,10 @@ namespace ShikimoriSharp
             var ret = await _httpClient.SendAsync(request);
             sr += $"[{DateTime.Now:HH:mm:ss:ff}] RESPONSE {ret.ReasonPhrase}{Environment.NewLine}";
             OnNewLog?.Invoke(sr);
-            return ret;
+            if (ret.StatusCode != HttpStatusCode.BadRequest && ret.StatusCode != HttpStatusCode.Unauthorized)
+                return ret;
+            await RefreshAccessToken();
+            throw new HttpRequestException("Bad Request Or Unauthorized");
         }
         
         private async Task<string> MakeStringRequest(string dest, string method, HttpContent data,
@@ -104,7 +107,7 @@ namespace ShikimoriSharp
             var policy = Policy
                 .Handle<HttpRequestException>()
                 .OrResult<HttpResponseMessage>(r =>
-                    r.StatusCode == HttpStatusCode.TooManyRequests || r.StatusCode == HttpStatusCode.Unauthorized)
+                    r.StatusCode == HttpStatusCode.TooManyRequests)
                 .WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(Math.Pow(2, i)));
 
             var response = await policy.ExecuteAsync(async () => await Request(dest, method, data, requestAccess));
@@ -114,8 +117,6 @@ namespace ShikimoriSharp
                     throw new UnprocessableEntityException();
                 case HttpStatusCode.Forbidden:
                     throw new ForbiddenException();
-                case HttpStatusCode.BadRequest:
-                    throw new Exception("Bad Request, probably your refresh token is expired");
             }
             if (!response.IsSuccessStatusCode)
                 throw new Exception($"Unsuccessful request: {response.StatusCode} | {response.ReasonPhrase}");
@@ -147,14 +148,14 @@ namespace ShikimoriSharp
             return await GetAccessTokenRequest(content);
         }
 
-        public async Task<AccessToken> RefreshAccessToken(AccessToken token)
+        public async Task<AccessToken> RefreshAccessToken()
         {
             var content = new MultipartFormDataContent
             {
                 {new StringContent("refresh_token"), "grant_type"},
                 {new StringContent(ClientId), "client_id"},
                 {new StringContent(ClientSecret), "client_secret"},
-                {new StringContent(token.RefreshToken), "refresh_token"}
+                {new StringContent(Token.RefreshToken), "refresh_token"}
             };
 
             return await GetAccessTokenRequest(content);
@@ -163,8 +164,8 @@ namespace ShikimoriSharp
         private async Task<AccessToken> GetAccessTokenRequest(HttpContent stringData)
         {
             var res = await MakeRequest<AccessToken>(TokenUrl, "POST", stringData);
-            if (res.RefreshToken != Token.RefreshToken || res.Access_Token != Token.Access_Token)
-                OnTokenChange?.Invoke(res);
+            OnTokenChange?.Invoke(res);
+            Token = res;
             return res;
         }
 
