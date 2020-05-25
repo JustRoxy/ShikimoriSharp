@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using NUnit.Framework;
 using ShikimoriSharp.Exceptions;
-using static ShikimoriSharp.Information.Users;
+using ShikimoriSharp.Settings;
 
 namespace ShikimoriSharp.Tests.Information
 {
@@ -44,7 +44,7 @@ namespace ShikimoriSharp.Tests.Information
         [Test]
         public async Task GetMessagesTest([Values(114858)] long x)
         {
-            if (client.Client.Token.Scope.Contains("messages"))
+            if (IsInScope("messages"))
                 Assert.IsNotNull(await client.Users.GetMessages(x, new MessageRequestSettings("private")));
             else
                 Assert.ThrowsAsync<ForbiddenException>(

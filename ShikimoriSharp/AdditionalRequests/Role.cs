@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using static ShikimoriSharp.Information.Characters;
+using ShikimoriSharp.Classes;
 
 namespace ShikimoriSharp.AdditionalRequests
 {

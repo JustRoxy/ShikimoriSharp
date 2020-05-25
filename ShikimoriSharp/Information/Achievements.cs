@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using ShikimoriSharp.Bases;
+using ShikimoriSharp.Settings;
 using Version = ShikimoriSharp.Bases.Version;
 
 namespace ShikimoriSharp.Information
@@ -32,16 +33,6 @@ namespace ShikimoriSharp.Information
             [JsonProperty("created_at")] public DateTimeOffset? CreatedAt { get; set; }
 
             [JsonProperty("updated_at")] public DateTimeOffset? UpdatedAt { get; set; }
-        }
-
-        public class AchievementsSettings
-        {
-            public long user_id;
-
-            public AchievementsSettings(long userId)
-            {
-                user_id = userId;
-            }
         }
     }
 }

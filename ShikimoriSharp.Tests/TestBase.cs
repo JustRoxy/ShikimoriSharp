@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using NUnit.Framework;
 using ShikimoriSharp.Bases;
 
 namespace ShikimoriSharp.Tests
@@ -29,6 +28,9 @@ namespace ShikimoriSharp.Tests
 
         protected bool IsInScope(string scope)
         {
+            if (client.Client.Token.Scope is null)
+                throw new Exception("No Token");
+
             return client.Client.Token.Scope.Split(" ").Any(it => it == scope);
         }
     }

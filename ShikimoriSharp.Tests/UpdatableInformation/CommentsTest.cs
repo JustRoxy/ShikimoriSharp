@@ -1,7 +1,8 @@
 ﻿using System.Threading.Tasks;
 using NUnit.Framework;
+using ShikimoriSharp.Enums;
 using ShikimoriSharp.Exceptions;
-using static ShikimoriSharp.UpdatableInformation.Comments;
+using ShikimoriSharp.Settings;
 
 namespace ShikimoriSharp.Tests.UpdatableInformation
 {

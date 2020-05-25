@@ -15,7 +15,9 @@ namespace ShikimoriSharp.Tests.Information
             {
                 search = x
             })).First();
-            Assert.AreEqual(x, person.Name);
+
+            var personById = await client.People.GetPerson(person.Id);
+            Assert.AreEqual(person.Id, personById.Id);
         }
 
         [Test]

@@ -1,7 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Newtonsoft.Json;
 using ShikimoriSharp.AdditionalRequests;
 using ShikimoriSharp.Bases;
+using ShikimoriSharp.Classes;
+using ShikimoriSharp.Settings;
 
 namespace ShikimoriSharp.Information
 {
@@ -59,26 +60,6 @@ namespace ShikimoriSharp.Information
         public async Task<Topic[]> GetTopics(long id, BasicSettings settings)
         {
             return await Request<Topic[], BasicSettings>($"mangas/{id}/topics", settings);
-        }
-
-
-        public class MangaID : AnimeMangaIdBase
-        {
-            [JsonProperty("volumes")] public long? Volumes { get; set; }
-            [JsonProperty("chapters")] public long? Chapters { get; set; }
-            [JsonProperty("publishers")] public Publishers.Publisher[] Publishers { get; set; }
-        }
-
-        public class Manga : AnimeMangaBase
-        {
-            [JsonProperty("volumes")] public long? Volumes { get; set; }
-
-            [JsonProperty("chapters")] public long? Chapters { get; set; }
-        }
-
-        public class MangaRequestSettings : MangaAnimeRequestSettingsBase
-        {
-            public int[]? publisher;
         }
     }
 }
