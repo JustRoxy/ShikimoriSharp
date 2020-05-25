@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Newtonsoft.Json;
 using ShikimoriSharp.Bases;
-using ShikimoriSharp.Information;
+using ShikimoriSharp.Classes;
 
 namespace ShikimoriSharp.UpdatableInformation
 {
@@ -16,16 +15,9 @@ namespace ShikimoriSharp.UpdatableInformation
             return await Request<Dialog[]>("dialogs", true);
         }
 
-        public async Task<Users.Message[]> GetDialogs(string fromNickname)
+        public async Task<Message[]> GetDialogs(string fromNickname)
         {
-            return await Request<Users.Message[]>($"dialogs/{fromNickname}", true);
-        }
-
-        public class Dialog
-        {
-            [JsonProperty("target_user")] public Users.User TargetUser { get; set; }
-
-            [JsonProperty("message")] public Users.MessageContent Message { get; set; }
+            return await Request<Message[]>($"dialogs/{fromNickname}", true);
         }
     }
 }

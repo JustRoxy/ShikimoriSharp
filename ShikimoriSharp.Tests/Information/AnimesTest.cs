@@ -4,8 +4,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using ShikimoriSharp.Enums;
 using ShikimoriSharp.Exceptions;
-using ShikimoriSharp.UpdatableInformation;
-using static ShikimoriSharp.Information.Animes;
+using ShikimoriSharp.Settings;
 
 namespace ShikimoriSharp.Tests.Information
 {
@@ -24,7 +23,7 @@ namespace ShikimoriSharp.Tests.Information
         {
             var anime = (await client.Animes.GetAnime(new AnimeRequestSettings
             {
-                search = "Naruto"
+                search = "Detective Conan"
             })).First();
             var idAnime = await client.Animes.GetAnime(anime.Id);
             Assert.AreEqual(anime.Name, idAnime.Name);
@@ -64,11 +63,11 @@ namespace ShikimoriSharp.Tests.Information
                 mylist = MyList.completed
             });
             var ids = anime.Select(it => it.Id)
-                .Select(async it => (await client.UserRates.GetUsersRates(new UserRates.UserRatesSettings
+                .Select(async it => (await client.UserRates.GetUsersRates(new UserRatesSettings
                 {
                     user_id = userId,
                     target_id = it,
-                    target_type = UserRates.TargetType.Anime
+                    target_type = TargetType.Anime
                 })).First()).Select(it => it.Result);
             Assert.That(ids.Select(it => it.Status), Is.All.EqualTo("completed"));
         }

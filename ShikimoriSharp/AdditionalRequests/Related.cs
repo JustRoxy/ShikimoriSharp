@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
-using ShikimoriSharp.Information;
-using static ShikimoriSharp.Information.Mangas;
+using ShikimoriSharp.Classes;
 
 namespace ShikimoriSharp.AdditionalRequests
 {

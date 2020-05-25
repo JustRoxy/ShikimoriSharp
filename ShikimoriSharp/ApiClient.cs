@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Polly;
-using Polly.Retry;
 using ShikimoriSharp.Bases;
 using ShikimoriSharp.Exceptions;
 
@@ -20,6 +19,8 @@ namespace ShikimoriSharp
         private const int RPM = 90;
 
         private const string TokenUrl = "https://shikimori.one/oauth/token";
+
+        private readonly HttpClient _httpClient = new HttpClient();
 
         /// <summary>
         ///     1.1d is the additional time because of server's inaccuracy
@@ -76,8 +77,6 @@ namespace ShikimoriSharp
         {
             return await RequestApi<TResult>(destination, null, requestAccess);
         }
-        
-        private HttpClient _httpClient = new HttpClient();
 
         private async Task<HttpResponseMessage> Request(string dest, string method, HttpContent data,
             bool requestAccess = false)
@@ -100,7 +99,7 @@ namespace ShikimoriSharp
             await RefreshAccessToken();
             throw new HttpRequestException("Bad Request Or Unauthorized");
         }
-        
+
         private async Task<string> MakeStringRequest(string dest, string method, HttpContent data,
             bool requestAccess = false)
         {
@@ -118,6 +117,7 @@ namespace ShikimoriSharp
                 case HttpStatusCode.Forbidden:
                     throw new ForbiddenException();
             }
+
             if (!response.IsSuccessStatusCode)
                 throw new Exception($"Unsuccessful request: {response.StatusCode} | {response.ReasonPhrase}");
 

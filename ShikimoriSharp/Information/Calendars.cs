@@ -1,8 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using System.Threading.Tasks;
 using ShikimoriSharp.Bases;
-using Version = ShikimoriSharp.Bases.Version;
+using ShikimoriSharp.Classes;
 
 namespace ShikimoriSharp.Information
 {
@@ -16,16 +14,5 @@ namespace ShikimoriSharp.Information
         {
             return await Request<Calendar[]>("calendar");
         }
-    }
-
-    public class Calendar
-    {
-        [JsonProperty("next_episode")] public long? NextEpisode { get; set; }
-
-        [JsonProperty("next_episode_at")] public DateTimeOffset? NextEpisodeAt { get; set; }
-
-        [JsonProperty("duration")] public string Duration { get; set; }
-
-        [JsonProperty("anime")] public Anime Anime { get; set; }
     }
 }

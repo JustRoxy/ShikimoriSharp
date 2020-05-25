@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace ShikimoriSharp.Tests.Information
@@ -15,7 +16,9 @@ namespace ShikimoriSharp.Tests.Information
         [Test]
         public async Task GetStudios()
         {
-            Assert.IsNotEmpty(await client.Studios.GetStudios());
+            var studio = await client.Studios.GetStudios();
+            var studiosn = studio.Where(it => !(it.Image is null));
+            Assert.IsNotEmpty(studio);
         }
     }
 }

@@ -8,7 +8,7 @@
         <Description>ShikimoriSharp is the best shikimori.one API wrapper  </Description>
         <PackageLicenseUrl></PackageLicenseUrl>
         <RepositoryUrl>https://github.com/JustRoxy/ShikimoriSharp</RepositoryUrl>
-        <PackageVersion>1.1.1</PackageVersion>
+        <PackageVersion>1.1.2</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>

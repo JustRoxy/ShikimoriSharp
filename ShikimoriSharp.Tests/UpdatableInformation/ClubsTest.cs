@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using NUnit.Framework;
 using ShikimoriSharp.Exceptions;
-using ShikimoriSharp.UpdatableInformation;
+using ShikimoriSharp.Settings;
 
 namespace ShikimoriSharp.Tests.UpdatableInformation
 {
@@ -9,7 +9,7 @@ namespace ShikimoriSharp.Tests.UpdatableInformation
     public class ClubsTest : TestBase
     {
         [Test]
-        public async Task ClubJoinTest([Values(1)] long id)
+        public void ClubJoinTest([Values(1)] long id)
         {
             if (IsInScope("clubs"))
                 Assert.DoesNotThrowAsync(async () => await client.Clubs.Join(id));
@@ -17,7 +17,7 @@ namespace ShikimoriSharp.Tests.UpdatableInformation
         }
 
         [Test]
-        public async Task ClubLeaveTest([Values(1)] long id)
+        public void ClubLeaveTest([Values(1)] long id)
         {
             if (IsInScope("clubs"))
                 Assert.DoesNotThrowAsync(async () => await client.Clubs.Leave(id));
@@ -55,10 +55,11 @@ namespace ShikimoriSharp.Tests.UpdatableInformation
         }
 
         [Test]
-        public async Task GetClubsTest([Values("Разработка сайта")] string search)
+        public async Task GetClubsTest([Values("Спортивные аниме и манга (Споконы)")]
+            string search)
         {
             Assert.IsNotEmpty(await client.Clubs.GetClubs());
-            var club = await client.Clubs.GetClubs(new Clubs.ClubsRequestSettings
+            var club = await client.Clubs.GetClubs(new ClubsRequestSettings
             {
                 search = search
             });

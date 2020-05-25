@@ -1,8 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using ShikimoriSharp.Bases;
-using static ShikimoriSharp.Information.Mangas;
+using ShikimoriSharp.Settings;
 
 namespace ShikimoriSharp.Tests.Information
 {
@@ -58,7 +57,7 @@ namespace ShikimoriSharp.Tests.Information
                 limit = 1,
                 search = search
             })).First();
-            Assert.That(mangas.Russian.ToString()?.ToLower(), Is.EqualTo(expect.ToLower()));
+            Assert.That(mangas.Russian?.ToLower(), Is.EqualTo(expect.ToLower()));
         }
 
         [Test]

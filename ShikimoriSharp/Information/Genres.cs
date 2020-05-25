@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Newtonsoft.Json;
 using ShikimoriSharp.Bases;
+using ShikimoriSharp.Classes;
 
 namespace ShikimoriSharp.Information
 {
@@ -13,17 +13,6 @@ namespace ShikimoriSharp.Information
         public async Task<Genre[]> GetGenres()
         {
             return await Request<Genre[]>("genres");
-        }
-
-        public class Genre
-        {
-            [JsonProperty("id")] public long? Id { get; set; }
-
-            [JsonProperty("name")] public string Name { get; set; }
-
-            [JsonProperty("russian")] public object Russian { get; set; }
-
-            [JsonProperty("kind")] public string Kind { get; set; }
         }
     }
 }

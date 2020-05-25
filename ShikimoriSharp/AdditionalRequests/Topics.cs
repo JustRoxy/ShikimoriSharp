@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 using ShikimoriSharp.Bases;
-using static ShikimoriSharp.Information.Users;
+using ShikimoriSharp.Classes;
 
 namespace ShikimoriSharp.AdditionalRequests
 {
@@ -30,6 +30,11 @@ namespace ShikimoriSharp.AdditionalRequests
         [JsonProperty("event")] public object Event { get; set; }
         [JsonProperty("created_at")] public DateTimeOffset CreatedAt { get; set; }
         [JsonProperty("episode")] public object Episode { get; set; }
+    }
+
+    public class ExtendedLightTopic : LightTopic
+    {
+        [JsonProperty("url")] public string Url { get; set; }
     }
 
     public class Topic : LightTopic

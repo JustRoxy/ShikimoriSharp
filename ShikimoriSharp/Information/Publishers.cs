@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Newtonsoft.Json;
 using ShikimoriSharp.Bases;
+using ShikimoriSharp.Classes;
 
 namespace ShikimoriSharp.Information
 {
@@ -13,13 +13,6 @@ namespace ShikimoriSharp.Information
         public async Task<Publisher[]> GetPublisher()
         {
             return await Request<Publisher[]>("publishers");
-        }
-
-        public class Publisher
-        {
-            [JsonProperty("id")] public long? Id { get; set; }
-
-            [JsonProperty("name")] public string Name { get; set; }
         }
     }
 }

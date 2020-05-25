@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using NUnit.Framework;
 using ShikimoriSharp.Exceptions;
-using static ShikimoriSharp.Information.Achievements;
+using ShikimoriSharp.Settings;
 
 namespace ShikimoriSharp.Tests.Information
 {
