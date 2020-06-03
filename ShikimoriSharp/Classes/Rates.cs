@@ -6,7 +6,7 @@ namespace ShikimoriSharp.Classes
     public class PublicUserRate
     {
         [JsonProperty("id")] public long Id { get; set; }
-        [JsonProperty("score")] public long? Score { get; set; }
+        [JsonProperty("score")] public long Score { get; set; }
         [JsonProperty("status")] public string Status { get; set; }
         [JsonProperty("rewatches")] public long? Rewatches { get; set; }
         [JsonProperty("episodes")] public long? Episodes { get; set; }
@@ -20,8 +20,8 @@ namespace ShikimoriSharp.Classes
 
     public class UserRate : PublicUserRate
     {
-        [JsonProperty("user_id")] public long? UserId { get; set; }
-        [JsonProperty("target_id")] public long? TargetId { get; set; }
+        [JsonProperty("user_id")] public long UserId { get; set; }
+        [JsonProperty("target_id")] public long TargetId { get; set; }
         [JsonProperty("target_type")] public string TargetType { get; set; }
     }
 

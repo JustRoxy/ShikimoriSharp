@@ -18,6 +18,6 @@ namespace ShikimoriSharp.Bases
         [JsonProperty("score")] public string Score { get; set; }
         [JsonProperty("status")] public string Status { get; set; }
         [JsonProperty("aired_on")] public DateTimeOffset? AiredOn { get; set; }
-        [JsonProperty("released_on")] public object ReleasedOn { get; set; }
+        [JsonProperty("released_on")] public DateTimeOffset? ReleasedOn { get; set; }
     }
 }

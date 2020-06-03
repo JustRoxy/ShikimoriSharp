@@ -5,7 +5,7 @@ namespace ShikimoriSharp.AdditionalRequests
 {
     public class ExternalLinks
     {
-        [JsonProperty("id")] public long? Id { get; set; }
+        [JsonProperty("id")] public long Id { get; set; }
 
         [JsonProperty("kind")] public string Kind { get; set; }
 

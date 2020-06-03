@@ -47,7 +47,7 @@ namespace ShikimoriSharp.AdditionalRequests
 
         [JsonProperty("html_footer")] public string HtmlFooter { get; set; }
 
-        [JsonProperty("comments_count")] public long? CommentsCount { get; set; }
+        [JsonProperty("comments_count")] public long CommentsCount { get; set; }
 
         [JsonProperty("forum")] public Forum Forum { get; set; }
         [JsonProperty("user")] public User User { get; set; }
@@ -58,16 +58,16 @@ namespace ShikimoriSharp.AdditionalRequests
 
         [JsonProperty("linked_type")] public string LinkedType { get; set; }
 
-        [JsonProperty("viewed")] public bool? Viewed { get; set; }
+        [JsonProperty("viewed")] public bool Viewed { get; set; }
 
         [JsonProperty("last_comment_viewed")] public object LastCommentViewed { get; set; }
     }
 
     public class Forum
     {
-        [JsonProperty("id")] public long? Id { get; set; }
+        [JsonProperty("id")] public long Id { get; set; }
 
-        [JsonProperty("position")] public long? Position { get; set; }
+        [JsonProperty("position")] public long Position { get; set; }
 
         [JsonProperty("name")] public string Name { get; set; }
 
@@ -78,7 +78,7 @@ namespace ShikimoriSharp.AdditionalRequests
 
     public class Linked
     {
-        [JsonProperty("id")] public long? Id { get; set; }
+        [JsonProperty("id")] public long Id { get; set; }
 
         [JsonProperty("name")] public string Name { get; set; }
 
@@ -94,16 +94,16 @@ namespace ShikimoriSharp.AdditionalRequests
 
         [JsonProperty("status")] public object Status { get; set; }
 
-        [JsonProperty("volumes")] public long? Volumes { get; set; }
+        [JsonProperty("volumes")] public long Volumes { get; set; }
 
-        [JsonProperty("chapters")] public long? Chapters { get; set; }
+        [JsonProperty("chapters")] public long Chapters { get; set; }
 
-        [JsonProperty("episodes")] public long? Episodes { get; set; }
+        [JsonProperty("episodes")] public long Episodes { get; set; }
 
-        [JsonProperty("episodes_aired")] public long? EpisodesAired { get; set; }
+        [JsonProperty("episodes_aired")] public long EpisodesAired { get; set; }
 
-        [JsonProperty("aired_on")] public object AiredOn { get; set; }
+        [JsonProperty("aired_on")] public DateTimeOffset AiredOn { get; set; }
 
-        [JsonProperty("released_on")] public object ReleasedOn { get; set; }
+        [JsonProperty("released_on")] public DateTimeOffset ReleasedOn { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace ShikimoriSharp.Bases
         [JsonProperty("description_source")] public string DescriptionSource { get; set; }
         [JsonProperty("franchise")] public string Franchise { get; set; }
 
-        [JsonProperty("favoured")] public bool? Favoured { get; set; }
+        [JsonProperty("favoured")] public bool Favoured { get; set; }
 
         [JsonProperty("anons")] public bool Anons { get; set; }
 

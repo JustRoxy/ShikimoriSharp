@@ -23,7 +23,7 @@ namespace ShikimoriSharp.Classes
 
     public class Video
     {
-        [JsonProperty("id")] public long? Id { get; set; }
+        [JsonProperty("id")] public long Id { get; set; }
         [JsonProperty("url")] public Uri Url { get; set; }
         [JsonProperty("image_url")] public Uri ImageUrl { get; set; }
         [JsonProperty("player_url")] public Uri PlayerUrl { get; set; }
