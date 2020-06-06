@@ -36,14 +36,14 @@ namespace ShikimoriSharp.Information
             return await Request<UserInfo>($"users/{id}/info");
         }
 
-        public async Task<UserInfo> WhoAmI()
+        public async Task<UserInfo> WhoAmI(AccessToken personalInformation)
         {
-            return await Request<UserInfo>("users/whoami", true);
+            return await Request<UserInfo>("users/whoami", personalInformation);
         }
 
-        public async Task Sign_Out()
+        public async Task Sign_Out(AccessToken personalInformation)
         {
-            await NoResponseRequest("users/sign_out", method: "GET");
+            await NoResponseRequest("users/sign_out", personalInformation, method: "GET");
         }
 
         public async Task<User[]> GetFriends(long id)
@@ -91,14 +91,14 @@ namespace ShikimoriSharp.Information
             return await Request<Favorites>($"users/{id}");
         }
 
-        public async Task<Message[]> GetMessages(long id, MessageRequestSettings settings)
+        public async Task<Message[]> GetMessages(long id, MessageRequestSettings settings, AccessToken personalInformation)
         {
-            return await Request<Message[], MessageRequestSettings>($"users/{id}/messages", settings, true);
+            return await Request<Message[], MessageRequestSettings>($"users/{id}/messages", settings, personalInformation);
         }
 
-        public async Task<NewInformation> UnreadMessages(long id)
+        public async Task<NewInformation> UnreadMessages(long id, AccessToken personalInformation)
         {
-            return await Request<NewInformation>($"users/{id}/unread_messages", true);
+            return await Request<NewInformation>($"users/{id}/unread_messages", personalInformation);
         }
 
         public async Task<History[]> GetHistory(long id)

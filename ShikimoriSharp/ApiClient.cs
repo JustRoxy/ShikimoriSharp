@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Polly;
 using ShikimoriSharp.Bases;
@@ -24,50 +25,51 @@ namespace ShikimoriSharp
         public readonly TokenBucket BucketRpm = new TokenBucket("M", RPM, TimeSpan.FromMinutes(1.05d).TotalMilliseconds);
         public readonly TokenBucket BucketRps = new TokenBucket("S", RPS, TimeSpan.FromSeconds(1).TotalMilliseconds);
 
-        public ApiClient(ClientSettings settings)
+        public ApiClient(ILogger logger, ClientSettings settings)
         {
+            _logger = logger;
             _settings = settings;
-            _manager = new AuthorizationManager(settings,
-                (s, s1, arg3) => RequestForm<AccessToken>(s, arg3, method: s1));
+            AuthorizationManager = new AuthorizationManager(settings, RefreshRequest);
         }
         
-        private AuthorizationManager _manager;
-        public AccessToken Token { get; private set; }
+        public AuthorizationManager AuthorizationManager { get; }
 
+        private readonly ILogger _logger;
         private ClientSettings _settings;
+        
 
-        public async Task Auth(string authCode)
+        private async Task<AccessToken> RequestTokenRefreshing(AccessToken expiredToken)
         {
-            Token = await _manager.GetAccessToken(authCode);
-        }
-
-        public void Auth(AccessToken token)
-        {
-            Token = token;
-        }
-
-        private async Task<AccessToken> TokenRequestRefreshing(AccessToken expiredToken)
-        {
-            var nToken = await _manager.RefreshAccessToken(expiredToken);
+            var nToken = await AuthorizationManager.RefreshAccessToken(expiredToken);
+            _logger.Log(LogLevel.Information, $"New Token Acquired: {nToken.RefreshToken}");
             OnNewToken?.Invoke(nToken);
             return nToken;
         }
-        
-        public async Task RequestWithNoResponse(string destination, HttpContent settings, bool requestAccess = false, string method = "GET")
+
+        private Func<AccessToken, RequestManager> Request => x =>
+            new RequestManager(_logger, BucketRps, BucketRpm, _settings, x, RequestTokenRefreshing);
+
+        public async Task RequestWithNoResponse(string destination, HttpContent settings, AccessToken token = null, string method = "GET")
         {
-            var requester = new RequestManager(BucketRps, BucketRpm, _settings, Token, TokenRequestRefreshing);
-            await requester.ResponseExecutor(destination, method, settings, requestAccess);
+            var requester = Request(token);
+            await requester.ResponseExecutor(destination, method, settings);
         }
 
-        public async Task<TResult> RequestForm<TResult>(string destination, HttpContent settings, bool requestAccess = false, string method = "GET")
+        private async Task<AccessToken> RefreshRequest(string dest, HttpContent content)
         {
-            var requester = new RequestManager(BucketRps, BucketRpm, _settings, Token, TokenRequestRefreshing);
-            return await requester.ResponseAsType<TResult>(destination, method, settings, requestAccess);
+            var requester = new RequestManager(_logger, BucketRps, BucketRpm, _settings, null, null);
+            return await requester.ResponseAsType<AccessToken>(dest, "POST", content);
         }
 
-        public async Task<TResult> RequestForm<TResult>(string destination, bool requestAccess = false, string method = "GET")
+        public async Task<TResult> RequestForm<TResult>(string destination, HttpContent settings, AccessToken token = null, string method = "GET")
         {
-            return await RequestForm<TResult>(destination, null, requestAccess, method);
+            var requester = Request(token);
+            return await requester.ResponseAsType<TResult>(destination, method, settings);
+        }
+
+        public async Task<TResult> RequestForm<TResult>(string destination, AccessToken token = null, string method = "GET")
+        {
+            return await RequestForm<TResult>(destination, null, token, method);
         }
     }
 }

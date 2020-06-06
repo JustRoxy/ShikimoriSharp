@@ -2,62 +2,69 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Polly;
 using ShikimoriSharp.Bases;
 using ShikimoriSharp.Exceptions;
 
+
 namespace ShikimoriSharp
 {
     public class RequestManager
     {
-        public delegate void NewLog(string log);
-        public event NewLog OnNewLog;
-        private TokenBucket BucketRpm;
-        private TokenBucket BucketRps;
-        private ClientSettings _settings;
+        private readonly TokenBucket _bucketRpm;
+        private readonly ILogger _logger;
+        private readonly TokenBucket _bucketRps;
+        private readonly ClientSettings _settings;
+        private readonly Func<AccessToken, Task<AccessToken>> _refresh;
         private AccessToken _token;
-        public Func<AccessToken, Task<AccessToken>> Refresh;
         
         
-        public RequestManager(TokenBucket bucketRps, TokenBucket bucketRpm, ClientSettings settings, AccessToken token, Func<AccessToken, Task<AccessToken>> refresh)
+        public RequestManager(ILogger logger, TokenBucket bucketRps, TokenBucket bucketRpm, ClientSettings settings, AccessToken token,  Func<AccessToken, Task<AccessToken>> refresh)
         {
-            BucketRps = bucketRps;
-            BucketRpm = bucketRpm;
+            _logger = logger;
+            _bucketRps = bucketRps;
+            _bucketRpm = bucketRpm;
             _settings = settings;
+            _refresh = refresh;
             _token = token;
-            Refresh = refresh;
         }
 
-        public async Task<HttpResponseMessage> Response(string dest, string method, HttpContent data, bool requestAccess = false)
+        private async Task<HttpResponseMessage> Response(string dest, string method, HttpContent data)
         {
             using var httpClient = new HttpClient();
-            var sr = string.Empty;
-            await BucketRpm.TokenRequest();
-            await BucketRps.TokenRequest();
-            sr += $"[{DateTime.Now:HH:mm:ss:ff}] REQUEST {dest}{Environment.NewLine}";
+            await _bucketRpm.TokenRequest();
+            await _bucketRps.TokenRequest();
+            _logger?.Log(LogLevel.Debug,$"REQUEST {dest}");
+
             var request = new HttpRequestMessage(new HttpMethod(method), dest);
             request.Headers.TryAddWithoutValidation("User-Agent", _settings.ClientName);
             request.Content = data;
-            if (requestAccess)
-                request.Headers.TryAddWithoutValidation("Authorization",
-                    $"{_token.TokenType} {_token.Access_Token}");
+            if (!(_token is null))
+                request.Headers.TryAddWithoutValidation("Authorization", $"{_token.TokenType} {_token.Access_Token}");
             var ret = await httpClient.SendAsync(request);
-            sr += $"[{DateTime.Now:HH:mm:ss:ff}] RESPONSE {ret.ReasonPhrase}{Environment.NewLine}";
+            
+            _logger?.Log(LogLevel.Debug, $"RESPONSE {ret.ReasonPhrase}");
+
             if (ret.StatusCode != HttpStatusCode.BadRequest && ret.StatusCode != HttpStatusCode.Unauthorized)
                 return ret;
-            _token = await Refresh(_token);
-            throw new HttpRequestException("Bad Request Or Unauthorized");
+            if (_refresh is null)
+                throw new Exception($"An error occured while token refreshing: {ret.StatusCode}");
+            
+            _logger?.Log(LogLevel.Warning, "REFRESHING TOKEN");
+            _token = await _refresh(_token);
+            throw new HttpRequestException($"{ret.StatusCode}");
         }
 
-        public async Task<string> ResponseExecutor(string dest, string method, HttpContent data, bool requestAccess = false)
+        public async Task<string> ResponseExecutor(string dest, string method, HttpContent data)
         {
             var policy = Policy
                 .Handle<HttpRequestException>()
                 .OrResult<HttpResponseMessage>(r => r.StatusCode == HttpStatusCode.TooManyRequests)
                 .WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(Math.Pow(2, i)));
-
-            var response = await policy.ExecuteAsync(() => Response(dest, method, data, requestAccess));
+            
+            var response = await policy.ExecuteAsync(() => Response(dest, method, data));
             
             switch (response.StatusCode)
             {
@@ -73,9 +80,9 @@ namespace ShikimoriSharp
             return await response.Content.ReadAsStringAsync();
         }
 
-        public async Task<TResult> ResponseAsType<TResult>(string dest, string method, HttpContent data, bool requestAccess = false)
+        public async Task<TResult> ResponseAsType<TResult>(string dest, string method, HttpContent data)
         {
-            var response = await ResponseExecutor(dest, method, data, requestAccess);
+            var response = await ResponseExecutor(dest, method, data);
             return await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<TResult>(response));
         }
     }

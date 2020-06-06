@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using ShikimoriSharp.Bases;
 using ShikimoriSharp.Information;
 using ShikimoriSharp.UpdatableInformation;
@@ -7,9 +8,9 @@ namespace ShikimoriSharp
 {
     public class ShikimoriClient
     {
-        public ShikimoriClient(ClientSettings settings)
+        public ShikimoriClient(ILogger logger, ClientSettings settings)
         {
-            Client = new ApiClient(settings);
+            Client = new ApiClient(logger, settings);
             Achievements = new Achievements(Client);
             Animes = new Animes(Client);
             Bans = new Bans(Client);
@@ -67,19 +68,5 @@ namespace ShikimoriSharp
         public UserRates UserRates { get; }
         public Users Users { get; }
         public Videos Videos { get; }
-
-        public static async Task<ShikimoriClient> Create(ClientSettings settings, string authorizationCode)
-        {
-            var obj = new ShikimoriClient(settings);
-            await obj.Client.Auth(authorizationCode);
-            return obj;
-        }
-
-        public static ShikimoriClient Create(ClientSettings settings, AccessToken token)
-        {
-            var obj = new ShikimoriClient(settings);
-            obj.Client.Auth(token);
-            return obj;
-        }
     }
 }

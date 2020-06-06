@@ -16,19 +16,19 @@ namespace ShikimoriSharp.UpdatableInformation
             return await Request<Style>($"styles/{id}");
         }
 
-        public async Task<Style> PreviewStyle(StylePreviewSettings settings)
+        public async Task<Style> PreviewStyle(StylePreviewSettings settings, AccessToken personalInformation)
         {
-            return await SendJson<Style>("styles/preview", settings.style, true);
+            return await SendJson<Style>("styles/preview", settings.style, personalInformation);
         }
 
-        public async Task<Style> CreateStyle(StyleSettings settings)
+        public async Task<Style> CreateStyle(StyleSettings settings, AccessToken personalInformation)
         {
-            return await SendJson<Style>("styles/preview", settings.style, true);
+            return await SendJson<Style>("styles/preview", settings.style, personalInformation);
         }
 
-        public async Task<Style> UpdateStyle(int id, StyleUpdateSettings settings)
+        public async Task<Style> UpdateStyle(int id, StyleUpdateSettings settings, AccessToken personalInformation)
         {
-            return await SendJson<Style>($"styles/{id}", settings.style, true);
+            return await SendJson<Style>($"styles/{id}", settings.style, personalInformation);
         }
     }
 }

@@ -11,29 +11,29 @@ namespace ShikimoriSharp.UpdatableInformation
         {
         }
 
-        public async Task<Comment> GetComment(long id)
+        public async Task<Comment> GetComment(long id, AccessToken personalInformation)
         {
-            return await Request<Comment>($"comments/{id}", true);
+            return await Request<Comment>($"comments/{id}", personalInformation);
         }
 
-        public async Task<Comment[]> GetComments(CommentsRequestSettings settings)
+        public async Task<Comment[]> GetComments(CommentsRequestSettings settings, AccessToken personalInformation)
         {
-            return await Request<Comment[], CommentsRequestSettings>("comments", settings, true);
+            return await Request<Comment[], CommentsRequestSettings>("comments", settings, personalInformation);
         }
 
-        public async Task<Comment> SendComment(CommentCreateSettings settings)
+        public async Task<Comment> SendComment(CommentCreateSettings settings, AccessToken personalInformation)
         {
-            return await SendJson<Comment>("comments", settings, true);
+            return await SendJson<Comment>("comments", settings, personalInformation);
         }
 
-        public async Task<Comment> EditComment(long id, CommentEditSettings newMessage)
+        public async Task<Comment> EditComment(long id, CommentEditSettings newMessage, AccessToken personalInformation)
         {
-            return await SendJson<Comment>($"comments/{id}", newMessage, true, "PUT");
+            return await SendJson<Comment>($"comments/{id}", newMessage, personalInformation, "PUT");
         }
 
-        public async Task DeleteComment(long id)
+        public async Task DeleteComment(long id, AccessToken personalInformation)
         {
-            await NoResponseRequest($"comment/{id}", true, "DELETE");
+            await NoResponseRequest($"comment/{id}", true, personalInformation, "DELETE");
         }
     }
 }

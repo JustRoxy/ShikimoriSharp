@@ -15,28 +15,28 @@ namespace ShikimoriSharp.Tests.Information
         [Test]
         public async Task GetAnimeConstantsTest()
         {
-            var constant = await client.Constants.GetAnimeConstants();
+            var constant = await Client.Constants.GetAnimeConstants();
             AssertProperty(constant, "Status", "Kind");
         }
 
         [Test]
         public async Task GetClubConstantsTest()
         {
-            var constant = await client.Constants.GetClubConstants();
+            var constant = await Client.Constants.GetClubConstants();
             AssertProperty(constant, "CommentPolicy", "JoinPolicy", "ImageUploadPolicy");
         }
 
         [Test]
         public async Task GetMangaConstantsTest()
         {
-            var constant = await client.Constants.GetMangaConstants();
+            var constant = await Client.Constants.GetMangaConstants();
             AssertProperty(constant, "Status", "Kind");
         }
 
         [Test]
         public async Task GetSmileysConstantsTest()
         {
-            var constant = await client.Constants.GetSmileysConstants();
+            var constant = await Client.Constants.GetSmileysConstants();
             Assert.That(constant, Has.All.Property("Bbcode"));
             Assert.That(constant, Has.All.Property("Path"));
         }
@@ -44,7 +44,7 @@ namespace ShikimoriSharp.Tests.Information
         [Test]
         public async Task GetUserRateConstantsTest()
         {
-            var constant = await client.Constants.GetUserRateConstants();
+            var constant = await Client.Constants.GetUserRateConstants();
             AssertProperty(constant, "Status");
         }
     }

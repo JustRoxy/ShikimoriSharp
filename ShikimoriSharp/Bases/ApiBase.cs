@@ -48,10 +48,10 @@ namespace ShikimoriSharp.Bases
         }
 
         public async Task<TResult> Request<TResult, TSettings>(string apiMethod, TSettings settings,
-            bool protectedResource = false, string method = "GET")
+            AccessToken token = null, string method = "GET")
         {
             var settingsInfo = DeserializeToRequest(settings);
-            return await _apiClient.RequestForm<TResult>($"{Site}{apiMethod}", settingsInfo, protectedResource, method);
+            return await _apiClient.RequestForm<TResult>($"{Site}{apiMethod}", settingsInfo, token, method);
         }
 
         private static async Task<string> SerializeToJson(object obj)
@@ -59,29 +59,27 @@ namespace ShikimoriSharp.Bases
             return await Task.Factory.StartNew(() => JsonConvert.SerializeObject(obj));
         }
 
-        public async Task<TResult> SendJson<TResult>(string apiMethod, object content, bool protectedResource,
+        public async Task<TResult> SendJson<TResult>(string apiMethod, object content, AccessToken token,
             string method = "POST")
         {
             var json = new StringContent(await SerializeToJson(content), Encoding.UTF8, "application/json");
-            return await _apiClient.RequestForm<TResult>($"{Site}{apiMethod}", json, protectedResource, method);
+            return await _apiClient.RequestForm<TResult>($"{Site}{apiMethod}", json, token, method);
         }
 
-        public async Task<TResult> Request<TResult>(string apiMethod, bool protectedResource = false,
-            string method = "GET")
+        public async Task<TResult> Request<TResult>(string apiMethod, AccessToken token = null, string method = "GET")
         {
-            return await _apiClient.RequestForm<TResult>($"{Site}{apiMethod}", protectedResource);
+            return await _apiClient.RequestForm<TResult>($"{Site}{apiMethod}", token);
         }
 
-        public async Task NoResponseRequest(string apiMethod, bool protectedResource = true, string method = "POST")
+        public async Task NoResponseRequest(string apiMethod, AccessToken token, string method = "POST")
         {
-            await _apiClient.RequestWithNoResponse($"{Site}{apiMethod}", null, protectedResource, method);
+            await _apiClient.RequestWithNoResponse($"{Site}{apiMethod}", null, token, method);
         }
 
-        public async Task NoResponseRequest<TSettings>(string apiMethod, TSettings setting,
-            bool protectedResource = true, string method = "POST")
+        public async Task NoResponseRequest<TSettings>(string apiMethod, TSettings setting, AccessToken token, string method = "POST")
         {
             var settings = DeserializeToRequest(setting);
-            await _apiClient.RequestWithNoResponse($"{Site}{apiMethod}", settings, protectedResource);
+            await _apiClient.RequestWithNoResponse($"{Site}{apiMethod}", settings, token);
         }
     }
 

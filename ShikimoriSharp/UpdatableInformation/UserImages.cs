@@ -11,9 +11,9 @@ namespace ShikimoriSharp.UpdatableInformation
         {
         }
 
-        public async Task<ResultImage> CreateUserImage(UserImagesSettings settings)
+        public async Task<ResultImage> CreateUserImage(UserImagesSettings settings, AccessToken personalInformation)
         {
-            return await Request<ResultImage, UserImagesSettings>("user_images", settings, true, "POST");
+            return await Request<ResultImage, UserImagesSettings>("user_images", settings, personalInformation, "POST");
         }
     }
 }

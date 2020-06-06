@@ -9,9 +9,9 @@ namespace ShikimoriSharp
     {
         private const string TokenUrl = "https://shikimori.one/oauth/token";
         private readonly ClientSettings _settings;
-        private readonly Func<string, string, HttpContent, Task<AccessToken>> _refreshFunc;
+        private readonly Func<string, HttpContent, Task<AccessToken>> _refreshFunc;
 
-        public AuthorizationManager(ClientSettings settings, Func<string, string, HttpContent, Task<AccessToken>> refreshFunc)
+        public AuthorizationManager(ClientSettings settings, Func<string, HttpContent, Task<AccessToken>> refreshFunc)
         {
             _settings = settings;
             _refreshFunc = refreshFunc;
@@ -42,7 +42,7 @@ namespace ShikimoriSharp
 
         private async Task<AccessToken> GetAccessTokenRequest(HttpContent stringData)
         {
-            return await _refreshFunc(TokenUrl, "POST", stringData);
+            return await _refreshFunc(TokenUrl, stringData);
         }
     }
 }

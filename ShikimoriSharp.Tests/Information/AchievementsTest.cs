@@ -11,16 +11,15 @@ namespace ShikimoriSharp.Tests.Information
         [Test]
         public async Task HaveValueTest()
         {
-            var value = await client.Achievements.GetAchievements(
-                new AchievementsSettings(userId));
+            var value = await Client.Achievements.GetAchievements(new AchievementsSettings(UserId));
             Assert.That(value.Length, Is.GreaterThan(15));
         }
 
         [Test]
         public void IsFailingTest()
         {
-            Assert.ThrowsAsync<UnprocessableEntityException>(async () =>
-                await client.Achievements.GetAchievements(new AchievementsSettings(-1)));
+            Assert.ThrowsAsync<UnprocessableEntityException>(() =>
+                Client.Achievements.GetAchievements(new AchievementsSettings(-1)));
         }
     }
 }

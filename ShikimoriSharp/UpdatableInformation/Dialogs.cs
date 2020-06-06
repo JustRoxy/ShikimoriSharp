@@ -10,14 +10,14 @@ namespace ShikimoriSharp.UpdatableInformation
         {
         }
 
-        public async Task<Dialog[]> GetDialogs()
+        public async Task<Dialog[]> GetDialogs(AccessToken personalInformation)
         {
-            return await Request<Dialog[]>("dialogs", true);
+            return await Request<Dialog[]>("dialogs", personalInformation);
         }
 
-        public async Task<Message[]> GetDialogs(string fromNickname)
+        public async Task<Message[]> GetDialogs(string fromNickname, AccessToken personalInformation)
         {
-            return await Request<Message[]>($"dialogs/{fromNickname}", true);
+            return await Request<Message[]>($"dialogs/{fromNickname}", personalInformation);
         }
     }
 }

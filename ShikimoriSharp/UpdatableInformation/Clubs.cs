@@ -11,19 +11,19 @@ namespace ShikimoriSharp.UpdatableInformation
         {
         }
 
-        public async Task<Club[]> GetClubs(ClubsRequestSettings settings = null)
+        public async Task<Club[]> GetClubs(ClubsRequestSettings settings = null, AccessToken personalInformation = null)
         {
-            return await Request<Club[], ClubsRequestSettings>("clubs", settings, true);
+            return await Request<Club[], ClubsRequestSettings>("clubs", settings, personalInformation);
         }
 
-        public async Task<ClubID> GetClub(long id)
+        public async Task<ClubID> GetClub(long id, AccessToken personalInformation)
         {
-            return await Request<ClubID>($"clubs/{id}", true);
+            return await Request<ClubID>($"clubs/{id}", personalInformation);
         }
 
-        public async Task<Club> UpdateClub(long id, UpdateClubSettings club = null)
+        public async Task<Club> UpdateClub(long id, AccessToken personalInformation, UpdateClubSettings club = null)
         {
-            return await SendJson<Club>($"clubs/{id}", club, true, "PUT");
+            return await SendJson<Club>($"clubs/{id}", club, personalInformation, "PUT");
         }
 
         public async Task<Anime[]> GetAnimes(long id)
@@ -56,14 +56,14 @@ namespace ShikimoriSharp.UpdatableInformation
             return await Request<ClubImage[]>($"clubs/{id}/images");
         }
 
-        public async Task Join(long id)
+        public async Task Join(long id, AccessToken personalInformation)
         {
-            await NoResponseRequest($"clubs/{id}/join");
+            await NoResponseRequest($"clubs/{id}/join", personalInformation);
         }
 
-        public async Task Leave(long id)
+        public async Task Leave(long id, AccessToken personalInformation)
         {
-            await NoResponseRequest($"clubs/{id}/leave");
+            await NoResponseRequest($"clubs/{id}/leave", personalInformation);
         }
     }
 }

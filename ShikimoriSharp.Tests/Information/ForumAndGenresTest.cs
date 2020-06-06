@@ -9,13 +9,13 @@ namespace ShikimoriSharp.Tests.Information
         [Test]
         public async Task GetForumsTest()
         {
-            Assert.IsNotEmpty(await client.Forums.GetForums());
+            Assert.IsNotEmpty(await Client.Forums.GetForums());
         }
 
         [Test]
         public async Task GetGenres()
         {
-            Assert.IsNotEmpty(await client.Genres.GetGenres());
+            Assert.IsNotEmpty(await Client.Genres.GetGenres());
         }
     }
 }

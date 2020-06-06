@@ -11,19 +11,19 @@ namespace ShikimoriSharp.Tests.Information
         [Test]
         public async Task GetPersonTest([Values("Yoshitoshi Abe")] string x)
         {
-            var person = (await client.People.GetPerson(new Search
+            var person = (await Client.People.GetPerson(new Search
             {
                 search = x
             })).First();
 
-            var personById = await client.People.GetPerson(person.Id);
+            var personById = await Client.People.GetPerson(person.Id);
             Assert.AreEqual(person.Id, personById.Id);
         }
 
         [Test]
         public async Task GetPersonTest([Values(1991)] long x, [Values("Yoshitoshi Abe")] string testName)
         {
-            var person = await client.People.GetPerson(x);
+            var person = await Client.People.GetPerson(x);
             Assert.IsNotNull(person);
             Assert.AreEqual(testName, person.Name);
         }
@@ -31,7 +31,7 @@ namespace ShikimoriSharp.Tests.Information
         [Test]
         public async Task GetPublisherTest()
         {
-            var publisher = await client.Publishers.GetPublisher();
+            var publisher = await Client.Publishers.GetPublisher();
             Assert.IsNotEmpty(publisher);
         }
     }
