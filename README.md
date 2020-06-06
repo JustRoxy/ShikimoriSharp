@@ -9,47 +9,44 @@ https://shikimori.one/api/doc/1.0
 # Туториал по использованию
 
 ### Получите Authorization Code, или Access Token
-**Проследуйте этому туториалу, чтобу получить Authorization Code, ClientID и Client Secret.**
 https://shikimori.one/oauth
 
-### Создайте клиент ShikimoriClient
-**Есть два способа создания клиента, с помощью AuthCode, и с помощью Access Token**
+### ShikimoriClient
+
 ```csharp
-var client = await ShikimoriClient.Create("ИмяБота", "ClientID", "ClientSecret", AuthCode, "redirectUrl");
+var client = new ShikimoriSharp(logger, new ClientSettings("ИмяКлиента", "IDКлиента", "СекретКлиента"));
 ```
 
-
 ```csharp
-var client = ShikimoriClient.Create("ИмяБота", "ClientID", "ClientSecret", new AccessToken 
-{
-    Access_Token = "ВашAccessToken",
-    ExpiresIn = 86400,
-    RefreshToken = "ВашRefreshToken",
-    Scope = "ВашScope",
-    CreatedAt = ВашCreatedAt
-}, "redirectUrl");
+var token = client.Client.AuthorizationManager.GetAccessToken("authorizationCode"); //Если вам нужен Access Token из кода авторизации
 ```
 
 **Подпишитсь на обновления токена, скорее всего будет для вас это будет важно**
 ```csharp
-client.Client.OnTokenChange += token => Console.WriteLine($"{token.Access_Token}:{token.RefreshToken}");
+client.Client.OnNewToken += token => Console.WriteLine($"{token.Access_Token}:{token.RefreshToken}");
 ```
 
 ### Используйте Shikimori API v1
 **Пример получения всего вашего аниме**
 ```csharp
+var token = new AccessToken
+{
+       Access_Token = access,
+       RefreshToken = refresh
+}
 var myAnime = new List<Anime>(); 
 for (int i = 1; ; i++)
 {
-     var page = await client.Animes.GetAnime(new Animes.AnimeRequestSettings
-                  {
-                      page = i,
-                      limit = 50,
-                      mylist = MyList.completed
-                  });
+     var page = await client.Animes.GetAnime(new AnimeRequestSettings
+                {
+                   page = i,
+                   limit = 50,
+                   mylist = MyList.completed
+                }, token); //Важен токен, для идентификации пользователя
       if(page.Length == 0) break;
       myAnime.AddRange(page);
 }
+
 ```
 **Пример получения всех связанных тайтлов по названию**
 ```csharp
