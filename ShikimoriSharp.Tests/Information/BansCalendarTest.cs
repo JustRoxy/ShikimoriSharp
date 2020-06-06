@@ -9,14 +9,14 @@ namespace ShikimoriSharp.Tests.Information
         [Test]
         public async Task GetBansTest()
         {
-            var bans = await client.Bans.GetBans();
+            var bans = await Client.Bans.GetBans();
             Assert.IsNotEmpty(bans);
         }
 
         [Test]
         public async Task GetCalendarTest()
         {
-            var calendar = await client.Calendars.GetCalendar();
+            var calendar = await Client.Calendars.GetCalendar();
             Assert.IsNotEmpty(calendar);
         }
     }

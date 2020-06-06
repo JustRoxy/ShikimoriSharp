@@ -26,14 +26,14 @@ namespace ShikimoriSharp.UpdatableInformation
             return await Request<Topic>($"topics/{id}");
         }
 
-        public async Task<Topic> CreateTopic(CreateTopicSettings settings)
+        public async Task<Topic> CreateTopic(CreateTopicSettings settings, AccessToken personalInformation)
         {
-            return await SendJson<Topic>("topics", settings, true);
+            return await SendJson<Topic>("topics", settings, personalInformation);
         }
 
-        public async Task DeleteTopic(int id)
+        public async Task DeleteTopic(int id, AccessToken personalInformation)
         {
-            await NoResponseRequest($"topics/{id}");
+            await NoResponseRequest($"topics/{id}", personalInformation);
         }
     }
 }

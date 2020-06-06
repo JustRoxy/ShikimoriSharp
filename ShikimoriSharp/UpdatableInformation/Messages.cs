@@ -11,39 +11,39 @@ namespace ShikimoriSharp.UpdatableInformation
         {
         }
 
-        public async Task<Message> GetMessages(int id)
+        public async Task<Message> GetMessages(int id, AccessToken personalInformation)
         {
-            return await Request<Message>($"messages/{id}", true);
+            return await Request<Message>($"messages/{id}", personalInformation);
         }
 
-        public async Task<Message> SendMessage(MessageToSend message)
+        public async Task<Message> SendMessage(MessageToSend message, AccessToken personalInformation)
         {
-            return await SendJson<Message>("messages", message, true);
+            return await SendJson<Message>("messages", message, personalInformation);
         }
 
-        public async Task<Message> EditMessage(int id, MessageToEdit message)
+        public async Task<Message> EditMessage(int id, MessageToEdit message, AccessToken personalInformation)
         {
-            return await SendJson<Message>($"messages/{id}", message, true);
+            return await SendJson<Message>($"messages/{id}", message, personalInformation);
         }
 
-        public async Task DeleteMessage(int id)
+        public async Task DeleteMessage(int id, AccessToken personalInformation)
         {
-            await NoResponseRequest($"messages/{id}", method: "DELETE");
+            await NoResponseRequest($"messages/{id}", personalInformation, method: "DELETE");
         }
 
-        public async Task MarkRead(MarkReadSettings settings = null)
+        public async Task MarkRead(AccessToken personalInformation, MarkReadSettings settings = null)
         {
-            await NoResponseRequest("messages/mark_read", settings);
+            await NoResponseRequest("messages/mark_read", settings, personalInformation);
         }
 
-        public async Task ReadAll(AllSettings settings = null)
+        public async Task ReadAll(AccessToken personalInformation, AllSettings settings = null)
         {
-            await NoResponseRequest("messages/read_all", settings);
+            await NoResponseRequest("messages/read_all", settings, personalInformation);
         }
 
-        public async Task DeleteAll(AllSettings settings = null)
+        public async Task DeleteAll(AccessToken personalInformation, AllSettings settings = null)
         {
-            await NoResponseRequest("messages/delete_all", settings);
+            await NoResponseRequest("messages/delete_all", settings, personalInformation);
         }
     }
 }

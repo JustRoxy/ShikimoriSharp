@@ -10,13 +10,13 @@ namespace ShikimoriSharp.Tests.Information
         [Test]
         public async Task GetActiveUsersTest()
         {
-            Assert.IsNotEmpty(await client.Stats.GetActiveUsers());
+            Assert.IsNotEmpty(await Client.Stats.GetActiveUsers());
         }
 
         [Test]
         public async Task GetStudios()
         {
-            var studio = await client.Studios.GetStudios();
+            var studio = await Client.Studios.GetStudios();
             var studiosn = studio.Where(it => !(it.Image is null));
             Assert.IsNotEmpty(studio);
         }

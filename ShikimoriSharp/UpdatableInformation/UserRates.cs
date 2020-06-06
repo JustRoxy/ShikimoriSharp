@@ -21,24 +21,24 @@ namespace ShikimoriSharp.UpdatableInformation
             return await Request<UserRate[], UserRatesSettings>("user_rates", settings);
         }
 
-        public async Task<UserRate[]> NewUserRate(NewUserRateSettings settings)
+        public async Task<UserRate[]> NewUserRate(NewUserRateSettings settings, AccessToken personalInformation)
         {
-            return await Request<UserRate[], NewUserRateSettings>("user_rates", settings, true, "POST");
+            return await Request<UserRate[], NewUserRateSettings>("user_rates", settings, personalInformation, "POST");
         }
 
-        public async Task<UserRate[]> EditUserRate(int id, UserRateEditSettings settings)
+        public async Task<UserRate[]> EditUserRate(int id, UserRateEditSettings settings, AccessToken personalInformation)
         {
-            return await Request<UserRate[], UserRateEditSettings>($"user_rates/{id}", settings, true, "PUT");
+            return await Request<UserRate[], UserRateEditSettings>($"user_rates/{id}", settings, personalInformation, "PUT");
         }
 
-        public async Task<UserRate> Increment(int id)
+        public async Task<UserRate> Increment(int id, AccessToken personalInformation)
         {
-            return await Request<UserRate>($"user_rates/{id}/increment", true);
+            return await Request<UserRate>($"user_rates/{id}/increment", personalInformation);
         }
 
-        public async Task DeleteUserRate(int id)
+        public async Task DeleteUserRate(int id, AccessToken personalInformation)
         {
-            await NoResponseRequest($"user_rates/{id}");
+            await NoResponseRequest($"user_rates/{id}", personalInformation);
         }
     }
 }

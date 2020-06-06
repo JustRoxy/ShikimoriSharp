@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Polly;
 using ShikimoriSharp.Bases;
@@ -11,164 +12,64 @@ namespace ShikimoriSharp
 {
     public class ApiClient
     {
-        public delegate void NewLog(string log);
+        public delegate void OnAccessToken(AccessToken token);
 
-        public delegate void OnChange(AccessToken token);
+        public event OnAccessToken OnNewToken;
 
         private const int RPS = 5;
         private const int RPM = 90;
 
-        private const string TokenUrl = "https://shikimori.one/oauth/token";
-
-        private readonly HttpClient _httpClient = new HttpClient();
-
         /// <summary>
-        ///     1.1d is the additional time because of server's inaccuracy
+        ///     1.05d is the additional time because of server's inaccuracy
         /// </summary>
-        public TokenBucket BucketRpm =
-            new TokenBucket("MINUTE", RPM, (int) TimeSpan.FromMinutes(1.1d).TotalMilliseconds);
+        public readonly TokenBucket BucketRpm = new TokenBucket("M", RPM, TimeSpan.FromMinutes(1.05d).TotalMilliseconds);
+        public readonly TokenBucket BucketRps = new TokenBucket("S", RPS, TimeSpan.FromSeconds(1).TotalMilliseconds);
 
-        public TokenBucket BucketRps = new TokenBucket("SECOND", RPS, (int) TimeSpan.FromSeconds(1).TotalMilliseconds);
-
-        public ApiClient(string clientName, string clientId, string clientSecret, string redirectUrl)
+        public ApiClient(ILogger logger, ClientSettings settings)
         {
-            ClientName = clientName;
-            ClientId = clientId;
-            ClientSecret = clientSecret;
-            RedirectUrl = redirectUrl;
+            _logger = logger;
+            _settings = settings;
+            AuthorizationManager = new AuthorizationManager(settings, RefreshRequest);
+        }
+        
+        public AuthorizationManager AuthorizationManager { get; }
+
+        private readonly ILogger _logger;
+        private ClientSettings _settings;
+        
+
+        private async Task<AccessToken> RequestTokenRefreshing(AccessToken expiredToken)
+        {
+            var nToken = await AuthorizationManager.RefreshAccessToken(expiredToken);
+            _logger.Log(LogLevel.Information, $"New Token Acquired: {nToken.RefreshToken}");
+            OnNewToken?.Invoke(nToken);
+            return nToken;
         }
 
-        public AccessToken Token { get; private set; }
+        private Func<AccessToken, RequestManager> Request => x =>
+            new RequestManager(_logger, BucketRps, BucketRpm, _settings, x, RequestTokenRefreshing);
 
-        public string ClientName { get; }
-        public string ClientId { get; }
-        public string ClientSecret { get; }
-        public string RedirectUrl { get; }
-        public event OnChange OnTokenChange;
-
-        public event NewLog OnNewLog;
-
-        public async Task Auth(string authCode)
+        public async Task RequestWithNoResponse(string destination, HttpContent settings, AccessToken token = null, string method = "GET")
         {
-            await GetAccessToken(authCode);
+            var requester = Request(token);
+            await requester.ResponseExecutor(destination, method, settings);
         }
 
-        public void Auth(AccessToken token)
+        private async Task<AccessToken> RefreshRequest(string dest, HttpContent content)
         {
-            Token = token;
+            var requester = new RequestManager(_logger, BucketRps, BucketRpm, _settings, null, null);
+            return await requester.ResponseAsType<AccessToken>(dest, "POST", content);
         }
 
-        public async Task NoResponseRequest(string destination, HttpContent settings, bool requestAccess = false,
-            string method = "GET")
+        public async Task<TResult> RequestForm<TResult>(string destination, HttpContent settings, AccessToken token = null, string method = "GET")
         {
-            await MakeStringRequest(destination, method, settings,
-                requestAccess);
+            var requester = Request(token);
+            return await requester.ResponseAsType<TResult>(destination, method, settings);
         }
 
-        public async Task<TResult> RequestApi<TResult>(string destination, HttpContent settings,
-            bool requestAccess = false, string method = "GET")
+        public async Task<TResult> RequestForm<TResult>(string destination, AccessToken token = null, string method = "GET")
         {
-            return await MakeRequest<TResult>(destination, method, settings,
-                requestAccess);
+            return await RequestForm<TResult>(destination, null, token, method);
         }
-
-        public async Task<TResult> RequestApi<TResult>(string destination, bool requestAccess = false,
-            string method = "GET")
-        {
-            return await RequestApi<TResult>(destination, null, requestAccess);
-        }
-
-        private async Task<HttpResponseMessage> Request(string dest, string method, HttpContent data,
-            bool requestAccess = false)
-        {
-            var sr = string.Empty;
-            await BucketRpm.TokenRequest();
-            await BucketRps.TokenRequest();
-            sr += $"[{DateTime.Now:HH:mm:ss:ff}] REQUEST {dest}{Environment.NewLine}";
-            var request = new HttpRequestMessage(new HttpMethod(method), dest);
-            request.Headers.TryAddWithoutValidation("User-Agent", ClientName);
-            request.Content = data;
-            if (requestAccess)
-                request.Headers.TryAddWithoutValidation("Authorization",
-                    $"{Token.TokenType} {Token.Access_Token}");
-            var ret = await _httpClient.SendAsync(request);
-            sr += $"[{DateTime.Now:HH:mm:ss:ff}] RESPONSE {ret.ReasonPhrase}{Environment.NewLine}";
-            OnNewLog?.Invoke(sr);
-            if (ret.StatusCode != HttpStatusCode.BadRequest && ret.StatusCode != HttpStatusCode.Unauthorized)
-                return ret;
-            await RefreshAccessToken();
-            throw new HttpRequestException("Bad Request Or Unauthorized");
-        }
-
-        private async Task<string> MakeStringRequest(string dest, string method, HttpContent data,
-            bool requestAccess = false)
-        {
-            var policy = Policy
-                .Handle<HttpRequestException>()
-                .OrResult<HttpResponseMessage>(r =>
-                    r.StatusCode == HttpStatusCode.TooManyRequests)
-                .WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(Math.Pow(2, i)));
-
-            var response = await policy.ExecuteAsync(async () => await Request(dest, method, data, requestAccess));
-            switch (response.StatusCode)
-            {
-                case HttpStatusCode.UnprocessableEntity:
-                    throw new UnprocessableEntityException();
-                case HttpStatusCode.Forbidden:
-                    throw new ForbiddenException();
-            }
-
-            if (!response.IsSuccessStatusCode)
-                throw new Exception($"Unsuccessful request: {response.StatusCode} | {response.ReasonPhrase}");
-
-            return await response.Content.ReadAsStringAsync();
-        }
-
-        private async Task<TResult> MakeRequest<TResult>(string dest, string method, HttpContent data,
-            bool requestAccess = false)
-        {
-            var response = await MakeStringRequest(dest, method, data, requestAccess);
-            return await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<TResult>(response));
-        }
-
-
-        #region Authorization
-
-        public async Task<AccessToken> GetAccessToken(string authCode)
-        {
-            var content = new MultipartFormDataContent
-            {
-                {new StringContent("authorization_code"), "grant_type"},
-                {new StringContent(ClientId), "client_id"},
-                {new StringContent(ClientSecret), "client_secret"},
-                {new StringContent(authCode), "code"},
-                {new StringContent(RedirectUrl), "redirect_uri"}
-            };
-
-            return await GetAccessTokenRequest(content);
-        }
-
-        public async Task<AccessToken> RefreshAccessToken()
-        {
-            var content = new MultipartFormDataContent
-            {
-                {new StringContent("refresh_token"), "grant_type"},
-                {new StringContent(ClientId), "client_id"},
-                {new StringContent(ClientSecret), "client_secret"},
-                {new StringContent(Token.RefreshToken), "refresh_token"}
-            };
-
-            return await GetAccessTokenRequest(content);
-        }
-
-        private async Task<AccessToken> GetAccessTokenRequest(HttpContent stringData)
-        {
-            var res = await MakeRequest<AccessToken>(TokenUrl, "POST", stringData);
-            OnTokenChange?.Invoke(res);
-            Token = res;
-            return res;
-        }
-
-        #endregion
     }
 }

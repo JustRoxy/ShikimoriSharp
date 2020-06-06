@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using ShikimoriSharp.Bases;
 using ShikimoriSharp.Information;
 using ShikimoriSharp.UpdatableInformation;
@@ -7,10 +8,9 @@ namespace ShikimoriSharp
 {
     public class ShikimoriClient
     {
-        private ShikimoriClient(string clientName, string clientId, string clientSecret,
-            string redirectUrl = @"urn:ietf:wg:oauth:2.0:oob")
+        public ShikimoriClient(ILogger logger, ClientSettings settings)
         {
-            Client = new ApiClient(clientName, clientId, clientSecret, redirectUrl);
+            Client = new ApiClient(logger, settings);
             Achievements = new Achievements(Client);
             Animes = new Animes(Client);
             Bans = new Bans(Client);
@@ -41,48 +41,32 @@ namespace ShikimoriSharp
         }
 
         public ApiClient Client { get; }
-        public Achievements Achievements { get; set; }
+        public Achievements Achievements { get; }
         public Animes Animes { get; }
-        public Bans Bans { get; set; }
-        public Calendars Calendars { get; set; }
-        public Characters Characters { get; set; }
-        public Clubs Clubs { get; set; }
-        public Comments Comments { get; set; }
-        public Constants Constants { get; set; }
-        public Dialogs Dialogs { get; set; }
-        public Favorites Favorites { get; set; }
-        public Forums Forums { get; set; }
-        public Friends Friends { get; set; }
-        public Genres Genres { get; set; }
-        public Mangas Mangas { get; set; }
-        public Messages Messages { get; set; }
-        public People People { get; set; }
-        public Publishers Publishers { get; set; }
-        public Ranobe Ranobe { get; set; }
-        public Stats Stats { get; set; }
-        public Studios Studios { get; set; }
-        public Styles Styles { get; set; }
-        public TopicIgnores TopicIgnores { get; set; }
-        public Topics Topics { get; set; }
-        public UserImages UserImages { get; set; }
-        public UserRates UserRates { get; set; }
-        public Users Users { get; set; }
-        public Videos Videos { get; set; }
-
-        public static async Task<ShikimoriClient> Create(string clientName, string clientId, string clientSecret,
-            string authorizationCode, string redirectUrl = @"urn:ietf:wg:oauth:2.0:oob")
-        {
-            var obj = new ShikimoriClient(clientName, clientId, clientSecret, redirectUrl);
-            await obj.Client.Auth(authorizationCode);
-            return obj;
-        }
-
-        public static ShikimoriClient Create(string clientName, string clientId, string clientSecret,
-            AccessToken token, string redirectUrl = @"urn:ietf:wg:oauth:2.0:oob")
-        {
-            var obj = new ShikimoriClient(clientName, clientId, clientSecret, redirectUrl);
-            obj.Client.Auth(token);
-            return obj;
-        }
+        public Bans Bans { get; }
+        public Calendars Calendars { get; }
+        public Characters Characters { get; }
+        public Clubs Clubs { get; }
+        public Comments Comments { get; }
+        public Constants Constants { get; }
+        public Dialogs Dialogs { get; }
+        public Favorites Favorites { get; }
+        public Forums Forums { get; }
+        public Friends Friends { get; }
+        public Genres Genres { get; }
+        public Mangas Mangas { get; }
+        public Messages Messages { get; }
+        public People People { get; }
+        public Publishers Publishers { get; }
+        public Ranobe Ranobe { get; }
+        public Stats Stats { get; }
+        public Studios Studios { get; }
+        public Styles Styles { get; }
+        public TopicIgnores TopicIgnores { get; }
+        public Topics Topics { get; }
+        public UserImages UserImages { get; }
+        public UserRates UserRates { get; }
+        public Users Users { get; }
+        public Videos Videos { get; }
     }
 }

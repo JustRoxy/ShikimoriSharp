@@ -15,14 +15,14 @@ namespace ShikimoriSharp.UpdatableInformation
             return await Request<Video>($"animes/{id}/videos");
         }
 
-        public async Task<Video> PostVideo(int id, NewVideo video)
+        public async Task<Video> PostVideo(int id, NewVideo video, AccessToken personalInformation)
         {
-            return await SendJson<Video>($"animes/{id}/videos", video, true);
+            return await SendJson<Video>($"animes/{id}/videos", video, personalInformation);
         }
 
-        public async Task DeleteVideo(int a_id, int id)
+        public async Task DeleteVideo(int a_id, int id, AccessToken personalInformation)
         {
-            await NoResponseRequest($"animes/{a_id}/videos/{id}");
+            await NoResponseRequest($"animes/{a_id}/videos/{id}", personalInformation);
         }
     }
 }

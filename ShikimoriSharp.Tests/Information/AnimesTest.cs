@@ -15,17 +15,17 @@ namespace ShikimoriSharp.Tests.Information
         public void GetAnimeByIdFailTest()
         {
             Assert.ThrowsAsync<Exception>(
-                async () => await client.Animes.GetAnime(-1));
+                async () => await Client.Animes.GetAnime(-1));
         }
 
         [Test]
         public async Task GetAnimeByIdTest()
         {
-            var anime = (await client.Animes.GetAnime(new AnimeRequestSettings
+            var anime = (await Client.Animes.GetAnime(new AnimeRequestSettings
             {
                 search = "Detective Conan"
             })).First();
-            var idAnime = await client.Animes.GetAnime(anime.Id);
+            var idAnime = await Client.Animes.GetAnime(anime.Id);
             Assert.AreEqual(anime.Name, idAnime.Name);
             Assert.AreEqual(anime.Id, idAnime.Id);
         }
@@ -33,14 +33,14 @@ namespace ShikimoriSharp.Tests.Information
         [Test]
         public async Task GetAnimeExternalLinksTest([Values(50)] long x)
         {
-            var links = await client.Animes.GetExternalLinks(x);
+            var links = await Client.Animes.GetExternalLinks(x);
             Assert.IsNotEmpty(links);
         }
 
         [Test]
         public void GetAnimeFailTest()
         {
-            Assert.ThrowsAsync<UnprocessableEntityException>(async () => await client.Animes.GetAnime(
+            Assert.ThrowsAsync<UnprocessableEntityException>(() => Client.Animes.GetAnime(
                 new AnimeRequestSettings
                 {
                     limit = 100000,
@@ -51,21 +51,21 @@ namespace ShikimoriSharp.Tests.Information
         [Test]
         public void GetAnimeFranchiseTest([Values(50)] long x)
         {
-            Assert.DoesNotThrowAsync(async () => await client.Animes.GetFranchise(x));
+            Assert.DoesNotThrowAsync(() => Client.Animes.GetFranchise(x));
         }
 
         [Test]
         public async Task GetAnimeMyListTest()
         {
-            var anime = await client.Animes.GetAnime(new AnimeRequestSettings
+            var anime = await Client.Animes.GetAnime(new AnimeRequestSettings
             {
                 limit = 5,
                 mylist = MyList.completed
-            });
+            }, Token);
             var ids = anime.Select(it => it.Id)
-                .Select(async it => (await client.UserRates.GetUsersRates(new UserRatesSettings
+                .Select(async it => (await Client.UserRates.GetUsersRates(new UserRatesSettings
                 {
-                    user_id = userId,
+                    user_id = UserId,
                     target_id = it,
                     target_type = TargetType.Anime
                 })).First()).Select(it => it.Result);
@@ -75,21 +75,21 @@ namespace ShikimoriSharp.Tests.Information
         [Test]
         public async Task GetAnimeRelatedTest([Values(50)] long x)
         {
-            var similar = await client.Animes.GetRelated(x);
+            var similar = await Client.Animes.GetRelated(x);
             Assert.IsTrue(similar.All(it => !(it.Anime is null && it.Manga is null)));
         }
 
         [Test]
         public async Task GetAnimeRolesTest([Values(50)] long x)
         {
-            var roles = await client.Animes.GetRoles(x);
+            var roles = await Client.Animes.GetRoles(x);
             Assert.IsNotEmpty(roles);
         }
 
         [Test]
         public async Task GetAnimeScreenshotsTest([Values(50)] long x)
         {
-            var screens = await client.Animes.GetScreenshots(x);
+            var screens = await Client.Animes.GetScreenshots(x);
             Assert.IsNotEmpty(screens);
             Assert.That(screens, Has.All.Property("Original").Not.Null);
             Assert.That(screens, Has.All.Property("Preview").Not.Null);
@@ -98,7 +98,7 @@ namespace ShikimoriSharp.Tests.Information
         [Test]
         public async Task GetAnimeSettingsTest()
         {
-            var result = await client.Animes.GetAnime(new AnimeRequestSettings
+            var result = await Client.Animes.GetAnime(new AnimeRequestSettings
             {
                 limit = 10,
                 search = "Naruto"
@@ -110,7 +110,7 @@ namespace ShikimoriSharp.Tests.Information
         [Test]
         public async Task GetAnimeSimilarTest([Values(50)] long x)
         {
-            var similar = await client.Animes.GetSimilar(x);
+            var similar = await Client.Animes.GetSimilar(x);
             Assert.IsNotEmpty(similar);
             Assert.That(similar, Has.All.Property("Id").Not.Null);
         }
@@ -118,14 +118,14 @@ namespace ShikimoriSharp.Tests.Information
         [Test]
         public async Task GetAnimeTest()
         {
-            var result = await client.Animes.GetAnime();
+            var result = await Client.Animes.GetAnime();
             Assert.IsNotEmpty(result);
         }
 
         [Test]
         public void GetAnimeTopicsTest([Values(50)] long x)
         {
-            Assert.DoesNotThrowAsync(async () => await client.Animes.GetTopics(x));
+            Assert.DoesNotThrowAsync(() => Client.Animes.GetTopics(x));
         }
     }
 }

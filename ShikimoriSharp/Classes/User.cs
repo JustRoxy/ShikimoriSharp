@@ -40,7 +40,7 @@ namespace ShikimoriSharp.Classes
         [JsonProperty("full_years")] public long? FullYears { get; set; }
         [JsonProperty("last_online")] public string LastOnline { get; set; }
         [JsonProperty("location")] public string Location { get; set; }
-        [JsonProperty("banned")] public bool? Banned { get; set; }
+        [JsonProperty("banned")] public bool Banned { get; set; }
         [JsonProperty("about")] public string About { get; set; }
         [JsonProperty("about_html")] public string AboutHtml { get; set; }
         [JsonProperty("common_info")] public string[] CommonInfo { get; set; }

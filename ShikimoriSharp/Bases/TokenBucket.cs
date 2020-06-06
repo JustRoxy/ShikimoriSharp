@@ -11,7 +11,7 @@ namespace ShikimoriSharp.Bases
 
         private readonly Timer _timer;
 
-        public TokenBucket(string name, int maxTokens, int refreshTime)
+        public TokenBucket(string name, int maxTokens, double refreshTime)
         {
             Name = name;
             MaxTokens = maxTokens;

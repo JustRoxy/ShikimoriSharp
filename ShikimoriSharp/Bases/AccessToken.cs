@@ -5,7 +5,6 @@ namespace ShikimoriSharp.Bases
     public class AccessToken
     {
         [JsonProperty("access_token")] public string Access_Token { get; set; }
-
         [JsonProperty("token_type")] public string TokenType { get; set; } = "Bearer";
 
         [JsonProperty("expires_in")] public int ExpiresIn { get; set; }

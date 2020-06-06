@@ -5,12 +5,12 @@ namespace ShikimoriSharp.Classes
 {
     public class ClubImage
     {
-        [JsonProperty("id")] public long? Id { get; set; }
+        [JsonProperty("id")] public long Id { get; set; }
         [JsonProperty("original_url")] public string OriginalUrl { get; set; }
         [JsonProperty("main_url")] public string MainUrl { get; set; }
         [JsonProperty("preview_url")] public string PreviewUrl { get; set; }
-        [JsonProperty("can_destroy")] public bool? CanDestroy { get; set; }
-        [JsonProperty("user_id")] public long? UserIdUserId { get; set; }
+        [JsonProperty("can_destroy")] public bool CanDestroy { get; set; }
+        [JsonProperty("user_id")] public long UserId { get; set; }
     }
 
     public class Logo : Image
@@ -34,8 +34,8 @@ namespace ShikimoriSharp.Classes
         [JsonProperty("description_html")] public string DescriptionHtml { get; set; }
         [JsonProperty("mangas")] public Manga[] Mangas { get; set; }
         [JsonProperty("characters")] public Character[] Characters { get; set; }
-        [JsonProperty("thread_id")] public long? ThreadId { get; set; }
-        [JsonProperty("topic_id")] public long? TopicId { get; set; }
+        [JsonProperty("thread_id")] public long ThreadId { get; set; }
+        [JsonProperty("topic_id")] public long TopicId { get; set; }
         [JsonProperty("user_role")] public object UserRole { get; set; }
         [JsonProperty("style_id")] public long StyleId { get; set; }
         [JsonProperty("members")] public User[] Members { get; set; }

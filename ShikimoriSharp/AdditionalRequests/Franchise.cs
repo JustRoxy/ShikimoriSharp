@@ -8,16 +8,16 @@ namespace ShikimoriSharp.AdditionalRequests
 
         [JsonProperty("nodes")] public Node[] Nodes { get; set; }
 
-        [JsonProperty("current_id")] public long? CurrentId { get; set; }
+        [JsonProperty("current_id")] public long CurrentId { get; set; }
     }
 
     public class Link
     {
-        [JsonProperty("id")] public long? Id { get; set; }
+        [JsonProperty("id")] public long Id { get; set; }
 
-        [JsonProperty("source_id")] public long? SourceId { get; set; }
+        [JsonProperty("source_id")] public long SourceId { get; set; }
 
-        [JsonProperty("target_id")] public long? TargetId { get; set; }
+        [JsonProperty("target_id")] public long TargetId { get; set; }
 
         [JsonProperty("source")] public long? Source { get; set; }
 
@@ -30,7 +30,7 @@ namespace ShikimoriSharp.AdditionalRequests
 
     public class Node
     {
-        [JsonProperty("id")] public long? Id { get; set; }
+        [JsonProperty("id")] public long Id { get; set; }
 
         [JsonProperty("date")] public long? Date { get; set; }
 
@@ -44,6 +44,6 @@ namespace ShikimoriSharp.AdditionalRequests
 
         [JsonProperty("kind")] public string Kind { get; set; }
 
-        [JsonProperty("weight")] public long? Weight { get; set; }
+        [JsonProperty("weight")] public long Weight { get; set; }
     }
 }
