@@ -61,7 +61,7 @@ namespace ShikimoriSharp.Tests.Information
             {
                 limit = 5,
                 mylist = MyList.completed
-            });
+            }, Token);
             var ids = anime.Select(it => it.Id)
                 .Select(async it => (await Client.UserRates.GetUsersRates(new UserRatesSettings
                 {

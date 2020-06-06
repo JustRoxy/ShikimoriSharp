@@ -18,7 +18,7 @@ namespace ShikimoriSharp.Tests.Information
         [Test]
         public async Task GetCharactersBySearchBadTest([Values("FJNSAFNASUGFNASIGASSUGA")] string x)
         {
-            var badResult = await Client.Characters.GetCharactersBySearch("x");
+            var badResult = await Client.Characters.GetCharactersBySearch(x);
             Assert.IsEmpty(badResult, "Unfortunately the search should return empty object");
         }
 
