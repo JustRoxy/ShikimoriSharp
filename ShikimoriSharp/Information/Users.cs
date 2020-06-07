@@ -21,14 +21,15 @@ namespace ShikimoriSharp.Information
             return await Request<User[], BasicSettings>("users", settings);
         }
 
-        public async Task<UserId> GetUser(long id)
+        public async Task<UserId> GetUser(long id, AccessToken personalInformation = null)
         {
-            return await Request<UserId>($"users/{id}");
+            return await Request<UserId>($"users/{id}", personalInformation);
         }
 
-        public async Task<UserId> GetUser(string nickname)
+        public async Task<UserId> GetUser(string nickname, AccessToken personalInformation = null)
         {
-            return await Request<UserId, UserIdRequestSettings>($"users/{nickname}", new UserIdRequestSettings(1));
+            return await Request<UserId, UserIdRequestSettings>($"users/{nickname}", new UserIdRequestSettings(1),
+                personalInformation);
         }
 
         public async Task<UserInfo> GetUserInfo(long id)
@@ -46,44 +47,44 @@ namespace ShikimoriSharp.Information
             await NoResponseRequest("users/sign_out", personalInformation, method: "GET");
         }
 
-        public async Task<User[]> GetFriends(long id)
+        public async Task<User[]> GetFriends(long id, AccessToken personalInformation = null)
         {
-            return await Request<User[]>($"users/{id}/friends");
+            return await Request<User[]>($"users/{id}/friends", personalInformation);
         }
 
-        public async Task<Club[]> GetClubs(long id)
+        public async Task<Club[]> GetClubs(long id, AccessToken personalInformation = null)
         {
-            return await Request<Club[]>($"users/{id}/clubs");
+            return await Request<Club[]>($"users/{id}/clubs", personalInformation);
         }
 
-        public async Task<AnimeRate[]> GetUserAnimeRates(long id)
+        public async Task<AnimeRate[]> GetUserAnimeRates(long id, AccessToken personalInformation = null)
         {
-            return await AllRates("anime", id);
+            return await AllRates("anime", id, personalInformation);
         }
 
-        public async Task<AnimeRate[]> GetUserAnimeRates(long id, AnimeRateRequestSettings settings)
+        public async Task<AnimeRate[]> GetUserAnimeRates(long id, AnimeRateRequestSettings settings, AccessToken personalInformation = null)
         {
-            return await AllRates("anime", id, settings);
+            return await AllRates("anime", id, settings, personalInformation);
         }
 
-        public async Task<AnimeRate[]> GetUserMangaRates(long id)
+        public async Task<AnimeRate[]> GetUserMangaRates(long id, AccessToken personalInformation = null)
         {
-            return await AllRates("manga", id);
+            return await AllRates("manga", id, personalInformation);
         }
 
-        public async Task<AnimeRate[]> GetUserMangaRates(long id, AnimeRateRequestSettings settings)
+        public async Task<AnimeRate[]> GetUserMangaRates(long id, AnimeRateRequestSettings settings, AccessToken personalInformation = null)
         {
-            return await AllRates("manga", id, settings);
+            return await AllRates("manga", id, settings, personalInformation);
         }
 
-        private async Task<AnimeRate[]> AllRates(string thingy, long id)
+        private async Task<AnimeRate[]> AllRates(string thingy, long id, AccessToken p)
         {
-            return await Request<AnimeRate[]>($"users/{id}/{thingy}_rates");
+            return await Request<AnimeRate[]>($"users/{id}/{thingy}_rates", p);
         }
 
-        private async Task<AnimeRate[]> AllRates(string thingy, long id, AnimeRateRequestSettings settings)
+        private async Task<AnimeRate[]> AllRates(string thingy, long id, AnimeRateRequestSettings settings, AccessToken p)
         {
-            return await Request<AnimeRate[], AnimeRateRequestSettings>($"users/{id}/{thingy}_rates", settings);
+            return await Request<AnimeRate[], AnimeRateRequestSettings>($"users/{id}/{thingy}_rates", settings, p);
         }
 
         public async Task<Favorites> GetFavourites(long id)

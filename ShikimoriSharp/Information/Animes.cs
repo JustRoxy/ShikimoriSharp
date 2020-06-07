@@ -12,12 +12,7 @@ namespace ShikimoriSharp.Information
         {
         }
 
-        public async Task<Anime[]> GetAnime()
-        {
-            return await Request<Anime[]>("animes");
-        }
-
-        public async Task<Anime[]> GetAnime(AnimeRequestSettings settings, AccessToken personalInformation = null)
+        public async Task<Anime[]> GetAnime(AnimeRequestSettings settings = null, AccessToken personalInformation = null)
         {
             return await Request<Anime[], AnimeRequestSettings>("animes", settings, personalInformation);
         }
@@ -32,14 +27,14 @@ namespace ShikimoriSharp.Information
             return await Request<Role[]>($"animes/{id}/roles");
         }
 
-        public async Task<Anime[]> GetSimilar(long id)
+        public async Task<Anime[]> GetSimilar(long id, AccessToken personalInformation = null)
         {
-            return await Request<Anime[]>($"animes/{id}/similar");
+            return await Request<Anime[]>($"animes/{id}/similar", personalInformation);
         }
 
-        public async Task<Related[]> GetRelated(long id)
+        public async Task<Related[]> GetRelated(long id, AccessToken personalInformation = null)
         {
-            return await Request<Related[]>($"animes/{id}/related");
+            return await Request<Related[]>($"animes/{id}/related", personalInformation);
         }
 
         public async Task<Screenshots[]> GetScreenshots(long id)
@@ -57,14 +52,14 @@ namespace ShikimoriSharp.Information
             return await Request<ExternalLinks[]>($"animes/{id}/external_links");
         }
 
-        public async Task<Topic[]> GetTopics(long id)
+        public Task<Topic[]> GetTopics(long id, AccessToken personalInformation = null)
         {
-            return await Request<Topic[]>($"animes/{id}/topics");
+            return GetTopics(id, null, personalInformation);
         }
 
-        public async Task<Topic[]> GetTopics(long id, AnimeTopicSettings settings)
+        public async Task<Topic[]> GetTopics(long id, AnimeTopicSettings settings, AccessToken personalInformation = null)
         {
-            return await Request<Topic[], AnimeTopicSettings>($"animes/{id}/topics", settings);
+            return await Request<Topic[], AnimeTopicSettings>($"animes/{id}/topics", settings, personalInformation);
         }
     }
 }

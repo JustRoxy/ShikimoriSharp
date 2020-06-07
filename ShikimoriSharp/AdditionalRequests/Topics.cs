@@ -92,18 +92,18 @@ namespace ShikimoriSharp.AdditionalRequests
 
         [JsonProperty("score")] public string Score { get; set; }
 
-        [JsonProperty("status")] public object Status { get; set; }
+        [JsonProperty("status")] public string Status { get; set; }
 
-        [JsonProperty("volumes")] public long Volumes { get; set; }
+        [JsonProperty("volumes")] public long? Volumes { get; set; }
 
-        [JsonProperty("chapters")] public long Chapters { get; set; }
+        [JsonProperty("chapters")] public long? Chapters { get; set; }
 
-        [JsonProperty("episodes")] public long Episodes { get; set; }
+        [JsonProperty("episodes")] public long? Episodes { get; set; }
 
-        [JsonProperty("episodes_aired")] public long EpisodesAired { get; set; }
+        [JsonProperty("episodes_aired")] public long? EpisodesAired { get; set; }
 
-        [JsonProperty("aired_on")] public DateTimeOffset AiredOn { get; set; }
+        [JsonProperty("aired_on")] public DateTimeOffset? AiredOn { get; set; }
 
-        [JsonProperty("released_on")] public DateTimeOffset ReleasedOn { get; set; }
+        [JsonProperty("released_on")] public DateTimeOffset? ReleasedOn { get; set; }
     }
 }

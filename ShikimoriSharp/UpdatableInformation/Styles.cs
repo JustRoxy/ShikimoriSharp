@@ -16,7 +16,7 @@ namespace ShikimoriSharp.UpdatableInformation
             return await Request<Style>($"styles/{id}");
         }
 
-        public async Task<Style> PreviewStyle(StylePreviewSettings settings, AccessToken personalInformation)
+        public async Task<Style> PreviewStyle(StylePreviewSettings settings, AccessToken personalInformation = null)
         {
             return await SendJson<Style>("styles/preview", settings.style, personalInformation);
         }

@@ -6,9 +6,9 @@
         <Title>ShikimoriSharp</Title>
         <Authors>JustRoxy</Authors>
         <Description>ShikimoriSharp is the best shikimori.one API wrapper  </Description>
-        <PackageLicenseUrl></PackageLicenseUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryUrl>https://github.com/JustRoxy/ShikimoriSharp</RepositoryUrl>
-        <PackageVersion>1.1.2</PackageVersion>
+        <PackageVersion>1.2.0</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>

@@ -16,29 +16,30 @@ namespace ShikimoriSharp.UpdatableInformation
             return await Request<Club[], ClubsRequestSettings>("clubs", settings, personalInformation);
         }
 
-        public async Task<ClubID> GetClub(long id, AccessToken personalInformation)
+        public async Task<ClubID> GetClub(long id, AccessToken personalInformation = null)
         {
             return await Request<ClubID>($"clubs/{id}", personalInformation);
         }
 
         public async Task<Club> UpdateClub(long id, AccessToken personalInformation, UpdateClubSettings club = null)
         {
+            Requires(personalInformation, new[] {"clubs"});
             return await SendJson<Club>($"clubs/{id}", club, personalInformation, "PUT");
         }
 
-        public async Task<Anime[]> GetAnimes(long id)
+        public async Task<Anime[]> GetAnimes(long id, AccessToken personalInformation = null)
         {
-            return await Request<Anime[]>($"clubs/{id}/animes");
+            return await Request<Anime[]>($"clubs/{id}/animes", personalInformation);
         }
 
-        public async Task<Manga[]> GetMangas(long id)
+        public async Task<Manga[]> GetMangas(long id, AccessToken personalInformation = null)
         {
-            return await Request<Manga[]>($"clubs/{id}/mangas");
+            return await Request<Manga[]>($"clubs/{id}/mangas", personalInformation);
         }
 
-        public async Task<Manga[]> GetRanobe(long id)
+        public async Task<Manga[]> GetRanobe(long id, AccessToken personalInformation = null)
         {
-            return await Request<Manga[]>($"clubs/{id}/ranobe");
+            return await Request<Manga[]>($"clubs/{id}/ranobe", personalInformation);
         }
 
         public async Task<Character[]> GetCharacters(long id)
@@ -58,11 +59,13 @@ namespace ShikimoriSharp.UpdatableInformation
 
         public async Task Join(long id, AccessToken personalInformation)
         {
+            Requires(personalInformation, new[] {"clubs"});
             await NoResponseRequest($"clubs/{id}/join", personalInformation);
         }
 
         public async Task Leave(long id, AccessToken personalInformation)
         {
+            Requires(personalInformation, new[] {"clubs"});
             await NoResponseRequest($"clubs/{id}/leave", personalInformation);
         }
     }

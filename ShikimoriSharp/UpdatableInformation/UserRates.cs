@@ -23,21 +23,25 @@ namespace ShikimoriSharp.UpdatableInformation
 
         public async Task<UserRate[]> NewUserRate(NewUserRateSettings settings, AccessToken personalInformation)
         {
+            Requires(personalInformation, new[] {"user_rates"});
             return await Request<UserRate[], NewUserRateSettings>("user_rates", settings, personalInformation, "POST");
         }
 
         public async Task<UserRate[]> EditUserRate(int id, UserRateEditSettings settings, AccessToken personalInformation)
         {
+            Requires(personalInformation, new[] {"user_rates"});
             return await Request<UserRate[], UserRateEditSettings>($"user_rates/{id}", settings, personalInformation, "PUT");
         }
 
         public async Task<UserRate> Increment(int id, AccessToken personalInformation)
         {
+            Requires(personalInformation, new[] {"user_rates"});
             return await Request<UserRate>($"user_rates/{id}/increment", personalInformation);
         }
 
         public async Task DeleteUserRate(int id, AccessToken personalInformation)
         {
+            Requires(personalInformation, new[] {"user_rates"});
             await NoResponseRequest($"user_rates/{id}", personalInformation);
         }
     }
