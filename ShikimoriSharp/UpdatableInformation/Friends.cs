@@ -11,11 +11,13 @@ namespace ShikimoriSharp.UpdatableInformation
 
         public async Task AddFriend(int id, AccessToken personalInformation)
         {
+            Requires(personalInformation, new[] {"friends"});
             await NoResponseRequest($"friends/{id}", personalInformation);
         }
 
         public async Task DeleteFriend(int id, AccessToken personalInformation)
         {
+            Requires(personalInformation, new[] {"friends"});
             await NoResponseRequest($"friends/{id}", personalInformation, method: "DELETE");
         }
     }

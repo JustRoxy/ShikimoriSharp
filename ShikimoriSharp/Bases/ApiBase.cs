@@ -1,9 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using ShikimoriSharp.Exceptions;
 
 namespace ShikimoriSharp.Bases
 {
@@ -11,6 +14,13 @@ namespace ShikimoriSharp.Bases
     {
         private readonly ApiClient _apiClient;
 
+        protected bool Requires(AccessToken token, IEnumerable<string> scopes)
+        {
+            var scope = token.Scope.Split(" ");
+            if (scopes.All(it => scope.Any(x => x == it)))
+                throw new NotInScopeException();
+            return true;
+        }
         protected ApiBase(Version version, ApiClient apiClient)
         {
             Version = version;

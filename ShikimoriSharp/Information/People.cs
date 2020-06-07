@@ -15,9 +15,9 @@ namespace ShikimoriSharp.Information
             return await Request<SearchPerson[], Search>("people/search", settings);
         }
 
-        public async Task<Person> GetPerson(long id)
+        public async Task<Person> GetPerson(long id, AccessToken personalInformation = null)
         {
-            return await Request<Person>($"people/{id}");
+            return await Request<Person>($"people/{id}", personalInformation);
         }
     }
 }

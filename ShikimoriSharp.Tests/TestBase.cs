@@ -33,7 +33,6 @@ namespace ShikimoriSharp.Tests
         protected AccessToken Token;
         protected TestBase()
         {
-            
             var scope = Environment.GetEnvironmentVariable("scope");
             var access = Environment.GetEnvironmentVariable("access_token");
             var refresh = Environment.GetEnvironmentVariable("refresh_token");

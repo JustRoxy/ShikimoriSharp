@@ -11,13 +11,13 @@ namespace ShikimoriSharp.Tests.Information
         [Test]
         public async Task GetMangaByIdTest([Values(418)] long x)
         {
-            var manga = (await Client.Mangas.GetManga(new MangaRequestSettings
+            var manga = (await Client.Mangas.GetBySearch(new MangaRequestSettings
             {
                 search = "Mushishi"
             })).First();
             var id = manga.Id;
 
-            var actual = await Client.Mangas.GetManga(id);
+            var actual = await Client.Mangas.GetById(id);
             Assert.AreEqual(actual.Name, manga.Name);
             Assert.AreEqual(actual.Id, manga.Id);
         }
@@ -52,7 +52,7 @@ namespace ShikimoriSharp.Tests.Information
         public async Task GetMangaSettingsTest([Values("Mushishi")] string search,
             [Values("Мастер Муси")] string expect)
         {
-            var mangas = (await Client.Mangas.GetManga(new MangaRequestSettings
+            var mangas = (await Client.Mangas.GetBySearch(new MangaRequestSettings
             {
                 limit = 1,
                 search = search
@@ -72,7 +72,7 @@ namespace ShikimoriSharp.Tests.Information
         [Test]
         public async Task GetMangaTest()
         {
-            Assert.IsNotEmpty(await Client.Mangas.GetManga());
+            Assert.IsNotEmpty(await Client.Mangas.GetBySearch());
         }
 
         [Test]

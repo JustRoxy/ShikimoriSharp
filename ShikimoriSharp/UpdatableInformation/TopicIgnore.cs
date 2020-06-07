@@ -11,11 +11,13 @@ namespace ShikimoriSharp.UpdatableInformation
 
         public async Task Ignore(int id, AccessToken personalInformation)
         {
+            Requires(personalInformation, new[] {"ignores"});
             await NoResponseRequest($"topics/{id}/ignore", personalInformation);
         }
 
         public async Task UnIgnore(int id, AccessToken personalInformation)
         {
+            Requires(personalInformation, new[] {"ignores"});
             await NoResponseRequest($"topics/{id}/ignore", personalInformation, method: "DELETE");
         }
     }
