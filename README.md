@@ -59,7 +59,7 @@ var conan = await client.Animes.GetAnimeById(id);
 Console.WriteLine($"Anime {conan.Name}: {conan.Score}");
 var related = await client.Animes.GetRelated(id);
 Console.WriteLine($"\Related titles");
-foreach (var rel in related)git config --global credential.helper store
+foreach (var rel in related)
 {
       Console.Write(rel.RelationRussian);
       if(!(rel.Anime is null)) Console.WriteLine($" | Anime: {rel.Anime.Name}");
