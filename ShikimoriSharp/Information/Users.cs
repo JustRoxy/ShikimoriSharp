@@ -89,7 +89,7 @@ namespace ShikimoriSharp.Information
 
         public async Task<Favorites> GetFavourites(long id)
         {
-            return await Request<Favorites>($"users/{id}");
+            return await Request<Favorites>($"users/{id}/favourites");
         }
 
         public async Task<Message[]> GetMessages(long id, MessageRequestSettings settings, AccessToken personalInformation)
