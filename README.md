@@ -3,31 +3,31 @@
 [![Nuget](https://img.shields.io/nuget/v/ShikimoriSharp)](https://www.nuget.org/packages/ShikimoriSharp/)
 ![.NET Core](https://github.com/JustRoxy/ShikimoriSharp/workflows/.NET%20Core/badge.svg)
 
-# Документация API
+# API Documentation
 https://shikimori.one/api/doc/1.0
 
-# Туториал по использованию
+# Tutorial
 
-### Получите Authorization Code, или Access Token
+### Get Authorization Code or Access Token
 https://shikimori.one/oauth
 
 ### ShikimoriClient
 
 ```csharp
-var client = new ShikimoriSharp(logger, new ClientSettings("ИмяКлиента", "IDКлиента", "СекретКлиента"));
+var client = new ShikimoriSharp(logger, new ClientSettings("ClientName", "ClientID", "ClientSecret"));
 ```
 
 ```csharp
-var token = client.Client.AuthorizationManager.GetAccessToken("authorizationCode"); //Если вам нужен Access Token из кода авторизации
+var token = client.Client.AuthorizationManager.GetAccessToken("authorizationCode"); //If you need to convert authorization code to access token
 ```
 
-**Подпишитсь на обновления токена, скорее всего будет для вас это будет важно**
+**Subscribe on token updates, probably you will need to store this somewhere**
 ```csharp
 client.Client.OnNewToken += token => Console.WriteLine($"{token.Access_Token}:{token.RefreshToken}");
 ```
 
-### Используйте Shikimori API v1
-**Пример получения всего вашего аниме**
+### Use Shikimori API v1
+**Example of getting the entire anime list from profile**
 ```csharp
 var token = new AccessToken
 {
@@ -42,13 +42,13 @@ for (int i = 1; ; i++)
                    page = i,
                    limit = 50,
                    mylist = MyList.completed
-                }, token); //Важен токен, для идентификации пользователя
+                }, token); //Token is important for identification of the user
       if(page.Length == 0) break;
       myAnime.AddRange(page);
 }
 
 ```
-**Пример получения всех связанных тайтлов по названию**
+**Example of getting related titles by name**
 ```csharp
 var search = await client.Animes.GetAnime(new AnimeRequestSettings
                                         {
@@ -56,14 +56,14 @@ var search = await client.Animes.GetAnime(new AnimeRequestSettings
                                         });
 var id = search.First().Id;
 var conan = await client.Animes.GetAnimeById(id);
-Console.WriteLine($"Аниме {conan.Name}: {conan.Score}");
+Console.WriteLine($"Anime {conan.Name}: {conan.Score}");
 var related = await client.Animes.GetRelated(id);
-Console.WriteLine($"\nСвязанные тайтлы");
-foreach (var rel in related)
+Console.WriteLine($"\Related titles");
+foreach (var rel in related)git config --global credential.helper store
 {
       Console.Write(rel.RelationRussian);
-      if(!(rel.Anime is null)) Console.WriteLine($" | Аниме: {rel.Anime.Name}");
-      if (!(rel.Manga is null)) Console.WriteLine($" | Манга: {rel.Manga.Name}");
+      if(!(rel.Anime is null)) Console.WriteLine($" | Anime: {rel.Anime.Name}");
+      if (!(rel.Manga is null)) Console.WriteLine($" | Manga: {rel.Manga.Name}");
       Console.WriteLine();
 }
 ```
