@@ -6,10 +6,10 @@
 # API Documentation
 https://shikimori.one/api/doc/1.0
 
-# Tutorial
-
-### Get Authorization Code or Access Token
+### OAUTH stuff
 https://shikimori.one/oauth
+
+# Examples
 
 ### ShikimoriClient
 
@@ -21,33 +21,13 @@ var client = new ShikimoriSharp(logger, new ClientSettings("ClientName", "Client
 var token = client.Client.AuthorizationManager.GetAccessToken("authorizationCode"); //If you need to convert authorization code to access token
 ```
 
-**Subscribe on token updates, probably you will need to store this somewhere**
+**Subscribe on token updates, you will probably need to store this somewhere**
 ```csharp
 client.Client.OnNewToken += token => Console.WriteLine($"{token.Access_Token}:{token.RefreshToken}");
 ```
 
 ### Use Shikimori API v1
-**Example of getting the entire anime list from profile**
-```csharp
-var token = new AccessToken
-{
-       Access_Token = access,
-       RefreshToken = refresh
-}
-var myAnime = new List<Anime>(); 
-for (int i = 1; ; i++)
-{
-     var page = await client.Animes.GetAnime(new AnimeRequestSettings
-                {
-                   page = i,
-                   limit = 50,
-                   mylist = MyList.completed
-                }, token); //Token is important for identification of the user
-      if(page.Length == 0) break;
-      myAnime.AddRange(page);
-}
 
-```
 **Example of getting related titles by name**
 ```csharp
 var search = await client.Animes.GetAnime(new AnimeRequestSettings
