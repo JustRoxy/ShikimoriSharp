@@ -17,7 +17,7 @@ namespace ShikimoriSharp.Bases
         protected bool Requires(AccessToken token, IEnumerable<string> scopes)
         {
             var scope = token.Scope.Split(" ");
-            if (scopes.All(it => scope.Any(x => x == it)))
+            if (!scopes.All(it => scope.Any(x => x == it)))
                 throw new NotInScopeException();
             return true;
         }
