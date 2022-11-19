@@ -4,6 +4,5 @@ namespace ShikimoriSharp.Exceptions
 {
     public class NotInScopeException : Exception
     {
-        
     }
 }

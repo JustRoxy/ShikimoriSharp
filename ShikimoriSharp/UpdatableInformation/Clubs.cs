@@ -23,7 +23,7 @@ namespace ShikimoriSharp.UpdatableInformation
 
         public async Task<Club> UpdateClub(long id, AccessToken personalInformation, UpdateClubSettings club = null)
         {
-            Requires(personalInformation, new[] {"clubs"});
+            Requires(personalInformation, new[] { "clubs" });
             return await SendJson<Club>($"clubs/{id}", club, personalInformation, "PUT");
         }
 
@@ -59,13 +59,13 @@ namespace ShikimoriSharp.UpdatableInformation
 
         public async Task Join(long id, AccessToken personalInformation)
         {
-            Requires(personalInformation, new[] {"clubs"});
+            Requires(personalInformation, new[] { "clubs" });
             await NoResponseRequest($"clubs/{id}/join", personalInformation);
         }
 
         public async Task Leave(long id, AccessToken personalInformation)
         {
-            Requires(personalInformation, new[] {"clubs"});
+            Requires(personalInformation, new[] { "clubs" });
             await NoResponseRequest($"clubs/{id}/leave", personalInformation);
         }
     }

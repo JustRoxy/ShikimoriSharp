@@ -12,19 +12,20 @@ namespace ShikimoriSharp.UpdatableInformation
 
         public async Task<Dialog[]> GetDialogs(AccessToken personalInformation)
         {
-            Requires(personalInformation, new[] {"messages"});
+            Requires(personalInformation, new[] { "messages" });
             return await Request<Dialog[]>("dialogs", personalInformation);
         }
+
         public async Task<Message[]> GetDialogs(string fromNickname, AccessToken personalInformation)
         {
-            Requires(personalInformation, new[] {"messages"});
+            Requires(personalInformation, new[] { "messages" });
             return await Request<Message[]>($"dialogs/{fromNickname}", personalInformation);
         }
 
         public async Task DeleteDialog(string nickname, AccessToken personalInformation)
         {
-            Requires(personalInformation, new[] {"messages"});
-            await NoResponseRequest($"dialogs/{nickname}", personalInformation, method: "DELETE");
+            Requires(personalInformation, new[] { "messages" });
+            await NoResponseRequest($"dialogs/{nickname}", personalInformation, "DELETE");
         }
     }
 }

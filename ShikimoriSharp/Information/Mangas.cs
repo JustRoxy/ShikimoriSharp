@@ -1,8 +1,4 @@
-﻿using System.Threading.Tasks;
-using ShikimoriSharp.AdditionalRequests;
-using ShikimoriSharp.Bases;
-using ShikimoriSharp.Classes;
-using ShikimoriSharp.Settings;
+﻿using ShikimoriSharp.Bases;
 
 namespace ShikimoriSharp.Information
 {

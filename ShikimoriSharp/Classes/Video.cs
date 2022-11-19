@@ -14,9 +14,9 @@ namespace ShikimoriSharp.Classes
         {
             video.Add("video", new Dictionary<string, string>
             {
-                {"kind", kind.ToString()},
-                {"name", name},
-                {"url", url}
+                { "kind", kind.ToString() },
+                { "name", name },
+                { "url", url }
             });
         }
     }

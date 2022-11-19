@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using ShikimoriSharp.Bases;
 using ShikimoriSharp.Information;
 using ShikimoriSharp.UpdatableInformation;

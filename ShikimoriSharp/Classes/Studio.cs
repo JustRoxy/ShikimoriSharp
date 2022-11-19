@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using ShikimoriSharp.Bases;
 
 namespace ShikimoriSharp.Classes
 {
@@ -9,6 +8,6 @@ namespace ShikimoriSharp.Classes
         [JsonProperty("name")] public string Name { get; set; }
         [JsonProperty("filtered_name")] public string FilteredName { get; set; }
         [JsonProperty("real")] public bool? Real { get; set; }
-        [JsonProperty("image")] public Image Image { get; set; }
+        [JsonProperty("image")] public string Image { get; set; }
     }
 }

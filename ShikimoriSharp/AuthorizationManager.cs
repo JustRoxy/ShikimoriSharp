@@ -8,8 +8,8 @@ namespace ShikimoriSharp
     public class AuthorizationManager
     {
         private const string TokenUrl = "https://shikimori.one/oauth/token";
-        private readonly ClientSettings _settings;
         private readonly Func<string, HttpContent, Task<AccessToken>> _refreshFunc;
+        private readonly ClientSettings _settings;
 
         public AuthorizationManager(ClientSettings settings, Func<string, HttpContent, Task<AccessToken>> refreshFunc)
         {
@@ -21,11 +21,11 @@ namespace ShikimoriSharp
         {
             return await GetAccessTokenRequest(new MultipartFormDataContent
             {
-                {new StringContent("authorization_code"), "grant_type"},
-                {new StringContent(_settings.ClientId), "client_id"},
-                {new StringContent(_settings.ClientSecret), "client_secret"},
-                {new StringContent(authCode), "code"},
-                {new StringContent(_settings.RedirectUrl), "redirect_uri"}
+                { new StringContent("authorization_code"), "grant_type" },
+                { new StringContent(_settings.ClientId), "client_id" },
+                { new StringContent(_settings.ClientSecret), "client_secret" },
+                { new StringContent(authCode), "code" },
+                { new StringContent(_settings.RedirectUrl), "redirect_uri" }
             });
         }
 
@@ -33,10 +33,10 @@ namespace ShikimoriSharp
         {
             return await GetAccessTokenRequest(new MultipartFormDataContent
             {
-                {new StringContent("refresh_token"), "grant_type"},
-                {new StringContent(_settings.ClientId), "client_id"},
-                {new StringContent(_settings.ClientSecret), "client_secret"},
-                {new StringContent(oldToken.RefreshToken), "refresh_token"}
+                { new StringContent("refresh_token"), "grant_type" },
+                { new StringContent(_settings.ClientId), "client_id" },
+                { new StringContent(_settings.ClientSecret), "client_secret" },
+                { new StringContent(oldToken.RefreshToken), "refresh_token" }
             });
         }
 

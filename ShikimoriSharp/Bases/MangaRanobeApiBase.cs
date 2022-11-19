@@ -13,8 +13,9 @@ namespace ShikimoriSharp.Bases
         {
             _query = query;
         }
-        
-        public async Task<Manga[]> GetBySearch(MangaRequestSettings settings = null, AccessToken personalInformation = null)
+
+        public async Task<Manga[]> GetBySearch(MangaRequestSettings settings = null,
+            AccessToken personalInformation = null)
         {
             return await Request<Manga[], MangaRequestSettings>($"{_query}", settings, personalInformation);
         }

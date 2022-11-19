@@ -22,7 +22,7 @@ namespace ShikimoriSharp.UpdatableInformation
 
         public async Task DeleteFavorite(FavoriteSettings s, AccessToken personalInformation)
         {
-            await NoResponseRequest($"favorites/{s.linked_type}/{s.linked_id}", personalInformation, method: "DELETE");
+            await NoResponseRequest($"favorites/{s.linked_type}/{s.linked_id}", personalInformation, "DELETE");
         }
 
         public async Task ReorderFavorite(int id, AccessToken personalInformation, Position pos = null)
