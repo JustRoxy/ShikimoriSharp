@@ -44,7 +44,7 @@ namespace ShikimoriSharp.Information
 
         public async Task Sign_Out(AccessToken personalInformation)
         {
-            await NoResponseRequest("users/sign_out", personalInformation, method: "GET");
+            await NoResponseRequest("users/sign_out", personalInformation, "GET");
         }
 
         public async Task<User[]> GetFriends(long id, AccessToken personalInformation = null)
@@ -62,7 +62,8 @@ namespace ShikimoriSharp.Information
             return await AllRates("anime", id, personalInformation);
         }
 
-        public async Task<AnimeRate[]> GetUserAnimeRates(long id, AnimeRateRequestSettings settings, AccessToken personalInformation = null)
+        public async Task<AnimeRate[]> GetUserAnimeRates(long id, AnimeRateRequestSettings settings,
+            AccessToken personalInformation = null)
         {
             return await AllRates("anime", id, settings, personalInformation);
         }
@@ -72,7 +73,8 @@ namespace ShikimoriSharp.Information
             return await AllRates("manga", id, personalInformation);
         }
 
-        public async Task<AnimeRate[]> GetUserMangaRates(long id, AnimeRateRequestSettings settings, AccessToken personalInformation = null)
+        public async Task<AnimeRate[]> GetUserMangaRates(long id, AnimeRateRequestSettings settings,
+            AccessToken personalInformation = null)
         {
             return await AllRates("manga", id, settings, personalInformation);
         }
@@ -82,7 +84,8 @@ namespace ShikimoriSharp.Information
             return await Request<AnimeRate[]>($"users/{id}/{thingy}_rates", p);
         }
 
-        private async Task<AnimeRate[]> AllRates(string thingy, long id, AnimeRateRequestSettings settings, AccessToken p)
+        private async Task<AnimeRate[]> AllRates(string thingy, long id, AnimeRateRequestSettings settings,
+            AccessToken p)
         {
             return await Request<AnimeRate[], AnimeRateRequestSettings>($"users/{id}/{thingy}_rates", settings, p);
         }
@@ -92,9 +95,11 @@ namespace ShikimoriSharp.Information
             return await Request<Favorites>($"users/{id}/favourites");
         }
 
-        public async Task<Message[]> GetMessages(long id, MessageRequestSettings settings, AccessToken personalInformation)
+        public async Task<Message[]> GetMessages(long id, MessageRequestSettings settings,
+            AccessToken personalInformation)
         {
-            return await Request<Message[], MessageRequestSettings>($"users/{id}/messages", settings, personalInformation);
+            return await Request<Message[], MessageRequestSettings>($"users/{id}/messages", settings,
+                personalInformation);
         }
 
         public async Task<NewInformation> UnreadMessages(long id, AccessToken personalInformation)

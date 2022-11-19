@@ -13,7 +13,7 @@ namespace ShikimoriSharp.UpdatableInformation
 
         public async Task<ResultImage> CreateUserImage(UserImagesSettings settings, AccessToken personalInformation)
         {
-            Requires(personalInformation, new[] {"comments"});
+            Requires(personalInformation, new[] { "comments" });
             return await Request<ResultImage, UserImagesSettings>("user_images", settings, personalInformation, "POST");
         }
     }

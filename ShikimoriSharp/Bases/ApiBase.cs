@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
@@ -14,13 +13,6 @@ namespace ShikimoriSharp.Bases
     {
         private readonly ApiClient _apiClient;
 
-        protected bool Requires(AccessToken token, IEnumerable<string> scopes)
-        {
-            var scope = token.Scope.Split(" ");
-            if (!scopes.All(it => scope.Any(x => x == it)))
-                throw new NotInScopeException();
-            return true;
-        }
         protected ApiBase(Version version, ApiClient apiClient)
         {
             Version = version;
@@ -29,6 +21,14 @@ namespace ShikimoriSharp.Bases
 
         public Version Version { get; }
         private string Site => $"https://shikimori.one/api/{GetThing()}";
+
+        protected bool Requires(AccessToken token, IEnumerable<string> scopes)
+        {
+            var scope = token.Scope.Split(" ");
+            if (!scopes.All(it => scope.Any(x => x == it)))
+                throw new NotInScopeException();
+            return true;
+        }
 
         private string GetThing()
         {
@@ -86,7 +86,8 @@ namespace ShikimoriSharp.Bases
             await _apiClient.RequestWithNoResponse($"{Site}{apiMethod}", null, token, method);
         }
 
-        public async Task NoResponseRequest<TSettings>(string apiMethod, TSettings setting, AccessToken token, string method = "POST")
+        public async Task NoResponseRequest<TSettings>(string apiMethod, TSettings setting, AccessToken token,
+            string method = "POST")
         {
             var settings = DeserializeToRequest(setting);
             await _apiClient.RequestWithNoResponse($"{Site}{apiMethod}", settings, token);

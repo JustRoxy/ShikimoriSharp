@@ -12,7 +12,8 @@ namespace ShikimoriSharp.Information
         {
         }
 
-        public async Task<Anime[]> GetAnime(AnimeRequestSettings settings = null, AccessToken personalInformation = null)
+        public async Task<Anime[]> GetAnime(AnimeRequestSettings settings = null,
+            AccessToken personalInformation = null)
         {
             return await Request<Anime[], AnimeRequestSettings>("animes", settings, personalInformation);
         }
@@ -57,7 +58,8 @@ namespace ShikimoriSharp.Information
             return GetTopics(id, null, personalInformation);
         }
 
-        public async Task<Topic[]> GetTopics(long id, AnimeTopicSettings settings, AccessToken personalInformation = null)
+        public async Task<Topic[]> GetTopics(long id, AnimeTopicSettings settings,
+            AccessToken personalInformation = null)
         {
             return await Request<Topic[], AnimeTopicSettings>($"animes/{id}/topics", settings, personalInformation);
         }

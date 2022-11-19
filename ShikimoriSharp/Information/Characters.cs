@@ -12,7 +12,7 @@ namespace ShikimoriSharp.Information
 
         public async Task<Character[]> GetCharactersBySearch(string search)
         {
-            return await Request<Character[], Search>("characters/search", new Search {search = search});
+            return await Request<Character[], Search>("characters/search", new Search { search = search });
         }
 
         public async Task<FullCharacter> GetCharacterById(long id, AccessToken personalInformation = null)

@@ -34,11 +34,11 @@ namespace ShikimoriSharp.Settings
         {
             topic.Add("topic", new Dictionary<string, string>
             {
-                {"body", body},
-                {"forum_id", forum_id.ToString()},
-                {"title", title},
-                {"type", "Topic"},
-                {"user_id", user_id.ToString()}
+                { "body", body },
+                { "forum_id", forum_id.ToString() },
+                { "title", title },
+                { "type", "Topic" },
+                { "user_id", user_id.ToString() }
             });
             if (linked_id is null || linked_type is null) return;
             topic["topic"].Add("linked_id", linked_id.ToString());

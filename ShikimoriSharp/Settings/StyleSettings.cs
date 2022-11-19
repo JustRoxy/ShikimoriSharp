@@ -12,7 +12,7 @@ namespace ShikimoriSharp.Settings
         {
             style.Add("style", new Dictionary<string, string>
             {
-                {"css", css}
+                { "css", css }
             });
         }
     }
@@ -26,8 +26,8 @@ namespace ShikimoriSharp.Settings
         {
             style.Add("style", new Dictionary<string, string>
             {
-                {"css", css},
-                {"name", name}
+                { "css", css },
+                { "name", name }
             });
         }
     }
@@ -41,10 +41,10 @@ namespace ShikimoriSharp.Settings
         {
             style.Add("style", new Dictionary<string, string>
             {
-                {"css", css},
-                {"name", name},
-                {"owner_id", owner_id.ToString()},
-                {"owner_type", owner_type.ToString()}
+                { "css", css },
+                { "name", name },
+                { "owner_id", owner_id.ToString() },
+                { "owner_type", owner_type.ToString() }
             });
         }
     }
