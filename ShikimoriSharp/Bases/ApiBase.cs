@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
@@ -51,7 +52,14 @@ namespace ShikimoriSharp.Bases
                 .Where(it => !(it.Value is null));
             var content = new MultipartFormDataContent();
             foreach (var i in typeEnum)
-                content.Add(new StringContent(i.Value.ToString()), i.Name);
+                if (i.Value is bool b)
+                {
+                    content.Add(new StringContent(b ? "true" : "false"));
+                }
+                else
+                {
+                    content.Add(new StringContent(i.Value.ToString()), i.Name);
+                }
 
 
             return content;
