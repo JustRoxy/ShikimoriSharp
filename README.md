@@ -14,7 +14,7 @@ https://shikimori.one/oauth
 ### ShikimoriClient
 
 ```csharp
-var client = new ShikimoriSharp(logger, new ClientSettings("ClientName", "ClientID", "ClientSecret"));
+var client = new ShikimoriClient(logger, new ClientSettings("ClientName", "ClientID", "ClientSecret"));
 ```
 
 ```csharp
